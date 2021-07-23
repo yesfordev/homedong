@@ -3,6 +3,7 @@ import axios from 'axios';
 
 // signup axios -> REST API, params 필요
 export const signup = createAsyncThunk('SIGNUP', async (userInfo) => {
+  console.log(userInfo);
   await axios
     .post('/signup', userInfo)
     .then((res) => {

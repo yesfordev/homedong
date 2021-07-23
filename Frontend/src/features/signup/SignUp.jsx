@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core/styles';
-import { signup, checkNickname, checkEmail } from './signupSlice';
+import { signup, checkNickname } from './signupSlice';
 
 // style
 const Wrapper = styled.div`
-  height: 100%;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,29 +17,26 @@ const Wrapper = styled.div`
 const LoginContainer = styled.div`
   height: 80%;
   width: 80%;
-  background-color: white;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
 `;
 const Title = styled.span`
-  font-weight: bold;
+  font-size: 2.5rem;
 `;
 
 const useStyles = makeStyles({
-  validator: {
-    fontSize: '1.5em',
+  validatorForm: {
+    width: '35%',
   },
 });
 
 // logic
-
 function SignUp() {
   // local state
   const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
-  const [confirmNumber, setConfirmNumber] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const classes = useStyles();
@@ -57,7 +54,12 @@ function SignUp() {
   // submit when user click button
   function handleSubmit(event) {
     event.preventDefault();
-    dispatch(signup(nickname));
+    const data = {
+      email,
+      nickname,
+      password,
+    };
+    dispatch(signup(data));
   }
 
   // validation (same password)
@@ -84,19 +86,26 @@ function SignUp() {
     <Wrapper>
       <LoginContainer>
         <Title>LOGO</Title>
-        <ValidatorForm onSubmit={handleSubmit}>
+        <ValidatorForm
+          onSubmit={handleSubmit}
+          className={classes.validatorForm}
+        >
           <TextValidator
-            className={classes.validator}
             label="닉네임"
             onChange={handleNickname}
+            color="secondary"
             name="nickname"
             value={nickname}
             validators={['required']}
             errorMessages={['정보를 입력해주세요']}
+            helperText="최대 6글자입니다."
+            variant="outlined"
             InputLabelProps={{
               shrink: true,
             }}
-            helperText="최대 6글자입니다."
+            margin="normal"
+            size="small"
+            fullWidth
           />
           <Button onClick={() => dispatch(checkNickname(nickname))}>
             중복확인
@@ -112,19 +121,9 @@ function SignUp() {
               shrink: true,
             }}
             margin="normal"
-          />
-          {/* button disabled 토글 필요 */}
-          <Button onClick={() => dispatch(checkEmail(email))}>인증하기</Button>
-          <TextValidator
-            label="인증번호"
-            onChange={(e) => setConfirmNumber(e.target.value)}
-            name="confirmNumber"
-            value={confirmNumber}
-            validators={['required']}
-            errorMessages={['정보를 입력해주세요']}
-            InputLabelProps={{
-              shrink: true,
-            }}
+            variant="outlined"
+            size="small"
+            fullWidth
           />
           <TextValidator
             label="비밀번호"
@@ -137,6 +136,9 @@ function SignUp() {
             InputLabelProps={{
               shrink: true,
             }}
+            variant="outlined"
+            size="small"
+            fullWidth
           />
           <TextValidator
             label="비밀번호 확인"
@@ -152,6 +154,10 @@ function SignUp() {
             InputLabelProps={{
               shrink: true,
             }}
+            variant="outlined"
+            margin="normal"
+            size="small"
+            fullWidth
           />
           <Button type="submit">Submit</Button>
         </ValidatorForm>
