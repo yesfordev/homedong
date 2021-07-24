@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import styles from 'styled-components';
-import { Container, TextField, Button } from '@material-ui/core';
+import { Container, Button } from '@material-ui/core';
+import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
+import { useDispatch } from 'react-redux';
+import { login } from './LoginSlice';
+
+// style
 
 const Wrapper = styles(Container)`
   display: flex;
@@ -9,44 +14,68 @@ const Wrapper = styles(Container)`
   align-items: center;
 `;
 
+const Title = styles.span`
+  font-size: 2.5rem;
+`;
+
 const LoginContainer = styles.div`
   display: flex;
   flex-direction: column;
 `;
 
-const InputValidator = styles(TextField)`
-  margin: 16px;
-`;
-
-const SubmitButton = styles(Button)`
-
-`;
-
+// component
 function Login() {
+  const dispatch = useDispatch();
+  // state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  // function
+  function handleSubmit(e) {
+    e.preventDefault();
+    const data = {
+      email,
+      password,
+    };
+    dispatch(login(data));
+  }
+
+  // render
   return (
     <Wrapper>
       <LoginContainer>
-        <InputValidator
-          label="이메일"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          variant="outlined"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <InputValidator
-          label="비밀번호"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          variant="outlined"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <SubmitButton color="primary">로그인</SubmitButton>
+        <Title>LOGO</Title>
+        <ValidatorForm onSubmit={handleSubmit}>
+          <TextValidator
+            label="이메일"
+            onChange={(e) => setEmail(e.target.value)}
+            name="email"
+            value={email}
+            validators={['required', 'isEmail']}
+            errorMessages={[
+              '정보를 입력해주세요',
+              '이메일 형식으로 입력해주세요',
+            ]}
+            variant="outlined"
+            autoFocus
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <TextValidator
+            label="비밀번호"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            name="password"
+            type="password"
+            validators={['required']}
+            errorMessages={['정보를 입력해주세요']}
+            variant="outlined"
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <Button type="submit">로그인</Button>
+        </ValidatorForm>
       </LoginContainer>
     </Wrapper>
   );
