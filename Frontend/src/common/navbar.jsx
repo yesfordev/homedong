@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styles from 'styled-components';
 import { Link } from 'react-router-dom';
-import SimpleModal from './modal';
+import MakeRoomModal from './MakeRoomModal';
+import FindRoomModal from './FindRoomModal';
 
 const Wrapper = styles.div`
   height: 65px;
@@ -27,16 +28,31 @@ const Links = styles.ul`
 `;
 
 function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  console.log(setIsOpen);
+  const [isMakeOpen, setIsMakeOpen] = useState(false);
+  const handleMakeModal = () => setIsMakeOpen(false);
+  const [isFindOpen, setIsFindOpen] = useState(false);
+  const handleFindModal = () => setIsFindOpen(false);
   return (
     <Wrapper>
       <Logo />
+      <MakeRoomModal
+        fullWidth
+        isOpen={isMakeOpen}
+        handleModalClose={handleMakeModal}
+      />
+      <FindRoomModal
+        fullWidth
+        isOpen={isFindOpen}
+        handleModalClose={handleFindModal}
+      />
       <Links>
         <Link to="/tutorial">튜토리얼</Link>
-        <span>방만들기</span>
-        <span>방찾기</span>
-        <SimpleModal isOpen={isOpen} />
+        <button type="button" onClick={() => setIsMakeOpen(true)}>
+          방만들기
+        </button>
+        <button type="button" onClick={() => setIsFindOpen(true)}>
+          방찾기
+        </button>
         <Link to="/ranking">랭킹</Link>
       </Links>
     </Wrapper>
