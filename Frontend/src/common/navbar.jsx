@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import MakeRoomModal from './MakeRoomModal';
 import FindRoomModal from './FindRoomModal';
 
+import DropDownMenu from './NavbarDropdown';
+
 const Wrapper = styles.div`
   height: 65px;
   display: flex;
@@ -19,11 +21,14 @@ const Logo = styles.div`
 `;
 
 const Links = styles.ul`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   & > * {
     margin-right: 25px;
-  } > span
-  {
     cursor: pointer;
+  } > button {
+    font-size: 1rem;
   }
 `;
 
@@ -54,6 +59,7 @@ function Navbar() {
           방찾기
         </button>
         <Link to="/ranking">랭킹</Link>
+        <DropDownMenu />
       </Links>
     </Wrapper>
   );
