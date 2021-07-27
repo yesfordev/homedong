@@ -10,6 +10,8 @@ import java.io.IOException;
 
 /**
  * Created by Seo Youngeun on 2021-07-26
+ *
+ * JWT 401 error
  */
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {

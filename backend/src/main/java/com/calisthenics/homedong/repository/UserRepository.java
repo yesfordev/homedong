@@ -8,6 +8,8 @@ import java.util.Optional;
 
 /**
  * Created by Seo Youngeun on 2021-07-26
+ *
+ * User Repository
  */
 public interface UserRepository extends JpaRepository<User, Integer> {
     @EntityGraph(attributePaths = "roles")

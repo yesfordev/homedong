@@ -11,6 +11,8 @@ import java.util.Optional;
 
 /**
  * Created by Seo Youngeun on 2021.07.26
+ *
+ * Spring Security 관련 Util
  */
 public class SecurityUtil {
     private static final Logger logger = LoggerFactory.getLogger(SecurityUtil.class);

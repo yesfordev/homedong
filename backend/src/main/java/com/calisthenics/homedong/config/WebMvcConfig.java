@@ -6,6 +6,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Created by Seo Youngeun on 2021-07-26
+ *
+ * CORS 설정
  */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {

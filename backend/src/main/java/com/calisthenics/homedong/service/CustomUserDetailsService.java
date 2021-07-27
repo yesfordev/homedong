@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 
 /**
  * Created by Seo Youngeun on 2021-07-26
+ *
+ * Spring Security에서 정말 중요한 부분. UserDetails를 다룸
  */
 @Component("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {

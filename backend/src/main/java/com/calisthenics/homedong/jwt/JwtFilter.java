@@ -16,6 +16,8 @@ import java.io.IOException;
 
 /**
  * Created by Seo Youngeun on 2021-07-26
+ *
+ * JWT Filtering 작업 처리
  */
 public class JwtFilter extends GenericFilterBean {
 

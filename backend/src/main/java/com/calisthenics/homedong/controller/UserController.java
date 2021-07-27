@@ -13,6 +13,8 @@ import javax.validation.Valid;
 
 /**
  * Created by Seo Youngeun on 2021-07-26
+ *
+ * 유저 관련 Controller
  */
 @RestController
 @RequestMapping("/api")

@@ -21,7 +21,7 @@ import static com.google.common.collect.Lists.newArrayList;
 /**
  * Created by Seo Youngeun on 2021-07-26
  *
- * API 문서 관련 swagger2 설정 정의.
+ * API 문서 관련 swagger2 설정.
  */
 @Configuration
 @EnableSwagger2

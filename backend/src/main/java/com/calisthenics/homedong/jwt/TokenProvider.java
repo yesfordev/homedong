@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 
 /**
  * Created by Seo Youngeun on 2021-07-26
+ *
+ * JWT Token Provider
  */
 @Component
 public class TokenProvider implements InitializingBean {

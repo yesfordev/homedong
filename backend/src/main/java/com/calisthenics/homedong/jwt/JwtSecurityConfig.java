@@ -7,6 +7,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 /**
  * Created by Seo Youngeun on 2021-07-26
+ *
+ * JwtFilter, TokenProvider security에 설정
  */
 public class JwtSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
