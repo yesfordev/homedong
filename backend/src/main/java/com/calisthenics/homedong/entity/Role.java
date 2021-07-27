@@ -5,6 +5,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * Created by Seo Youngeun on ${DATE}
+ */
 @Entity
 @Table(name = "role")
 @Getter

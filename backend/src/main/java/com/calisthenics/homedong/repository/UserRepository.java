@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
+/**
+ * Created by Seo Youngeun on ${DATE}
+ */
 public interface UserRepository extends JpaRepository<User, Integer> {
     @EntityGraph(attributePaths = "roles")
     Optional<User> findOneWithRolesByEmail(String email);

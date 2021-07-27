@@ -19,6 +19,8 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
+ * Created by Seo Youngeun on ${DATE}
+ *
  * API 문서 관련 swagger2 설정 정의.
  */
 @Configuration

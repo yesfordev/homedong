@@ -10,6 +10,9 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
 
+/**
+ * Created by Seo Youngeun on ${DATE}
+ */
 @Entity
 @Table(name = "user")
 @Getter
@@ -31,7 +34,6 @@ public class User implements UserDetails {
     @Column(name = "email", length = 50, unique = true)
     private String email;
 
-    @JsonIgnore
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", length = 200)
     private String password;

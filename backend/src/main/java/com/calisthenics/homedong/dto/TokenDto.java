@@ -2,6 +2,9 @@ package com.calisthenics.homedong.dto;
 
 import lombok.*;
 
+/**
+ * Created by Seo Youngeun on ${DATE}
+ */
 @Getter
 @Setter
 @Builder

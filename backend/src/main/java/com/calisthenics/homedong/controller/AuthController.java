@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+/**
+ * Created by Seo Youngeun on ${DATE}
+ */
 @RestController
 @RequestMapping("/api")
 public class AuthController {

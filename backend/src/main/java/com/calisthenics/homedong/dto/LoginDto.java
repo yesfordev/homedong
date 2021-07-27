@@ -5,6 +5,9 @@ import lombok.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/**
+ * Created by Seo Youngeun on ${DATE}
+ */
 @Getter
 @Setter
 @Builder
