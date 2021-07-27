@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by Seo Youngeun on ${DATE}
+ * Created by Seo Youngeun on 2021-07-26
  */
 @Component("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {

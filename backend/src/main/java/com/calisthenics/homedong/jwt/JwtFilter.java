@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * Created by Seo Youngeun on ${DATE}
+ * Created by Seo Youngeun on 2021-07-26
  */
 public class JwtFilter extends GenericFilterBean {
 

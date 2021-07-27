@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 /**
- * Created by Seo Youngeun on ${DATE}
+ * Created by Seo Youngeun on 2021-07-26
  */
 public interface UserRepository extends JpaRepository<User, Integer> {
     @EntityGraph(attributePaths = "roles")

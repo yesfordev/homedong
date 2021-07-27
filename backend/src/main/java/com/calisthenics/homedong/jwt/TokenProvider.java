@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 /**
- * Created by Seo Youngeun on ${DATE}
+ * Created by Seo Youngeun on 2021-07-26
  */
 @Component
 public class TokenProvider implements InitializingBean {
