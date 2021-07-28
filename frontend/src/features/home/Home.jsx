@@ -1,6 +1,6 @@
 import React from 'react';
 // import styles from 'styled-components';
-import Navbar from '../../common/navbar';
+import Navbar from '../../common/Navbar';
 
 function Home() {
   return (

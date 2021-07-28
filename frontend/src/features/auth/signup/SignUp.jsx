@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core/styles';
-import { signup, checkNickname } from './signupSlice';
+import { signup, checkNickname } from '../authSlice';
 
 // style
 const Wrapper = styled.div`

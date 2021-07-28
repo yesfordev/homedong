@@ -3,7 +3,6 @@ import axios from 'axios';
 
 // signup axios -> REST API, params 필요
 export const signup = createAsyncThunk('SIGNUP', async (userInfo) => {
-  console.log(userInfo);
   await axios
     .post('/signup', userInfo)
     .then((res) => {
@@ -43,10 +42,13 @@ export const checkNickname = createAsyncThunk(
   }
 );
 
-const signUpSlice = createSlice({
-  name: 'signUp',
+const authSlice = createSlice({
+  name: 'auth',
   initialState: {
-    user: {},
+    user: {
+      nickname: '김싸피',
+      email: 'abc@naver.com',
+    },
   },
   reducers: {},
   // 조사 필요, return 값 찾아야함
@@ -59,4 +61,5 @@ const signUpSlice = createSlice({
 });
 
 // export const { signup } = signUpSlice.actions;
-export default signUpSlice.reducer;
+// export const userSelector = (state) => state.user;
+export default authSlice.reducer;
