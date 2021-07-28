@@ -15,7 +15,6 @@ export const signup = createAsyncThunk('SIGNUP', async (userInfo) => {
 
 // email confirm axios -> REST API, params 필요
 export const checkEmail = createAsyncThunk('CHECK_EMAIL', async (emailInfo) => {
-  console.log('이메일 버튼 활성화', emailInfo);
   await axios
     .get('/checkemail', emailInfo)
     .then((res) => {
@@ -30,7 +29,6 @@ export const checkEmail = createAsyncThunk('CHECK_EMAIL', async (emailInfo) => {
 export const checkNickname = createAsyncThunk(
   'CHECK_NICKNAME',
   async (nickname) => {
-    console.log('닉네임 버튼 활성화', nickname);
     await axios
       .get('/checknickname', nickname)
       .then((res) => {

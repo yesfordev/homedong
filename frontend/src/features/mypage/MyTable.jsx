@@ -12,6 +12,9 @@ const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
+  container: {
+    width: '100%',
+  },
 });
 
 function createData(name, calories, fat, carbs, protein) {
@@ -27,25 +30,25 @@ export default function MyTable() {
   const classes = useStyles();
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
+    <TableContainer component={Paper} className={classes.container}>
+      <Table className={classes.table} size="small" aria-label="simple table">
         <TableHead>
-          <TableRow>
+          <TableRow selected>
             <TableCell />
-            <TableCell align="right">윗몸일으키기</TableCell>
-            <TableCell align="right">스쿼트</TableCell>
-            <TableCell align="right">팔굽혀펴기</TableCell>
+            <TableCell align="center">윗몸일으키기</TableCell>
+            <TableCell align="center">스쿼트</TableCell>
+            <TableCell align="center">팔굽혀펴기</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
+            <TableRow align="center" key={row.name}>
+              <TableCell align="center" component="th" scope="row">
                 {row.name}
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
+              <TableCell align="center">{row.calories}</TableCell>
+              <TableCell align="center">{row.fat}</TableCell>
+              <TableCell align="center">{row.carbs}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -14,6 +14,7 @@
     "install": "^0.13.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
+    "react-calendar": "^3.4.0",
     "react-dom": "^17.0.2",
     "react-material-ui-form-validator": "^2.1.4",
     "react-redux": "^7.2.4",
@@ -59,5 +60,5 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "prettier": "2.3.2"
   },
-  "proxy": "http://localhost:8080/"
+  "proxy": "http://localhost:8080"
 }
