@@ -7,6 +7,7 @@ import com.calisthenics.homedong.db.repository.UserRepository;
 import com.calisthenics.homedong.error.exception.ErrorCode;
 import com.calisthenics.homedong.error.exception.custom.AuthEmailSendFailException;
 import com.calisthenics.homedong.error.exception.custom.EmailDuplicateException;
+import com.calisthenics.homedong.error.exception.custom.NicknameDuplicateException;
 import com.calisthenics.homedong.error.exception.custom.UserNotFoundException;
 import com.calisthenics.homedong.util.SecurityUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -83,5 +84,11 @@ public class UserService {
 
         updateUser.setAuthStatus(true);
         return userRepository.save(updateUser);
+    }
+
+    public void checkDuplicateNickname(String nickname) {
+        if(userRepository.findAllByNickname(nickname).size() > 0) {
+            throw new NicknameDuplicateException(nickname);
+        }
     }
 }

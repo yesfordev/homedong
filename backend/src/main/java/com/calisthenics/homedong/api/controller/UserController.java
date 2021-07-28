@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.xml.ws.Response;
 import java.util.Map;
 
 /**
@@ -50,6 +51,13 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<User> getUserInfo(@PathVariable String email) {
         return ResponseEntity.ok(userService.getUserWithRoles(email).get());
+    }
+
+    @GetMapping("/user/check")
+    public ResponseEntity checkDuplicateNickname(@RequestParam String nickname) {
+        userService.checkDuplicateNickname(nickname);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }
