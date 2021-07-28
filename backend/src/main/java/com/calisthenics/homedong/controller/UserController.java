@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * Created by Seo Youngeun on 2021-07-26
@@ -19,21 +20,27 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api")
 public class UserController {
-    @Autowired
     private final UserService userService;
 
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@Valid @RequestBody UserDto userDto) {
-        User newUser = userService.signup(userDto);
+    public ResponseEntity signup(@Valid @RequestBody UserDto userDto) {
+        return new ResponseEntity<>(userService.signup(userDto));
+    }
 
-        if(newUser == null) {
-            return new ResponseEntity<>(newUser, HttpStatus.CONFLICT);
+    @GetMapping("/signup/confirm")
+    public ResponseEntity confirmEmail(@RequestParam Map<String, String> map) {
+        //email, authKey가 일치할 경우 authStatus 업데이트
+        User user = userService.updateAuthStatus(map);
+
+        if(user == null) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
-        return ResponseEntity.ok(userService.signup(userDto));
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/user")

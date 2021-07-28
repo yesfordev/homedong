@@ -2,6 +2,7 @@ package com.calisthenics.homedong.service;
 
 import com.calisthenics.homedong.entity.User;
 import com.calisthenics.homedong.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,25 +20,20 @@ import java.util.stream.Collectors;
  * Spring Security에서 정말 중요한 부분. UserDetails를 다룸
  */
 @Component("userDetailsService")
+@AllArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
-
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String email) {
-        return userRepository.findOneWithRolesByEmail(email)
+//        return userRepository.findOneWithRolesByEmail(email)
+        return userRepository.findOneWithRolesByEmailAndAuthStatus(email, true)
                 .map(user -> createUser(email, user))
-                .orElseThrow(() -> new UsernameNotFoundException(email + " -> 데이터베이스에서 찾을 수 없습니다."));
+                .orElseThrow(() -> new UsernameNotFoundException(email + " -> 이메일 인증이 이루어지지 않았거나, 없는 사용자입니다."));
     }
 
     private org.springframework.security.core.userdetails.User createUser(String email, User user) {
-//        if (!user.isActivated()) {
-//            throw new RuntimeException(email + " -> 활성화되어 있지 않습니다.");
-//        }
         List<GrantedAuthority> grantedRoles = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
                 .collect(Collectors.toList());

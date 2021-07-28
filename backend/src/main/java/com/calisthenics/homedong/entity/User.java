@@ -48,6 +48,13 @@ public class User implements UserDetails {
     @Column(name = "img")
     private String img;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(name = "auth_key")
+    private String authKey;
+
+    @Column(name = "auth_status")
+    private boolean authStatus;
+
     @ManyToMany
     @JoinTable(
             name = "user_role",

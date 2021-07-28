@@ -196,7 +196,7 @@ dependencies {
     implementation("org.projectlombok:lombok:1.18.20")
     annotationProcessor("org.projectlombok:lombok:1.18.20")
 
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    implementation('org.springframework.boot:spring-boot-starter-test')
 
     // 추가
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -212,10 +212,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-jdbc
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.5.2'
 
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.4.5'
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.5.1'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 test {
