@@ -1,6 +1,6 @@
 package com.calisthenics.homedong.controller;
 
-import com.calisthenics.homedong.dto.UserDto;
+import com.calisthenics.homedong.config.request.SignUpReq;
 import com.calisthenics.homedong.entity.User;
 import com.calisthenics.homedong.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +28,8 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity signup(@Valid @RequestBody UserDto userDto) {
-        return new ResponseEntity<>(userService.signup(userDto));
+    public ResponseEntity signup(@Valid @RequestBody SignUpReq signUpReq) {
+        return new ResponseEntity<>(userService.signup(signUpReq));
     }
 
     @GetMapping("/signup/confirm")

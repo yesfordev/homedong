@@ -15,7 +15,7 @@
 ---
 |**서영은**|**김예슬**|**김성민**|**송상민**|**망고**|
 |:---:|:---:|:---:|:---:|:-----------:|
-|![image](/uploads/e8c8407735095c6a2fa2aab7469ce66a/image.png)|![image](/uploads/a2e597d98b5de28f2b24533accbbe863/image.png)|![image](/uploads/974046d4b51144ee19ca6cc7249a26d4/image.png)|![image](/uploads/ada107ab245bb0cd74492f17f97b5e34/image.png)|![image](/uploads/74b138f321d71eba2f421d5742fcd5f3/image.png)|
+|<img src="/uploads/e8c8407735095c6a2fa2aab7469ce66a/image.png" width="800">|<img src="/uploads/a2e597d98b5de28f2b24533accbbe863/image.png" width="800">|<img src="/uploads/974046d4b51144ee19ca6cc7249a26d4/image.png" width="800">|<img src="/uploads/ada107ab245bb0cd74492f17f97b5e34/image.png" width="800">|<img src="/uploads/74b138f321d71eba2f421d5742fcd5f3/image.png" width="920">|
 |Leader & Backend|Backend|Backend|Frontend|Cute|
 
 ### 🖥️ 개발 환경

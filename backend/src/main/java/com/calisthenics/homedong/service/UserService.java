@@ -1,6 +1,6 @@
 package com.calisthenics.homedong.service;
 
-import com.calisthenics.homedong.dto.UserDto;
+import com.calisthenics.homedong.config.request.SignUpReq;
 import com.calisthenics.homedong.entity.Role;
 import com.calisthenics.homedong.entity.User;
 import com.calisthenics.homedong.repository.UserRepository;
@@ -32,8 +32,8 @@ public class UserService {
     }
 
     @Transactional
-    public HttpStatus signup(UserDto userDto) {
-        if(userRepository.findOneWithRolesByEmail(userDto.getEmail()).orElse(null) != null) {
+    public HttpStatus signup(SignUpReq signUpReq) {
+        if(userRepository.findOneWithRolesByEmail(signUpReq.getEmail()).orElse(null) != null) {
 //            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
             return HttpStatus.CONFLICT;
         }
@@ -43,16 +43,16 @@ public class UserService {
                 .roleName("ROLE_NAME")
                 .build();
 
-        String authKey = mailService.sendAuthMail(userDto.getEmail());
+        String authKey = mailService.sendAuthMail(signUpReq.getEmail());
 
         if(authKey.equals("FAIL")) {
             return HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
         User user = User.builder()
-                .email(userDto.getEmail())
-                .password(passwordEncoder.encode(userDto.getPassword()))
-                .nickname(userDto.getNickname())
+                .email(signUpReq.getEmail())
+                .password(passwordEncoder.encode(signUpReq.getPassword()))
+                .nickname(signUpReq.getNickname())
                 .roles(Collections.singleton(role))
                 .isTutorialFinished(false)
                 .authKey(authKey)
