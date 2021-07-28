@@ -1,10 +1,11 @@
 // reducer를 모아주는 함수,store를만들어주는 함수
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import LoginReducer from './features/login/LoginSlice';
+import SignUpReducer from './features/signup/signupSlice';
 
 const rootreducer = combineReducers({
   // 각 리듀서를 합침
-  LoginReducer,
+  SignUpReducer,  LoginReducer,
 });
 
 const store = configureStore({
