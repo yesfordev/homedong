@@ -28,22 +28,19 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity signup(@Valid @RequestBody SignUpReq signUpReq) {
-        return new ResponseEntity<>(userService.signup(signUpReq));
+    public ResponseEntity<User> signup(@Valid @RequestBody SignUpReq signUpReq) {
+        return ResponseEntity.ok(userService.signup(signUpReq));
     }
 
     @GetMapping("/signup/confirm")
     public ResponseEntity confirmEmail(@RequestParam Map<String, String> map) {
         //email, authKey가 일치할 경우 authStatus 업데이트
-        User user = userService.updateAuthStatus(map);
+        userService.updateAuthStatus(map);
 
-        if(user == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-        }
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("/user")
+    @GetMapping("/user/me")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<User> getMyUserInfo() {
         return ResponseEntity.ok(userService.getMyUserWithRoles().get());
@@ -54,4 +51,5 @@ public class UserController {
     public ResponseEntity<User> getUserInfo(@PathVariable String email) {
         return ResponseEntity.ok(userService.getUserWithRoles(email).get());
     }
+
 }

@@ -1,9 +1,10 @@
 package com.calisthenics.homedong.api.service;
 
+import com.calisthenics.homedong.error.exception.ErrorCode;
+import com.calisthenics.homedong.error.exception.custom.AuthEmailSendFailException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class MailService {
         StringBuffer buffer = new StringBuffer();
         int num = 0;
 
-        while(buffer.length() < size) {
+        while (buffer.length() < size) {
             num = random.nextInt(10);
             buffer.append(num);
         }
@@ -58,8 +59,8 @@ public class MailService {
 
             return authKey;
         } catch (UnknownHostException e) {
-            log.error(e.getMessage());
-            return "FAIL";
+            throw new AuthEmailSendFailException(email);
         }
+
     }
 }

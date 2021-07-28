@@ -4,19 +4,23 @@ import com.calisthenics.homedong.api.dto.SignUpReq;
 import com.calisthenics.homedong.db.entity.Role;
 import com.calisthenics.homedong.db.entity.User;
 import com.calisthenics.homedong.db.repository.UserRepository;
+import com.calisthenics.homedong.error.exception.ErrorCode;
+import com.calisthenics.homedong.error.exception.custom.AuthEmailSendFailException;
+import com.calisthenics.homedong.error.exception.custom.EmailDuplicateException;
+import com.calisthenics.homedong.error.exception.custom.UserNotFoundException;
 import com.calisthenics.homedong.util.SecurityUtil;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
 /**
  * Created by Seo Youngeun on 2021-07-26
- *
+ * <p>
  * 유저 관련 비즈니스 로직 처리를 위한 서비스 구현
  */
 @Service
@@ -32,22 +36,17 @@ public class UserService {
     }
 
     @Transactional
-    public HttpStatus signup(SignUpReq signUpReq) {
-        if(userRepository.findOneWithRolesByEmail(signUpReq.getEmail()).orElse(null) != null) {
-//            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
-            return HttpStatus.CONFLICT;
+    public User signup(final SignUpReq signUpReq) {
+        if (userRepository.findOneWithRolesByEmail(signUpReq.getEmail()).orElse(null) != null) {
+            throw new EmailDuplicateException(signUpReq);
         }
 
         Role role = Role.builder()
                 .roleId(1)
-                .roleName("ROLE_NAME")
+                .roleName("ROLE_USER")
                 .build();
 
         String authKey = mailService.sendAuthMail(signUpReq.getEmail());
-
-        if(authKey.equals("FAIL")) {
-            return HttpStatus.INTERNAL_SERVER_ERROR;
-        }
 
         User user = User.builder()
                 .email(signUpReq.getEmail())
@@ -59,16 +58,15 @@ public class UserService {
                 .authStatus(false)
                 .build();
 
-        userRepository.save(user);
-        return HttpStatus.OK;
+        return userRepository.save(user);
     }
 
-    @Transactional
-    public Optional<User> getUserWithRoles(String email) {
+    @Transactional(readOnly = true)
+    public Optional<User> getUserWithRoles(final String email) {
         return userRepository.findOneWithRolesByEmail(email);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<User> getMyUserWithRoles() {
         return SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithRolesByEmail);
     }
@@ -79,9 +77,10 @@ public class UserService {
         String authKey = map.get("authKey");
         User updateUser = userRepository.findOneWithRolesByEmailAndAuthKey(email, authKey).orElse(null);
 
-        if(updateUser == null) {
-            return null;
+        if (updateUser == null) {
+            throw new UserNotFoundException(email);
         }
+
         updateUser.setAuthStatus(true);
         return userRepository.save(updateUser);
     }
