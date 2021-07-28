@@ -1,4 +1,4 @@
-package com.calisthenics.homedong.config.request;
+package com.calisthenics.homedong.api.dto;
 
 import lombok.*;
 

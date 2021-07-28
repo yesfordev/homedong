@@ -1,6 +1,6 @@
-package com.calisthenics.homedong.controller;
+package com.calisthenics.homedong.api.controller;
 
-import com.calisthenics.homedong.service.MailService;
+import com.calisthenics.homedong.api.service.MailService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

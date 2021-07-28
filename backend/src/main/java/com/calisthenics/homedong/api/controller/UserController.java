@@ -1,8 +1,8 @@
-package com.calisthenics.homedong.controller;
+package com.calisthenics.homedong.api.controller;
 
-import com.calisthenics.homedong.config.request.SignUpReq;
-import com.calisthenics.homedong.entity.User;
-import com.calisthenics.homedong.service.UserService;
+import com.calisthenics.homedong.api.dto.SignUpReq;
+import com.calisthenics.homedong.db.entity.User;
+import com.calisthenics.homedong.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

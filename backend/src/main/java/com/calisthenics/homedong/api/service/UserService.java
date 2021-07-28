@@ -1,9 +1,9 @@
-package com.calisthenics.homedong.service;
+package com.calisthenics.homedong.api.service;
 
-import com.calisthenics.homedong.config.request.SignUpReq;
-import com.calisthenics.homedong.entity.Role;
-import com.calisthenics.homedong.entity.User;
-import com.calisthenics.homedong.repository.UserRepository;
+import com.calisthenics.homedong.api.dto.SignUpReq;
+import com.calisthenics.homedong.db.entity.Role;
+import com.calisthenics.homedong.db.entity.User;
+import com.calisthenics.homedong.db.repository.UserRepository;
 import com.calisthenics.homedong.util.SecurityUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;

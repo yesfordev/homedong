@@ -1,6 +1,6 @@
-package com.calisthenics.homedong.repository;
+package com.calisthenics.homedong.db.repository;
 
-import com.calisthenics.homedong.entity.User;
+import com.calisthenics.homedong.db.entity.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

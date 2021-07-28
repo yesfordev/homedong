@@ -1,7 +1,7 @@
-package com.calisthenics.homedong.controller;
+package com.calisthenics.homedong.api.controller;
 
-import com.calisthenics.homedong.config.request.LoginReq;
-import com.calisthenics.homedong.config.response.TokenRes;
+import com.calisthenics.homedong.api.dto.LoginReq;
+import com.calisthenics.homedong.api.dto.TokenRes;
 import com.calisthenics.homedong.jwt.JwtFilter;
 import com.calisthenics.homedong.jwt.TokenProvider;
 import org.springframework.http.HttpHeaders;

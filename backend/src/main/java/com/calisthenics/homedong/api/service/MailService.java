@@ -1,4 +1,4 @@
-package com.calisthenics.homedong.service;
+package com.calisthenics.homedong.api.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
