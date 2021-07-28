@@ -336,4 +336,6 @@ build
 # Tracked gradle-wrapper
 !/backend/gradle/wrapper/gradle-wrapper.jar
 
+application-prod.properties
+
 # End of Back
