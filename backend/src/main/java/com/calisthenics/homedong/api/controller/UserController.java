@@ -60,4 +60,11 @@ public class UserController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @DeleteMapping("/user")
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity deleteUser() {
+        userService.deleteUser();
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }
