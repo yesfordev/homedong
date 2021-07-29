@@ -15,7 +15,7 @@
 ---
 |**서영은**|**김예슬**|**김성민**|**송상민**|**망고**|
 |:---:|:---:|:---:|:---:|:-----------:|
-|<img src="/uploads/e8c8407735095c6a2fa2aab7469ce66a/image.png" width="800">|<img src="/uploads/a2e597d98b5de28f2b24533accbbe863/image.png" width="800">|<img src="/uploads/974046d4b51144ee19ca6cc7249a26d4/image.png" width="800">|<img src="/uploads/ada107ab245bb0cd74492f17f97b5e34/image.png" width="800">|<img src="/uploads/74b138f321d71eba2f421d5742fcd5f3/image.png" width="960">|
+|<img src="/uploads/e8c8407735095c6a2fa2aab7469ce66a/image.png" width="800">|<img src="/uploads/a2e597d98b5de28f2b24533accbbe863/image.png" width="800">|<img src="/uploads/974046d4b51144ee19ca6cc7249a26d4/image.png" width="800">|<img src="/uploads/ada107ab245bb0cd74492f17f97b5e34/image.png" width="800">|<img src="/uploads/74b138f321d71eba2f421d5742fcd5f3/image.png" width="930">|
 |Leader & Backend|Backend|Backend|Frontend|Cute|
 
 ### 🖥️ 개발 환경
@@ -93,18 +93,18 @@
 ---
 
 ```
-**FEAT:**    새로운 기능을 추가할 경우
-**FIX:**     버그를 고친 경우
-**STYLE:**   코드 포맷 변경, 간단한 수정, 코드 변경이 없는 경우
-**REFATOR:** 프로덕션 코드 리팩토링
-**DOCS:**    문서를 수정한 경우(ex> Swagger)
-**Rename:**  파일 혹은 폴더명 수정 및 이동
-**Remove:**  파일 삭제
+FEAT:    새로운 기능을 추가할 경우
+FIX:     버그를 고친 경우
+STYLE:   코드 포맷 변경, 간단한 수정, 코드 변경이 없는 경우
+REFATOR: 프로덕션 코드 리팩토링
+DOCS:    문서를 수정한 경우(ex> Swagger)
+Rename:  파일 혹은 폴더명 수정 및 이동
+Remove:  파일 삭제
 ```
 
 ```bash
-**커밋 타입**: 내용 자세히 적어주기 [#지라이슈넘버]
-ex) **FEAT**: 로그인 rest api 추가 [#지라이슈넘버]
+커밋 타입: 내용 자세히 적어주기 [#지라이슈넘버]
+ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
 ```
 
 해당 [Git 스타일 가이드](https://udacity.github.io/git-styleguide/)를 참고하여서 정했습니다
