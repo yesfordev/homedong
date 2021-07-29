@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios from '../../common/api/http-common';
 
-// signup axios -> REST API, params 필요
+// 메서드 전체 REST API, params 필요
+// 회원가입
 export const signup = createAsyncThunk('SIGNUP', async (userInfo) => {
   await axios
     .post('/signup', userInfo)
@@ -13,19 +14,7 @@ export const signup = createAsyncThunk('SIGNUP', async (userInfo) => {
     });
 });
 
-// email confirm axios -> REST API, params 필요
-export const checkEmail = createAsyncThunk('CHECK_EMAIL', async (emailInfo) => {
-  await axios
-    .get('/checkemail', emailInfo)
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      return err;
-    });
-});
-
-// nickname confirm axios -> REST API, params 필요
+// 닉네임 중복 검사
 export const checkNickname = createAsyncThunk(
   'CHECK_NICKNAME',
   async (nickname) => {
@@ -40,6 +29,63 @@ export const checkNickname = createAsyncThunk(
   }
 );
 
+// 로그인
+export const login = createAsyncThunk('LOGOUT', async (userInfo) => {
+  await axios
+    .post('/login', userInfo)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return err;
+    });
+});
+
+// 로그아웃
+export const logout = createAsyncThunk('LOGOUT', async (userId) => {
+  await axios
+    .post('/logout', userId)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return err;
+    });
+});
+
+// 닉네임 변경
+export const modifyNickname = createAsyncThunk(
+  'MODIFY_NICKNAME',
+  async (userInfo) => {
+    console.log('닉네임 변경', userInfo);
+    await axios
+      .put('/modifynickname', userInfo)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+);
+
+// 비밀번호 변경
+export const modifyPassword = createAsyncThunk(
+  'MODIFY_PASSWORD',
+  async (userInfo) => {
+    console.log('비밀번호 변경', userInfo);
+    await axios
+      .put('/modifypassword', userInfo)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+);
+
+// slice
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -53,8 +99,11 @@ const authSlice = createSlice({
   // fullfilled -> 완료되었을 때 무슨 일을 할지? (signup은 로그인 시켜준다, 이런것?)
   extraReducers: {
     [signup.fulfilled]: (state) => [...state],
-    [checkEmail.fulfilled]: () => [],
     [checkNickname.fullfilled]: () => [],
+    [login.fullfilled]: () => [],
+    [logout.fullfilled]: () => [],
+    [modifyNickname.fullfilled]: () => [],
+    [modifyPassword.fullfilled]: () => [],
   },
 });
 

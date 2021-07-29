@@ -8,6 +8,7 @@ import GlobalStyles from './GlobalStyles';
 import SignUp from './features/auth/signup/SignUp';
 import MyPage from './features/mypage/MyPage';
 import CheckPassword from './features/mypage/CheckPassword';
+import ModifyUserInfo from './features/auth/modify/ModifyUserInfo';
 
 const Wrapper = styled.div`
   background-color: rgba(246, 245, 253, 1);
@@ -25,6 +26,7 @@ function App() {
           <Route path="/tutorial" />
           <Route path="/mypage" component={MyPage} />
           <Route path="/checkpassword" component={CheckPassword} />
+          <Route path="/modifyuserinfo" component={ModifyUserInfo} />
           <Route path="/rank" />
         </BrowserRouter>
       </Wrapper>

@@ -3,7 +3,7 @@ import styles from 'styled-components';
 import { Container, Button } from '@material-ui/core';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { useDispatch } from 'react-redux';
-import { login } from './LoginSlice';
+import { login } from '../authSlice';
 
 // style
 

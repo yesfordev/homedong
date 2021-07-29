@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import { Container, Button } from '@material-ui/core';
-import styles from 'styled-components';
+import styled from 'styled-components';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 
 // style
-const Wrapper = styles(Container)`
+const Wrapper = styled(Container)`
   display: flex;
   height: 100vh;
   justify-content: center;
   align-items: center;
 `;
 
-const Title = styles.div`
+const Title = styled.div`
   font-size: 1rem;
   margin-bottom: 25px;
 `;
 
-const PasswordContainer = styles.div`
+const PasswordContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
