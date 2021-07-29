@@ -4,8 +4,6 @@ import com.calisthenics.homedong.api.dto.SignUpReq;
 import com.calisthenics.homedong.db.entity.Role;
 import com.calisthenics.homedong.db.entity.User;
 import com.calisthenics.homedong.db.repository.UserRepository;
-import com.calisthenics.homedong.error.exception.ErrorCode;
-import com.calisthenics.homedong.error.exception.custom.AuthEmailSendFailException;
 import com.calisthenics.homedong.error.exception.custom.EmailDuplicateException;
 import com.calisthenics.homedong.error.exception.custom.NicknameDuplicateException;
 import com.calisthenics.homedong.error.exception.custom.UserNotFoundException;
@@ -14,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
@@ -90,9 +87,5 @@ public class UserService {
         if(userRepository.findAllByNickname(nickname).size() > 0) {
             throw new NicknameDuplicateException(nickname);
         }
-    }
-
-    public void deleteUser() {
-        SecurityUtil.getCurrentEmail();
     }
 }
