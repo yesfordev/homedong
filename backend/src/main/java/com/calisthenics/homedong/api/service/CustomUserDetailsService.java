@@ -1,7 +1,7 @@
-package com.calisthenics.homedong.service;
+package com.calisthenics.homedong.api.service;
 
-import com.calisthenics.homedong.entity.User;
-import com.calisthenics.homedong.repository.UserRepository;
+import com.calisthenics.homedong.db.entity.User;
+import com.calisthenics.homedong.db.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

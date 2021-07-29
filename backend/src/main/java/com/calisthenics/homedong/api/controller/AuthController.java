@@ -1,7 +1,7 @@
-package com.calisthenics.homedong.controller;
+package com.calisthenics.homedong.api.controller;
 
-import com.calisthenics.homedong.dto.LoginDto;
-import com.calisthenics.homedong.dto.TokenDto;
+import com.calisthenics.homedong.api.dto.LoginReq;
+import com.calisthenics.homedong.api.dto.TokenRes;
 import com.calisthenics.homedong.jwt.JwtFilter;
 import com.calisthenics.homedong.jwt.TokenProvider;
 import org.springframework.http.HttpHeaders;
@@ -32,10 +32,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
+    public ResponseEntity<TokenRes> authorize(@Valid @RequestBody LoginReq loginReq) {
 
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
+                new UsernamePasswordAuthenticationToken(loginReq.getEmail(), loginReq.getPassword());
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -45,6 +45,6 @@ public class AuthController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(new TokenRes(jwt), httpHeaders, HttpStatus.OK);
     }
 }

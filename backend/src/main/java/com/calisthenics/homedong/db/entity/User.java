@@ -1,4 +1,4 @@
-package com.calisthenics.homedong.entity;
+package com.calisthenics.homedong.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

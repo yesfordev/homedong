@@ -1,4 +1,4 @@
-package com.calisthenics.homedong.dto;
+package com.calisthenics.homedong.api.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MailDto {
+public class MailReq {
     private String address;
     private String title;
     private String message;

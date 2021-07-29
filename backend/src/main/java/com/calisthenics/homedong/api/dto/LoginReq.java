@@ -1,4 +1,4 @@
-package com.calisthenics.homedong.dto;
+package com.calisthenics.homedong.api.dto;
 
 import lombok.*;
 
@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginDto {
+public class LoginReq {
 
     @NotNull
     @Size(min = 3, max = 50)

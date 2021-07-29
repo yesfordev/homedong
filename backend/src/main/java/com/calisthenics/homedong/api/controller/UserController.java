@@ -1,8 +1,8 @@
-package com.calisthenics.homedong.controller;
+package com.calisthenics.homedong.api.controller;
 
-import com.calisthenics.homedong.dto.UserDto;
-import com.calisthenics.homedong.entity.User;
-import com.calisthenics.homedong.service.UserService;
+import com.calisthenics.homedong.api.dto.SignUpReq;
+import com.calisthenics.homedong.db.entity.User;
+import com.calisthenics.homedong.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.xml.ws.Response;
 import java.util.Map;
 
 /**
@@ -28,22 +29,19 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity signup(@Valid @RequestBody UserDto userDto) {
-        return new ResponseEntity<>(userService.signup(userDto));
+    public ResponseEntity<User> signup(@Valid @RequestBody SignUpReq signUpReq) {
+        return ResponseEntity.ok(userService.signup(signUpReq));
     }
 
     @GetMapping("/signup/confirm")
     public ResponseEntity confirmEmail(@RequestParam Map<String, String> map) {
         //email, authKey가 일치할 경우 authStatus 업데이트
-        User user = userService.updateAuthStatus(map);
+        userService.updateAuthStatus(map);
 
-        if(user == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-        }
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("/user")
+    @GetMapping("/user/me")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<User> getMyUserInfo() {
         return ResponseEntity.ok(userService.getMyUserWithRoles().get());
@@ -54,4 +52,12 @@ public class UserController {
     public ResponseEntity<User> getUserInfo(@PathVariable String email) {
         return ResponseEntity.ok(userService.getUserWithRoles(email).get());
     }
+
+    @GetMapping("/user/check")
+    public ResponseEntity checkDuplicateNickname(@RequestParam String nickname) {
+        userService.checkDuplicateNickname(nickname);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }

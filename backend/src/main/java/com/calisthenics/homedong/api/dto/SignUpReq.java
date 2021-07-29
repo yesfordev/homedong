@@ -1,4 +1,4 @@
-package com.calisthenics.homedong.dto;
+package com.calisthenics.homedong.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class SignUpReq {
 
     @NotNull
     @Size(min = 3, max = 50)
@@ -28,4 +28,5 @@ public class UserDto {
     @NotNull
     @Size(min = 2, max = 10)
     private String nickname;
+
 }
