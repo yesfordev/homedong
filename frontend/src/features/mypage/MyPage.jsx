@@ -1,13 +1,20 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+// style
 import { Container, Button } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import styled from 'styled-components';
+
+// image
 import Badge1 from '../../assets/badge1.png';
 import Badge2 from '../../assets/badge2.png';
 import defaultImage from '../../assets/default.png';
-import Navbar from '../../common/Navbar';
+
+// component
+import Navbar from '../../common/navbar/Navbar';
 import MyTable from './MyTable';
 import Calender from './Calender';
 
@@ -92,14 +99,16 @@ export default function MyPage() {
             <Nickname>
               <Title>닉네임</Title>
               <Content>{nickname}</Content>
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                startIcon={<EditIcon />}
-              >
-                회원정보수정
-              </Button>
+              <Link to="/checkpassword">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  startIcon={<EditIcon />}
+                >
+                  회원정보수정
+                </Button>
+              </Link>
             </Nickname>
             <Email>
               <Title>이메일</Title>
