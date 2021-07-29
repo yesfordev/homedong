@@ -91,4 +91,8 @@ public class UserService {
             throw new NicknameDuplicateException(nickname);
         }
     }
+
+    public void deleteUser() {
+        SecurityUtil.getCurrentEmail();
+    }
 }

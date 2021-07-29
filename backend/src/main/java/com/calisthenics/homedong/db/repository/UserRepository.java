@@ -23,4 +23,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findOneWithRolesByEmailAndAuthStatus(String email, boolean authStatus);
 
     List<User> findAllByNickname(String nickname);
+
 }

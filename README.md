@@ -15,7 +15,7 @@
 ---
 |**서영은**|**김예슬**|**김성민**|**송상민**|**망고**|
 |:---:|:---:|:---:|:---:|:-----------:|
-|<img src="/uploads/e8c8407735095c6a2fa2aab7469ce66a/image.png" width="800">|<img src="/uploads/a2e597d98b5de28f2b24533accbbe863/image.png" width="800">|<img src="/uploads/974046d4b51144ee19ca6cc7249a26d4/image.png" width="800">|<img src="/uploads/ada107ab245bb0cd74492f17f97b5e34/image.png" width="800">|<img src="/uploads/74b138f321d71eba2f421d5742fcd5f3/image.png" width="920">|
+|<img src="/uploads/e8c8407735095c6a2fa2aab7469ce66a/image.png" width="800">|<img src="/uploads/a2e597d98b5de28f2b24533accbbe863/image.png" width="800">|<img src="/uploads/974046d4b51144ee19ca6cc7249a26d4/image.png" width="800">|<img src="/uploads/ada107ab245bb0cd74492f17f97b5e34/image.png" width="800">|<img src="/uploads/74b138f321d71eba2f421d5742fcd5f3/image.png" width="960">|
 |Leader & Backend|Backend|Backend|Frontend|Cute|
 
 ### 🖥️ 개발 환경
@@ -139,7 +139,7 @@ ex) **FEAT**: 로그인 rest api 추가 [#지라이슈넘버]
 
 ---
 
-![image](/uploads/4c93d3a4b5e130e88992383e5762bc38/image.png)
+![image](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/f8752d50-a59f-4cb7-900f-7720b818fe4f/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210729%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210729T023837Z&X-Amz-Expires=86400&X-Amz-Signature=d4788f48f8e40c56bfc91a956da1f4f68dbd68c68760235b364f0b792daec7bd&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
 
 ### ✨Git 스터디
 
