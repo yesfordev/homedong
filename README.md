@@ -139,7 +139,7 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
 
 ---
 
-![image](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/f8752d50-a59f-4cb7-900f-7720b818fe4f/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210729%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210729T023837Z&X-Amz-Expires=86400&X-Amz-Signature=d4788f48f8e40c56bfc91a956da1f4f68dbd68c68760235b364f0b792daec7bd&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
+![image](/uploads/c60a94c89d3468a629d1b1ba7d8f2650/image.png)
 
 ### ✨Git 스터디
 
