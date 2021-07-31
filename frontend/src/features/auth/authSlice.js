@@ -18,13 +18,15 @@ export const signup = createAsyncThunk('SIGNUP', async (userInfo) => {
 export const checkNickname = createAsyncThunk(
   'CHECK_NICKNAME',
   async (nickname) => {
+    // console.log('들어옴', nickname);
     await axios
       .get('/checknickname', nickname)
       .then((res) => {
+        console.log(res);
         return res.data;
       })
       .catch((err) => {
-        return err;
+        console.log(err);
       });
   }
 );
@@ -73,7 +75,6 @@ export const modifyNickname = createAsyncThunk(
 export const modifyPassword = createAsyncThunk(
   'MODIFY_PASSWORD',
   async (userInfo) => {
-    console.log('비밀번호 변경', userInfo);
     await axios
       .put('/modifypassword', userInfo)
       .then((res) => {
@@ -85,25 +86,33 @@ export const modifyPassword = createAsyncThunk(
   }
 );
 
+const initialState = {
+  user: {
+    nickname: '김싸피',
+    email: 'abc@naver.com',
+  },
+  isNicknameChecked: false,
+  temp: [],
+};
+
 // slice
 const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    user: {
-      nickname: '김싸피',
-      email: 'abc@naver.com',
-    },
-  },
+  initialState,
   reducers: {},
   // 조사 필요, return 값 찾아야함
   // fullfilled -> 완료되었을 때 무슨 일을 할지? (signup은 로그인 시켜준다, 이런것?)
   extraReducers: {
     [signup.fulfilled]: (state) => [...state],
-    [checkNickname.fullfilled]: () => [],
+    [checkNickname.fullfilled]: (state) => {
+      state.isNicknameChecked = true;
+    },
     [login.fullfilled]: () => [],
     [logout.fullfilled]: () => [],
-    [modifyNickname.fullfilled]: () => [],
-    [modifyPassword.fullfilled]: () => [],
+    [modifyNickname.pending]: () => [],
+    [modifyNickname.rejected]: () => [],
+    [modifyPassword.pending]: () => [],
+    [modifyPassword.rejected]: () => [],
   },
 });
 

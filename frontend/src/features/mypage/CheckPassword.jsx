@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Container, Button } from '@material-ui/core';
 import styled from 'styled-components';
+
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 
 // style
@@ -21,13 +23,16 @@ const PasswordContainer = styled.div`
   flex-direction: column;
 `;
 
-// function
-function handleSubmit(e) {
-  e.preventDefault();
-}
-
 function CheckPassword() {
   const [password, setPassword] = useState('');
+  const history = useHistory();
+
+  // function
+  function handleSubmit(e) {
+    e.preventDefault();
+    history.push('/modifyuserinfo');
+  }
+
   return (
     <Wrapper>
       <PasswordContainer>
@@ -46,7 +51,7 @@ function CheckPassword() {
               shrink: true,
             }}
           />
-          <Button>제출하기</Button>
+          <Button type="submit">제출하기</Button>
         </ValidatorForm>
       </PasswordContainer>
     </Wrapper>

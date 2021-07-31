@@ -1,9 +1,10 @@
 import { useState, React, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core/styles';
+
 import { checkNickname, modifyNickname, modifyPassword } from '../authSlice';
 
 // style
@@ -35,9 +36,12 @@ const useStyles = makeStyles({
 // logic
 function ModifyUserInfo() {
   // local state
-  const [nickname, setNickname] = useState('');
-  const [password, setPassword] = useState('');
+  const [newNickname, setNickname] = useState('');
+  const [newPassword, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
+  const { nickname } = useSelector((state) => state.auth.user);
+  const { isNicknameChecked } = useSelector((state) => state.auth);
+  console.log(nickname, isNicknameChecked);
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -50,23 +54,23 @@ function ModifyUserInfo() {
     }
     return false;
   }
+
   // submit when user click button
   function handleSubmit(event) {
     event.preventDefault();
     const { name } = event.target;
     const data = {
-      nickname,
-      password,
+      nickname: newNickname,
+      password: newPassword,
     };
     return name === 'nickname'
       ? dispatch(modifyNickname(data))
       : dispatch(modifyPassword(data));
   }
-
   // validation (same password)
   useEffect(() => {
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
-      if (value !== password) {
+      if (value !== newPassword) {
         return false;
       }
       return true;
@@ -81,7 +85,7 @@ function ModifyUserInfo() {
       }
       return true;
     });
-  }, [nickname]);
+  }, [newNickname]);
 
   return (
     <Wrapper>
@@ -97,7 +101,7 @@ function ModifyUserInfo() {
             onChange={handleNickname}
             color="secondary"
             name="nickname"
-            value={nickname}
+            value={newNickname || nickname}
             validators={['required']}
             errorMessages={['닉네임을 입력해주세요']}
             helperText="최대 6글자입니다."
@@ -109,10 +113,16 @@ function ModifyUserInfo() {
             size="small"
             fullWidth
           />
-          <Button onClick={() => dispatch(checkNickname(nickname))}>
+          <Button
+            onClick={() => {
+              dispatch(checkNickname(newNickname || nickname));
+            }}
+          >
             중복확인
           </Button>
-          <Button type="submit">변경하기</Button>
+          <Button type="submit" disabled={isNicknameChecked}>
+            변경하기
+          </Button>
         </ValidatorForm>
         <ValidatorForm
           onSubmit={handleSubmit}
@@ -124,7 +134,7 @@ function ModifyUserInfo() {
             onChange={(e) => setPassword(e.target.value)}
             name="password"
             type="password"
-            value={password}
+            value={newPassword}
             validators={['required']}
             errorMessages={['비밀번호를 입력해주세요']}
             InputLabelProps={{

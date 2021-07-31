@@ -23,6 +23,7 @@
     "rules": {
         "prettier/prettier": ["error", { "singleQuote": true }],
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-        "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.ts", "**/*.test.tsx"]}]
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.ts", "**/*.test.tsx"]}],
+        "no-param-reassign": ["error", { "props": false }]
     }
 }
