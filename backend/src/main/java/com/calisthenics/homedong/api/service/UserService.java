@@ -88,4 +88,11 @@ public class UserService {
             throw new NicknameDuplicateException(nickname);
         }
     }
+
+    @Transactional
+    public void deleteUser() {
+        if(userRepository.deleteByEmail(SecurityUtil.getCurrentEmail().orElse("")) == 0) {
+            throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
+        }
+    }
 }
