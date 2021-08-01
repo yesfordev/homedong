@@ -2,11 +2,10 @@ package com.calisthenics.homedong.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiKey;
-import springfox.documentation.service.AuthorizationScope;
-import springfox.documentation.service.SecurityReference;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -30,6 +29,7 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).useDefaultResponseMessages(false)
+                .apiInfo(getApiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.ant("/api/**"))
@@ -65,6 +65,15 @@ public class SwaggerConfig {
         return UiConfigurationBuilder.builder()
 //                .supportedSubmitMethods(newArrayList("get").toArray(new String[0])) // try it 기능 활성화 범위
 //                .operationsSorter(METHOD)
+                .build();
+    }
+
+    private ApiInfo getApiInfo() {
+        return new ApiInfoBuilder()
+                .title("[HOMEDONG] REST API")
+                .description("[HOMEDONG] BackEnd REST API Details")
+//                .contact(new Contact("[DDaja Swagger]", "https://github.com/swgil007/DDaJa", "BNG"))
+                .version("1.0")
                 .build();
     }
 }

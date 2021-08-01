@@ -27,7 +27,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String email) {
-//        return userRepository.findOneWithRolesByEmail(email)
         return userRepository.findOneWithRolesByEmailAndAuthStatus(email, true)
                 .map(user -> createUser(email, user))
                 .orElseThrow(() -> new UsernameNotFoundException(email + " -> 이메일 인증이 이루어지지 않았거나, 없는 사용자입니다."));

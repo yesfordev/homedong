@@ -28,10 +28,10 @@ public class Role {
     @Column(name = "role_name", length = 50)
     private String roleName;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "role_id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")})
-    private Set<User> users = new HashSet<>();
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(
+//            name = "user_role",
+//            joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "role_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")})
+//    private Set<User> users = new HashSet<>();
 }
