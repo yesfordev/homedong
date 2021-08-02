@@ -1,5 +1,8 @@
 package com.calisthenics.homedong.api.controller;
 
+import com.calisthenics.homedong.api.dto.ChangeNicknameReq;
+import com.calisthenics.homedong.api.dto.ChangePasswordReq;
+import com.calisthenics.homedong.api.dto.PasswordReq;
 import com.calisthenics.homedong.api.dto.SignUpReq;
 import com.calisthenics.homedong.db.entity.User;
 import com.calisthenics.homedong.api.service.UserService;
@@ -12,7 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.xml.ws.Response;
 import java.util.Map;
 
 /**
@@ -84,7 +86,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserWithRoles(email).get());
     }
 
-    @GetMapping("/user/check")
+    @GetMapping("/user/check_nickname")
     @ApiOperation(value = "닉네임 중복 확인", notes = "<strong>queryString에 nickname으로</strong> 닉네임 중복을 체크한다.")
     @ApiImplicitParam(name = "nickname", value = "중복 체크할 nickname", required = true, dataType = "String", paramType = "query")
     @ApiResponses({
@@ -110,6 +112,49 @@ public class UserController {
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity deleteUser() {
         userService.deleteUser();
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("/user/check_password")
+    @ApiOperation(value = "현재 비밀번호 확인", notes = "<strong>token과 현재 비밀번호</strong>를 이용해 해당 유저의 현재 비밀번호가 맞는지 확인한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "비밀번호 매치 여부 확인, true: 현재 비밀번호 일치, false: 현재 비밀번호 틀림"),
+            @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
+    })
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<Map<String, Boolean>> checkPassword(@RequestBody PasswordReq passwordReq) {
+        return ResponseEntity.ok(userService.checkPassword(passwordReq));
+    }
+
+    @PutMapping("/user/password")
+    @ApiOperation(value = "회원 비밀번호 변경", notes = "<strong>token과 변경할 비밀번호</strong>를 이용해 해당 유저의 비밀번호를 변경한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "비밀번호 변경 성공"),
+            @ApiResponse(code = 400, message = "input 오류 or 현재 비밀번호가 틀림", response = ErrorResponse.class),
+            @ApiResponse(code = 404, message = "회원 탈퇴할 정보가 없습니다.", response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
+    })
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity changeUserPassword(@RequestBody ChangePasswordReq changePasswordReq) {
+        userService.updatePassword(changePasswordReq);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PutMapping("/user/nickname")
+    @ApiOperation(value = "현재 닉네임 변경", notes = "<strong>token과 변경할 닉네임 </strong>를 이용해 해당 유저의 닉네임을 변경한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "비밀번호 매치 여부 확인, true: 현재 비밀번호 일치, false: 현재 비밀번호 틀림"),
+            @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
+    })
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity changeUserNickname(@RequestBody ChangeNicknameReq changeNicknameReq) {
+        userService.updateNickname(changeNicknameReq);
 
         return new ResponseEntity(HttpStatus.OK);
     }

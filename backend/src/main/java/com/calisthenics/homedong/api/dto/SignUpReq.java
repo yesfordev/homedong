@@ -13,9 +13,6 @@ import javax.validation.constraints.Size;
  */
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @ApiModel("SignUpRequest")
 public class SignUpReq {
 
@@ -25,7 +22,6 @@ public class SignUpReq {
     private String email;
 
     @ApiModelProperty(name="유저 password")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull
     @Size(min = 3, max = 100)
     private String password;
