@@ -1,10 +1,10 @@
-import { useState, React, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core/styles';
-import { signup, checkNickname } from './signupSlice';
+import { signup, checkNickname, setNicknameCheckedFalse } from '../authSlice';
 
 // style
 const Wrapper = styled.div`
@@ -37,6 +37,8 @@ function SignUp() {
   // local state
   const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
+  // const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+  const { isNicknameChecked } = useSelector((state) => state.auth);
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const classes = useStyles();
@@ -45,6 +47,10 @@ function SignUp() {
   // setState when user change input
   function handleNickname(event) {
     const { value } = event.target;
+    if (isNicknameChecked) {
+      console.log('디스패치?', isNicknameChecked);
+      dispatch(setNicknameCheckedFalse());
+    }
     if (value.length < 7) {
       setNickname(value);
       return true;
@@ -107,7 +113,20 @@ function SignUp() {
             size="small"
             fullWidth
           />
-          <Button onClick={() => dispatch(checkNickname(nickname))}>
+          <Button
+            disabled={isNicknameChecked || !nickname}
+            onClick={() => dispatch(checkNickname(nickname))}
+            //     .unwrap()
+            //     .then((res) => {
+            //       console.log('res', res);
+            //       setIsNicknameChecked(true);
+            //     })
+            //     .catch((err) => {
+            //       console.log('err', err);
+            //       setIsNicknameChecked(false);
+            //     })
+            // }
+          >
             중복확인
           </Button>
           <TextValidator

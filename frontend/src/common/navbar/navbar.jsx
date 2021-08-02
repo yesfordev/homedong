@@ -3,7 +3,6 @@ import styles from 'styled-components';
 import { Link } from 'react-router-dom';
 import MakeRoomModal from './MakeRoomModal';
 import FindRoomModal from './FindRoomModal';
-
 import DropDownMenu from './NavbarDropdown';
 
 const Wrapper = styles.div`
