@@ -1,9 +1,13 @@
 package com.calisthenics.homedong.api.service;
 
+import com.calisthenics.homedong.api.dto.ChangeNicknameReq;
+import com.calisthenics.homedong.api.dto.ChangePasswordReq;
+import com.calisthenics.homedong.api.dto.PasswordReq;
 import com.calisthenics.homedong.api.dto.SignUpReq;
 import com.calisthenics.homedong.db.entity.Role;
 import com.calisthenics.homedong.db.entity.User;
 import com.calisthenics.homedong.db.repository.UserRepository;
+import com.calisthenics.homedong.error.exception.custom.CurrentPasswordNotMatchException;
 import com.calisthenics.homedong.error.exception.custom.EmailDuplicateException;
 import com.calisthenics.homedong.error.exception.custom.NicknameDuplicateException;
 import com.calisthenics.homedong.error.exception.custom.UserNotFoundException;
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -95,4 +100,49 @@ public class UserService {
             throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
         }
     }
+
+    public Map<String, Boolean> checkPassword(PasswordReq passwordReq) {
+        User user = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
+
+        if(user == null) {
+            throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(null));
+        }
+
+        Map<String, Boolean> check = new HashMap<>();
+
+        if(!passwordEncoder.matches(passwordReq.getPassword(), user.getPassword())) {
+            check.put("check", false);
+        } else {
+            check.put("check", true);
+        }
+
+        return check;
+    }
+
+    @Transactional
+    public void updatePassword(ChangePasswordReq changePasswordReq) {
+        User updateUser = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
+
+        if(updateUser == null) {
+            throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(null));
+        }
+
+        updateUser.setPassword(passwordEncoder.encode(changePasswordReq.getChangePassword()));
+
+        userRepository.save(updateUser);
+    }
+
+    @Transactional
+    public void updateNickname(ChangeNicknameReq changeNicknameReq) {
+        User updateUser = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse(null)).orElse(null);
+
+        if(updateUser == null) {
+            throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(null));
+        }
+
+        updateUser.setNickname(changeNicknameReq.getChangeNickname());
+
+        userRepository.save(updateUser);
+    }
+
 }

@@ -12,9 +12,6 @@ import javax.validation.constraints.Size;
  */
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @ApiModel("LoginRequst")
 public class LoginReq {
 

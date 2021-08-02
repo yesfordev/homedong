@@ -22,8 +22,9 @@ public enum ErrorCode {
     EMAIL_DUPLICATION(409, "U001", "Email is Duplication"),
     AUTH_EMAIL_SEND_FAIL(500, "U002", "Auth Email Send Fail"),
     NICKNAME_DUPLICATION(409, "U003", "Nickname is Duplication"),
-
+    CURRENT_PASSWORD_NOT_MATCH_EXCEPTION(400, "U004", "Current password not match exception")
     ;
+
     private final String code;
     private final String message;
     private int status;
