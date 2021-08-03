@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { saveToken } from '../../common/api/JWT-common';
 import axios from '../../common/api/http-common';
 
 // 메서드 전체 REST API, params 필요
@@ -36,7 +37,11 @@ export const login = createAsyncThunk(
   async (userInfo, { rejectWithValue }) => {
     try {
       const response = await axios.post('/api/auth/login', userInfo);
-      return response.data;
+      const {
+        data: { token },
+      } = response;
+      saveToken(token);
+      return response;
     } catch (err) {
       return rejectWithValue(err.response);
     }
@@ -58,6 +63,7 @@ export const logout = createAsyncThunk('LOGOUT', async (userId) => {
 const initialState = {
   user: {},
   isNicknameChecked: false,
+  isLoggedin: false,
 };
 
 // slice
@@ -79,11 +85,17 @@ const authSlice = createSlice({
       console.log('reducer 회원가입 실패');
       state.user = {};
     },
-    [login.fullfilled]: (state) => {
-      state.user = login.value;
+    [login.fulfilled]: (state) => {
+      state.isLoggedin = true;
+      console.log('reducer 로그인 성공');
     },
-    [logout.fullfilled]: (state) => {
+    [login.rejected]: (state) => {
+      state.isLoggedin = false;
+      console.log('reducer 로그인 실패');
+    },
+    [logout.fulfilled]: (state) => {
       console.log('로그아웃', state);
+      state.user = {};
     },
     [checkNickname.fulfilled]: (state) => {
       state.isNicknameChecked = true;

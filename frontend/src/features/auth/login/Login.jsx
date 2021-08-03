@@ -3,6 +3,7 @@ import styles from 'styled-components';
 import { Container, Button } from '@material-ui/core';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { login } from '../authSlice';
 
 // style
@@ -25,6 +26,7 @@ const LoginContainer = styles.div`
 
 // component
 function Login() {
+  const history = useHistory();
   const dispatch = useDispatch();
   // state
   const [email, setEmail] = useState('');
@@ -36,7 +38,10 @@ function Login() {
       email,
       password,
     };
-    dispatch(login(data));
+    dispatch(login(data))
+      .unwrap()
+      .then(() => history.push('/'));
+    console.log('컴포넌트', data);
   }
 
   // render

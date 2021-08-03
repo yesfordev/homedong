@@ -3,9 +3,12 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Avatar } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../features/auth/authSlice';
 import defaultImage from '../../assets/default.png';
 
 export default function SimpleMenu() {
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -14,6 +17,10 @@ export default function SimpleMenu() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout);
   };
 
   return (
@@ -36,7 +43,7 @@ export default function SimpleMenu() {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>마이페이지</MenuItem>
-        <MenuItem onClick={handleClose}>로그아웃</MenuItem>
+        <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
       </Menu>
     </div>
   );
