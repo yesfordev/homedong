@@ -6,7 +6,11 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
+import javax.validation.constraints.Null;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -55,6 +59,9 @@ public class User implements UserDetails {
 
     @Column(name = "auth_status")
     private boolean authStatus;
+
+    @Column(name = "created_at", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Timestamp createdAt;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
