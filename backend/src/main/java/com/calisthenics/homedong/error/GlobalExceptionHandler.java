@@ -96,8 +96,8 @@ public class GlobalExceptionHandler {
      * 자격 증명에 실패할 때 발생함 (토큰이 유효하지 않거나 없을 때, 이메일 인증이 되지 않았을 때)
      */
     @ExceptionHandler(BadCredentialsException.class)
-    protected ResponseEntity<ErrorResponse> handelBadCredentialsException(BadCredentialsException e) {
-        log.error("handelBadCredentialsException", e);
+    protected ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException e) {
+        log.error("handleBadCredentialsException", e);
         final ErrorResponse response = ErrorResponse.of(ErrorCode.UNAUTHORIZED);
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
