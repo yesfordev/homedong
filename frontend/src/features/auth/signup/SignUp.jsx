@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 import { signup, checkNickname, setNicknameCheckedFalse } from '../authSlice';
 
 // style
@@ -37,18 +38,17 @@ function SignUp() {
   // local state
   const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
-  // const [isNicknameChecked, setIsNicknameChecked] = useState(false);
   const { isNicknameChecked } = useSelector((state) => state.auth);
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // setState when user change input
   function handleNickname(event) {
     const { value } = event.target;
     if (isNicknameChecked) {
-      console.log('디스패치?', isNicknameChecked);
       dispatch(setNicknameCheckedFalse());
     }
     if (value.length < 7) {
@@ -57,6 +57,15 @@ function SignUp() {
     }
     return false;
   }
+
+  function isValidNickname() {
+    dispatch(checkNickname(nickname))
+      .unwrap()
+      .catch((err) => {
+        alert(err.data.message);
+      });
+  }
+
   // submit when user click button
   function handleSubmit(event) {
     event.preventDefault();
@@ -65,7 +74,14 @@ function SignUp() {
       nickname,
       password,
     };
-    dispatch(signup(data));
+    dispatch(signup(data))
+      .unwrap()
+      .then(() => {
+        history.push('/login');
+      })
+      .catch((err) => {
+        console.log('unwrap', err.status);
+      });
   }
 
   // validation (same password)
@@ -115,17 +131,7 @@ function SignUp() {
           />
           <Button
             disabled={isNicknameChecked || !nickname}
-            onClick={() => dispatch(checkNickname(nickname))}
-            //     .unwrap()
-            //     .then((res) => {
-            //       console.log('res', res);
-            //       setIsNicknameChecked(true);
-            //     })
-            //     .catch((err) => {
-            //       console.log('err', err);
-            //       setIsNicknameChecked(false);
-            //     })
-            // }
+            onClick={isValidNickname}
           >
             중복확인
           </Button>
@@ -178,7 +184,9 @@ function SignUp() {
             size="small"
             fullWidth
           />
-          <Button type="submit">Submit</Button>
+          <Button disabled={!isNicknameChecked || !email} type="submit">
+            Submit
+          </Button>
         </ValidatorForm>
       </LoginContainer>
     </Wrapper>

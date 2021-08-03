@@ -9,6 +9,10 @@ const rootreducer = combineReducers({
 
 const store = configureStore({
   reducer: rootreducer, // 합친 리듀서 연결
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export default store; // 외부 인스톨이 가능하게 해줌
