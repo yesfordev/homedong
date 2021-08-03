@@ -1,10 +1,11 @@
-import { useState, React, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core/styles';
-import { signup, checkNickname } from './signupSlice';
+import { useHistory } from 'react-router-dom';
+import { signup, checkNickname, setNicknameCheckedFalse } from '../authSlice';
 
 // style
 const Wrapper = styled.div`
@@ -37,20 +38,34 @@ function SignUp() {
   // local state
   const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
+  const { isNicknameChecked } = useSelector((state) => state.auth);
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // setState when user change input
   function handleNickname(event) {
     const { value } = event.target;
+    if (isNicknameChecked) {
+      dispatch(setNicknameCheckedFalse());
+    }
     if (value.length < 7) {
       setNickname(value);
       return true;
     }
     return false;
   }
+
+  function isValidNickname() {
+    dispatch(checkNickname(nickname))
+      .unwrap()
+      .catch((err) => {
+        alert(err.data.message);
+      });
+  }
+
   // submit when user click button
   function handleSubmit(event) {
     event.preventDefault();
@@ -59,7 +74,14 @@ function SignUp() {
       nickname,
       password,
     };
-    dispatch(signup(data));
+    dispatch(signup(data))
+      .unwrap()
+      .then(() => {
+        history.push('/login');
+      })
+      .catch((err) => {
+        console.log('unwrap', err.status);
+      });
   }
 
   // validation (same password)
@@ -107,7 +129,10 @@ function SignUp() {
             size="small"
             fullWidth
           />
-          <Button onClick={() => dispatch(checkNickname(nickname))}>
+          <Button
+            disabled={isNicknameChecked || !nickname}
+            onClick={isValidNickname}
+          >
             중복확인
           </Button>
           <TextValidator
@@ -159,7 +184,9 @@ function SignUp() {
             size="small"
             fullWidth
           />
-          <Button type="submit">Submit</Button>
+          <Button disabled={!isNicknameChecked || !email} type="submit">
+            Submit
+          </Button>
         </ValidatorForm>
       </LoginContainer>
     </Wrapper>

@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Avatar } from '@material-ui/core';
-import defaultImage from '../assets/default.png';
+import defaultImage from '../../assets/default.png';
 
 export default function SimpleMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
