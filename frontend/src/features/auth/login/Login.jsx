@@ -15,7 +15,7 @@ const Wrapper = styles(Container)`
   align-items: center;
 `;
 
-const Title = styles.span`
+const Title = styles.div`
   font-size: 2.5rem;
 `;
 

@@ -9,6 +9,8 @@ const Wrapper = styles.div`
   height: 65px;
   display: flex;
   justify-content: space-between;
+  position: fixed;
+  width: 100%;
   align-items: center;
   border-bottom: solid rgba(248, 208, 83, 1);
 `;

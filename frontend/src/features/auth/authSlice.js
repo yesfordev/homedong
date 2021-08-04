@@ -63,6 +63,37 @@ export const logout = createAsyncThunk(
   }
 );
 
+// 닉네임 변경
+export const modifyNickname = createAsyncThunk(
+  'MODIFY_NICKNAME',
+  async (userInfo) => {
+    console.log('닉네임 변경', userInfo);
+    await axios
+      .put('/modifynickname', userInfo)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+);
+
+// 비밀번호 변경
+export const modifyPassword = createAsyncThunk(
+  'MODIFY_PASSWORD',
+  async (userInfo) => {
+    await axios
+      .put('/modifypassword', userInfo)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+);
+
 const initialState = {
   user: {},
   isNicknameChecked: false,

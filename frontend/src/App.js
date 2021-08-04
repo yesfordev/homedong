@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
-// import { useSelector } from 'react-redux';
 
 // style
 import { StylesProvider } from '@material-ui/core/styles';
@@ -10,10 +9,17 @@ import GlobalStyles from './GlobalStyles';
 
 // features
 import Login from './features/auth/login/Login';
-import Home from './features/home/Home';
 import SignUp from './features/auth/signup/SignUp';
+import MyPage from './features/mypage/MyPage';
+import CheckPassword from './features/mypage/CheckPassword';
+import ModifyUserInfo from './features/auth/modify/ModifyUserInfo';
+import Home from './features/home/Home';
+
+// routes
 import PrivateRoute from './common/Routes/PrivateRoute';
 import LoginRoute from './common/Routes/LoginRoute';
+
+// action
 import { loadUser } from './features/auth/authSlice';
 
 const Wrapper = styled.div`
@@ -41,8 +47,11 @@ function App() {
           <LoginRoute path="/login" component={Login} />
           <Route path="/signup" component={SignUp} />
           <PrivateRoute exact path="/" component={Home} />
-          <PrivateRoute path="/tutorial" component={Home} />
-          <PrivateRoute path="/rank" component={Home} />
+          <PrivateRoute path="/tutorial" />
+          <PrivateRoute path="/rank" />
+          <Route path="/mypage" component={MyPage} />
+          <Route path="/checkpassword" component={CheckPassword} />
+          <Route path="/modifyuserinfo" component={ModifyUserInfo} />
         </Switch>
       </Wrapper>
     </StylesProvider>

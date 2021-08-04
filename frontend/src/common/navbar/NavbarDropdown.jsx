@@ -4,8 +4,9 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Avatar } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { logout } from '../../features/auth/authSlice';
+
 import defaultImage from '../../assets/default.png';
 
 export default function SimpleMenu() {
@@ -54,6 +55,9 @@ export default function SimpleMenu() {
       >
         <MenuItem onClick={handleClose}>마이페이지</MenuItem>
         <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to="/mypage">마이페이지</Link>
+        </MenuItem>
       </Menu>
     </div>
   );
