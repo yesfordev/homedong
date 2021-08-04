@@ -1,6 +1,5 @@
 package com.calisthenics.homedong.api.controller;
 
-import com.calisthenics.homedong.api.dto.TokenRes;
 import com.calisthenics.homedong.api.service.MailService;
 import com.calisthenics.homedong.error.ErrorResponse;
 import io.swagger.annotations.*;

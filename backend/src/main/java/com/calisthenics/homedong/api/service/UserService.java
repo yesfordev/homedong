@@ -1,9 +1,9 @@
 package com.calisthenics.homedong.api.service;
 
-import com.calisthenics.homedong.api.dto.ChangeNicknameReq;
-import com.calisthenics.homedong.api.dto.ChangePasswordReq;
-import com.calisthenics.homedong.api.dto.PasswordReq;
-import com.calisthenics.homedong.api.dto.SignUpReq;
+import com.calisthenics.homedong.api.request.ChangeNicknameReq;
+import com.calisthenics.homedong.api.request.ChangePasswordReq;
+import com.calisthenics.homedong.api.request.PasswordReq;
+import com.calisthenics.homedong.api.request.SignUpReq;
 import com.calisthenics.homedong.db.entity.Role;
 import com.calisthenics.homedong.db.entity.User;
 import com.calisthenics.homedong.db.repository.UserRepository;

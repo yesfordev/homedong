@@ -1,6 +1,7 @@
 package com.calisthenics.homedong.api.controller;
 
-import com.calisthenics.homedong.api.dto.*;
+import com.calisthenics.homedong.api.response.BadgeRes;
+import com.calisthenics.homedong.api.response.BestRecordRes;
 import com.calisthenics.homedong.api.service.RecordService;
 import com.calisthenics.homedong.error.ErrorResponse;
 import io.swagger.annotations.*;
@@ -30,16 +31,29 @@ public class RecordController {
     }
 
     @GetMapping("/best")
-    @ApiOperation(value = "최고 기록 조회", notes = "<strong>토큰</strong>을 통해 최고기록 조회한다.")
+    @ApiOperation(value = "최고 기록 조회", notes = "<strong>토큰</strong>을 통해 사용자의 최고기록을 조회한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "최고기록 조회 성공"),
             @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
             @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
-            @ApiResponse(code = 500, message = "서버 에러 or 이메일 전송 에러", response = ErrorResponse.class)
+            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<List<BestRecordRes>> getBestRecord() {
         return ResponseEntity.ok(recordService.getBestRecord());
+    }
+
+    @GetMapping("/badge")
+    @ApiOperation(value = "뱃지 조회", notes = "<strong>토큰</strong>을 통해 사용자의 보윺 뱃지를 조회한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "뱃지 조회 성공"),
+            @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
+    })
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<BadgeRes> getBadgeRecord() {
+        return ResponseEntity.ok(recordService.getBadgeRecord());
     }
 
 }

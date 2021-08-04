@@ -1,7 +1,7 @@
 package com.calisthenics.homedong.api.controller;
 
-import com.calisthenics.homedong.api.dto.LoginReq;
-import com.calisthenics.homedong.api.dto.TokenRes;
+import com.calisthenics.homedong.api.request.LoginReq;
+import com.calisthenics.homedong.api.response.TokenRes;
 import com.calisthenics.homedong.error.ErrorResponse;
 import com.calisthenics.homedong.jwt.JwtFilter;
 import com.calisthenics.homedong.jwt.TokenProvider;

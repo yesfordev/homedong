@@ -1,9 +1,9 @@
 package com.calisthenics.homedong.api.controller;
 
-import com.calisthenics.homedong.api.dto.ChangeNicknameReq;
-import com.calisthenics.homedong.api.dto.ChangePasswordReq;
-import com.calisthenics.homedong.api.dto.PasswordReq;
-import com.calisthenics.homedong.api.dto.SignUpReq;
+import com.calisthenics.homedong.api.request.ChangeNicknameReq;
+import com.calisthenics.homedong.api.request.ChangePasswordReq;
+import com.calisthenics.homedong.api.request.PasswordReq;
+import com.calisthenics.homedong.api.request.SignUpReq;
 import com.calisthenics.homedong.db.entity.User;
 import com.calisthenics.homedong.api.service.UserService;
 import com.calisthenics.homedong.error.ErrorResponse;
@@ -16,7 +16,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 /**
