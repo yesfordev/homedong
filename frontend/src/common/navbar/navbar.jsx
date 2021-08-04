@@ -57,7 +57,7 @@ function Navbar() {
         <button type="button" onClick={() => setIsFindOpen(true)}>
           방찾기
         </button>
-        <Link to="/ranking">랭킹</Link>
+        <Link to="/rank">랭킹</Link>
         <DropDownMenu />
       </Links>
     </Wrapper>

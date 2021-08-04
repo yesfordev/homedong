@@ -40,8 +40,9 @@ function Login() {
     };
     dispatch(login(data))
       .unwrap()
-      .then(() => history.push('/'));
-    console.log('컴포넌트', data);
+      .then(() => {
+        history.push('/');
+      });
   }
 
   // render
