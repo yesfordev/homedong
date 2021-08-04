@@ -138,7 +138,7 @@ public class UserController {
     @ApiOperation(value = "회원 비밀번호 변경", notes = "<strong>token과 변경할 비밀번호</strong>를 이용해 해당 유저의 비밀번호를 변경한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "비밀번호 변경 성공"),
-            @ApiResponse(code = 400, message = "input 오류 or 현재 비밀번호가 틀림", response = ErrorResponse.class),
+            @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
             @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
             @ApiResponse(code = 404, message = "회원 탈퇴할 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
