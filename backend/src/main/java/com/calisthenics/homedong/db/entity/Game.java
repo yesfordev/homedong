@@ -21,6 +21,7 @@ public class Game {
 
     @Id
     @Column(name = "game_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer gameId;
 
     @ManyToOne(fetch = FetchType.LAZY)

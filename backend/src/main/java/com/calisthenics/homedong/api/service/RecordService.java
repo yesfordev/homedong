@@ -15,7 +15,7 @@ import java.util.*;
 /**
  * Created by Seo Youngeun on 2021-08-03
  */
-@Service("honedongService")
+@Service
 public class RecordService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;

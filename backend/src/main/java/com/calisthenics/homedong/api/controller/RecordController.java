@@ -18,7 +18,7 @@ import java.util.List;
  *
  * 유저 관련 Controller
  */
-@Api(value = "홈동 API", tags = {"Record"})
+@Api(value = "기록 API", tags = {"Record"})
 @Slf4j
 @RestController
 @RequestMapping("/api/record")
@@ -44,7 +44,7 @@ public class RecordController {
     }
 
     @GetMapping("/badge")
-    @ApiOperation(value = "뱃지 조회", notes = "<strong>토큰</strong>을 통해 사용자의 보윺 뱃지를 조회한다.")
+    @ApiOperation(value = "뱃지 조회", notes = "<strong>토큰</strong>을 통해 사용자의 보유 뱃지를 조회한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "뱃지 조회 성공"),
             @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),

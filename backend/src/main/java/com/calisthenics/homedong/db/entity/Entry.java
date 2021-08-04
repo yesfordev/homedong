@@ -18,6 +18,7 @@ public class Entry {
 
     @Id
     @Column(name = "entry_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer entryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
