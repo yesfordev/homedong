@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Seo Youngeun on 2021-08-03
@@ -33,6 +33,22 @@ public class RecordService {
             throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
         }
 
-        return roomRepository.getBestRecordByUserId(user.getUserId());
+        List<BestRecordRes> bestRecordResList = roomRepository.getBestRecordByUserId(user.getUserId());
+
+        Map<String, Integer> recordTemp = new HashMap<>();
+
+        recordTemp.put("SQUAT", -1);
+        recordTemp.put("SITUP", -1);
+        recordTemp.put("PUSHUP", -1);
+
+        for(BestRecordRes bestRecordRes : bestRecordResList) {
+            recordTemp.remove(bestRecordRes.getGameType());
+        }
+
+        for(String key : recordTemp.keySet()) {
+            bestRecordResList.add(new BestRecordRes(key, recordTemp.get(key)));
+        }
+
+        return bestRecordResList;
     }
 }
