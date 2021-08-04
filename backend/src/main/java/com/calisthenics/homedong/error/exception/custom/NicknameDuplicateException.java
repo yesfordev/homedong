@@ -1,6 +1,5 @@
 package com.calisthenics.homedong.error.exception.custom;
 
-import com.calisthenics.homedong.api.dto.SignUpReq;
 import com.calisthenics.homedong.error.exception.ErrorCode;
 import com.calisthenics.homedong.error.exception.InvalidValueException;
 

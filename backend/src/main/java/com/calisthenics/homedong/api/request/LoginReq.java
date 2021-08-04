@@ -1,6 +1,5 @@
-package com.calisthenics.homedong.api.dto;
+package com.calisthenics.homedong.api.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -13,22 +12,16 @@ import javax.validation.constraints.Size;
  */
 @Getter
 @Setter
-@ApiModel("SignUpRequest")
-public class SignUpReq {
+@ApiModel("LoginRequst")
+public class LoginReq {
 
-    @ApiModelProperty(name="유저 email")
+    @ApiModelProperty(name = "유저 email", example = "yesfordev@gmail.com")
     @NotNull
     @Size(min = 3, max = 50)
     private String email;
 
-    @ApiModelProperty(name="유저 password")
+    @ApiModelProperty(name = "유저 password", example = "yesyes")
     @NotNull
     @Size(min = 3, max = 100)
     private String password;
-
-    @ApiModelProperty(name="유저 nickname")
-    @NotNull
-    @Size(min = 2, max = 10)
-    private String nickname;
-
 }

@@ -1,4 +1,4 @@
-package com.calisthenics.homedong.api.dto;
+package com.calisthenics.homedong.api.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
