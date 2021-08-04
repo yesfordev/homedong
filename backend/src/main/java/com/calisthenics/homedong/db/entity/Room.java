@@ -5,8 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Created by Seo Youngeun on 2021-08-03
@@ -40,7 +40,8 @@ public class Room {
     @Column(name = "created_at", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp createdAt;
 
+    @Builder.Default
     @OneToMany(mappedBy = "room")
-    private List<Game> games = new ArrayList<Game>();
+    private Set<Game> games = new LinkedHashSet<Game>();
 
 }

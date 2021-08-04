@@ -7,11 +7,11 @@ import com.calisthenics.homedong.api.dto.SignUpReq;
 import com.calisthenics.homedong.db.entity.Role;
 import com.calisthenics.homedong.db.entity.User;
 import com.calisthenics.homedong.db.repository.UserRepository;
-import com.calisthenics.homedong.error.exception.custom.CurrentPasswordNotMatchException;
 import com.calisthenics.homedong.error.exception.custom.EmailDuplicateException;
 import com.calisthenics.homedong.error.exception.custom.NicknameDuplicateException;
 import com.calisthenics.homedong.error.exception.custom.UserNotFoundException;
 import com.calisthenics.homedong.util.SecurityUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +32,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
 
+    @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, MailService mailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;

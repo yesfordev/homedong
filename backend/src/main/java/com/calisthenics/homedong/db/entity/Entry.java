@@ -3,8 +3,6 @@ package com.calisthenics.homedong.db.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Seo Youngeun on 2021-08-03
@@ -22,7 +20,7 @@ public class Entry {
     @Column(name = "entry_id")
     private Integer entryId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="game_id")
     private Game game;
 

@@ -8,6 +8,7 @@ import com.calisthenics.homedong.db.entity.User;
 import com.calisthenics.homedong.api.service.UserService;
 import com.calisthenics.homedong.error.ErrorResponse;
 import io.swagger.annotations.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 /**
@@ -23,6 +25,7 @@ import java.util.Map;
  * 유저 관련 Controller
  */
 @Api(value = "유저 API", tags = {"User"})
+@Slf4j
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -65,7 +68,7 @@ public class UserController {
     @ApiOperation(value = "내 정보 보기", notes = "<strong>헤더에 token을 넣어</strong> 내 정보를 조회한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "내 정보 조회 성공", response = User.class),
-            @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
@@ -79,10 +82,11 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "유저 정보 조회 성공", response = User.class),
             @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<User> getUserInfo(@PathVariable String email) {
+    public ResponseEntity<User> getUserInfo(@PathVariable(required = true) String email) {
         return ResponseEntity.ok(userService.getUserWithRoles(email).get());
     }
 
@@ -95,7 +99,7 @@ public class UserController {
             @ApiResponse(code = 409, message = "닉네임 중복", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
-    public ResponseEntity checkDuplicateNickname(@RequestParam String nickname) {
+    public ResponseEntity checkDuplicateNickname(@RequestParam(required = true) String nickname) {
         userService.checkDuplicateNickname(nickname);
 
         return new ResponseEntity(HttpStatus.OK);
@@ -106,6 +110,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "회원 탈퇴 성공"),
             @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
             @ApiResponse(code = 404, message = "회원 탈퇴할 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
@@ -121,6 +126,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "비밀번호 매치 여부 확인, true: 현재 비밀번호 일치, false: 현재 비밀번호 틀림"),
             @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
             @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
@@ -134,6 +140,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "비밀번호 변경 성공"),
             @ApiResponse(code = 400, message = "input 오류 or 현재 비밀번호가 틀림", response = ErrorResponse.class),
+            @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
             @ApiResponse(code = 404, message = "회원 탈퇴할 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
@@ -149,6 +156,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "비밀번호 매치 여부 확인, true: 현재 비밀번호 일치, false: 현재 비밀번호 틀림"),
             @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
             @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })

@@ -4,9 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Created by Seo Youngeun on 2021-08-03
@@ -24,14 +23,15 @@ public class Game {
     @Column(name = "game_id")
     private Integer gameId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="room_id")
     private Room room;
 
     @Column(name = "created_at", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp createdAt;
 
+    @Builder.Default
     @OneToMany(mappedBy = "game")
-    private List<Entry> entries = new ArrayList<Entry>();
+    private Set<Entry> entries = new LinkedHashSet<Entry>();
 
 }
