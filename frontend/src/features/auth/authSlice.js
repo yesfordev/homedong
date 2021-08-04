@@ -43,6 +43,7 @@ export const login = createAsyncThunk(
       saveToken(token);
       return response;
     } catch (err) {
+      // status 500이면, 500의 에러로 처리
       return rejectWithValue(err.response);
     }
   }
@@ -63,7 +64,7 @@ export const logout = createAsyncThunk('LOGOUT', async (userId) => {
 const initialState = {
   user: {},
   isNicknameChecked: false,
-  isLoggedin: false,
+  isLoggedIn: false,
 };
 
 // slice
@@ -86,16 +87,17 @@ const authSlice = createSlice({
       state.user = {};
     },
     [login.fulfilled]: (state) => {
-      state.isLoggedin = true;
+      state.isLoggedIn = true;
       console.log('reducer 로그인 성공');
     },
-    [login.rejected]: (state) => {
-      state.isLoggedin = false;
-      console.log('reducer 로그인 실패');
+    [login.rejected]: (state, action) => {
+      state.isLoggedIn = false;
+      console.log('reducer 로그인 실패', action.payload.status);
     },
     [logout.fulfilled]: (state) => {
       console.log('로그아웃', state);
       state.user = {};
+      state.isLoggedIn = false;
     },
     [checkNickname.fulfilled]: (state) => {
       state.isNicknameChecked = true;
