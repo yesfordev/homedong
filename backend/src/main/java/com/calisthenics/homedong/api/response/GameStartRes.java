@@ -1,5 +1,7 @@
 package com.calisthenics.homedong.api.response;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +16,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ApiModel("GameStartResponse")
 public class GameStartRes {
 
+    @ApiModelProperty(name = "현재 시작된 게임 id")
     private Integer gameId;
 
 }
