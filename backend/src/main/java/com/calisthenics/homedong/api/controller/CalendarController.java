@@ -30,13 +30,13 @@ public class CalendarController {
     }
 
     @GetMapping("/daily")
-    @ApiOperation(value = "1일 1홈동 조회", notes = "<strong>토큰</strong>을 통해 사용자의 1일 1홈동을 조회한다. - 해당 달에 아무 데이터도 없는 경우도 고려해주기!(json array 형태로 안나옴)")
+    @ApiOperation(value = "1일 1홈동 조회", notes = "<strong>토큰</strong>을 통해 사용자의 1일 1홈동을 조회한다. - 해당 달에 아무 데이터도 없는 경우도 고려해주기!(json array 형태로 안나옴 -> empty String)")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "year", value = "조회할 년도", required = true, dataType = "Integer", paramType = "query"),
             @ApiImplicitParam(name = "month", value = "조회할 달", required = true, dataType = "Integer", paramType = "query")
     })
     @ApiResponses({
-            @ApiResponse(code = 200, message = "1일 1홈동 조회 성공"),
+            @ApiResponse(code = 200, message = "1일 1홈동 조회 성공(데이터 없는 경우도)"),
             @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
             @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
