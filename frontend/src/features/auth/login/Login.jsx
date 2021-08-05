@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import styles from 'styled-components';
+import styled from 'styled-components';
 import { Container, Button } from '@material-ui/core';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { useDispatch } from 'react-redux';
@@ -9,18 +9,18 @@ import { login } from '../authSlice';
 
 // style
 
-const Wrapper = styles(Container)`
+const Wrapper = styled(Container)`
   display: flex;
   height: 100vh;
   justify-content: center;
   align-items: center;
 `;
 
-const Title = styles.div`
+const Title = styled.div`
   font-size: 2.5rem;
 `;
 
-const LoginContainer = styles.div`
+const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
