@@ -53,11 +53,10 @@ export default function SimpleMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>마이페이지</MenuItem>
-        <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
         <MenuItem onClick={handleClose}>
           <Link to="/mypage">마이페이지</Link>
         </MenuItem>
+        <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
       </Menu>
     </div>
   );

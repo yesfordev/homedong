@@ -1,21 +1,24 @@
 import React from 'react';
-// import { useSelector } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import isAuthenticated from '../api/isAuthenticated';
+// import { useSelector } from 'react-redux';
 
 // const PrivateRoute = ({ isAuthenticated, component: Component, ...rest }) =>
 //   isAuthenticated ? <Component {...rest} /> : <Redirect to="/login" />;
 
-function PrivateRoute({ component: Component, ...rest }) {
-  // 문제
+function LoginRoute({ component: Component, restricted, ...rest }) {
   // const { isAuthenticated } = useSelector((state) => state.auth);
   return (
     <Route
       {...rest}
       render={(props) =>
-        isAuthenticated() ? <Component {...props} /> : <Redirect to="/login" />
+        isAuthenticated() && restricted ? (
+          <Redirect to="/" />
+        ) : (
+          <Component {...props} />
+        )
       }
     />
   );
 }
-export default PrivateRoute;
+export default LoginRoute;
