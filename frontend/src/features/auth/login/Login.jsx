@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
-import styles from 'styled-components';
+
+import styled from 'styled-components';
 import { Container, Button } from '@material-ui/core';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { login } from '../authSlice';
 
 // style
 
-const Wrapper = styles(Container)`
+const Wrapper = styled(Container)`
   display: flex;
   height: 100vh;
   justify-content: center;
   align-items: center;
 `;
 
-const Title = styles.div`
+const Title = styled.div`
   font-size: 2.5rem;
 `;
 
-const LoginContainer = styles.div`
+const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
@@ -42,6 +43,9 @@ function Login() {
       .unwrap()
       .then(() => {
         history.push('/');
+      })
+      .catch((err) => {
+        alert(err.status);
       });
   }
 
@@ -53,7 +57,7 @@ function Login() {
         <ValidatorForm onSubmit={handleSubmit}>
           <TextValidator
             label="이메일"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value.replace(/\s/g, ''))}
             name="email"
             value={email}
             validators={['required', 'isEmail']}
@@ -69,7 +73,7 @@ function Login() {
           />
           <TextValidator
             label="비밀번호"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value.replace(/\s/g, ''))}
             value={password}
             name="password"
             type="password"
@@ -81,6 +85,9 @@ function Login() {
             }}
           />
           <Button type="submit">로그인</Button>
+          <Button>
+            <Link to="/signup">회원가입</Link>
+          </Button>
         </ValidatorForm>
       </LoginContainer>
     </Wrapper>

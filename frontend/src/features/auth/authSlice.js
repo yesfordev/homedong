@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { saveToken, getToken, deleteToken } from '../../common/api/JWT-common';
+import { saveToken } from '../../common/api/JWT-common';
 import axios from '../../common/api/http-common';
 
 // 메서드 전체 REST API, params 필요
@@ -9,6 +9,7 @@ export const signup = createAsyncThunk(
   async (userInfo, { rejectWithValue }) => {
     try {
       const response = await axios.post('/api/signup', userInfo);
+      console.log('action');
       return response;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -24,7 +25,7 @@ export const checkNickname = createAsyncThunk(
       const response = await axios.get('/api/user/check_nickname', {
         params: { nickname },
       });
-      return response.data;
+      return response;
     } catch (err) {
       return rejectWithValue(err.response);
     }
@@ -49,16 +50,15 @@ export const login = createAsyncThunk(
   }
 );
 
-// 로그아웃
-export const logout = createAsyncThunk(
-  'LOGOUT',
-  async (userId, { rejectWithValue }) => {
+// 비밀번호 확인
+export const checkPassword = createAsyncThunk(
+  'CHECK_PASSWORD',
+  async (password, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/logout', userId);
+      const response = await axios.post('/api/user/check_password', password);
       return response;
     } catch (err) {
-      deleteToken();
-      return rejectWithValue(err.response);
+      return rejectWithValue(err);
     }
   }
 );
@@ -66,38 +66,38 @@ export const logout = createAsyncThunk(
 // 닉네임 변경
 export const modifyNickname = createAsyncThunk(
   'MODIFY_NICKNAME',
-  async (userInfo) => {
-    console.log('닉네임 변경', userInfo);
-    await axios
-      .put('/modifynickname', userInfo)
-      .then((res) => {
-        return res.data;
-      })
-      .catch((err) => {
-        return err;
-      });
+  async ({ newNickname }, { rejectWithValue }) => {
+    const data = {
+      changeNickname: newNickname,
+    };
+    try {
+      const response = await axios.put('/api/user/nickname', data);
+      return response;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
 );
 
 // 비밀번호 변경
 export const modifyPassword = createAsyncThunk(
   'MODIFY_PASSWORD',
-  async (userInfo) => {
-    await axios
-      .put('/modifypassword', userInfo)
-      .then((res) => {
-        return res.data;
-      })
-      .catch((err) => {
-        return err;
-      });
+  async ({ newPassword }, { rejectWithValue }) => {
+    const data = {
+      changePassword: newPassword,
+    };
+    try {
+      const response = await axios.put('/api/user/password', data);
+      return response;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
 );
 
 const initialState = {
   user: {},
   isNicknameChecked: false,
-  isAuthenticated: false,
 };
 
 // slice
@@ -108,26 +108,16 @@ const authSlice = createSlice({
     setNicknameCheckedFalse: (state) => {
       state.isNicknameChecked = false;
     },
-    loadUser: {
-      reducer: (state, action) => {
-        state.isAuthenticated = action.payload;
-      },
-      prepare: () => {
-        const token = !!getToken();
-        return { payload: token };
-      },
-    },
+    // loadUser: {
+    //   reducer: (state, action) => {
+    //     state.isAuthenticated = action.payload;
+    //   },
+    //   prepare: () => {
+    //     const token = !!getToken();
+    //     return { payload: token };
+    //   },
   },
-  // 조사 필요, return 값 찾아야함
-  // fullfilled -> 완료되었을 때 무슨 일을 할지? (signup은 로그인 시켜준다, 이런것?)
   extraReducers: {
-    [signup.fulfilled]: (state) => {
-      console.log('reducer', state);
-    },
-    [signup.rejected]: (state) => {
-      console.log('reducer 회원가입 실패');
-      state.user = {};
-    },
     [login.fulfilled]: (state) => {
       state.isAuthenticated = true;
       console.log('reducer 로그인 성공');
@@ -136,15 +126,13 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       console.log('reducer 로그인 실패', action.payload.status);
     },
-    [logout.rejected]: (state) => {
-      console.log('reducer 로그아웃 성공');
-      state.user = {};
-      state.isAuthenticated = false;
-    },
     [checkNickname.fulfilled]: (state) => {
       state.isNicknameChecked = true;
     },
     [checkNickname.rejected]: (state) => {
+      state.isNicknameChecked = false;
+    },
+    [modifyNickname.fulfilled]: (state) => {
       state.isNicknameChecked = false;
     },
   },

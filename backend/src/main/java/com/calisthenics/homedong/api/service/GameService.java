@@ -64,10 +64,6 @@ public class GameService {
 
         BadgeRes previousBadgeRes = recordService.getBadgeRecord();
 
-//        Room room = roomRepository.findByRoomId(gameEndReq.getRoomId());
-//        room.setStatus("ON");
-//        roomRepository.save(room);
-
         Game game = gameRepository.findById(gameEndReq.getGameId()).orElse(null);
 
         Room room = game.getRoom();

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
 import { signup, checkNickname, setNicknameCheckedFalse } from '../authSlice';
 
 // style
@@ -77,9 +77,11 @@ function SignUp() {
     dispatch(signup(data))
       .unwrap()
       .then(() => {
+        console.log('component');
         history.push('/login');
       })
       .catch((err) => {
+        alert(err.status, err.message);
         console.log('unwrap', err.status);
       });
   }
@@ -186,6 +188,9 @@ function SignUp() {
           />
           <Button disabled={!isNicknameChecked || !email} type="submit">
             Submit
+          </Button>
+          <Button>
+            <Link to="/login">로그인</Link>
           </Button>
         </ValidatorForm>
       </LoginContainer>
