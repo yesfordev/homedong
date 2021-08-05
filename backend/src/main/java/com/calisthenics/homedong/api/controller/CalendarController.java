@@ -1,6 +1,8 @@
 package com.calisthenics.homedong.api.controller;
 
+import com.calisthenics.homedong.api.response.ContinuousDayCountRes;
 import com.calisthenics.homedong.api.response.DailyCalendarRes;
+import com.calisthenics.homedong.api.response.IContinuousDayCountRes;
 import com.calisthenics.homedong.api.service.CalenderService;
 import com.calisthenics.homedong.error.ErrorResponse;
 import io.swagger.annotations.*;
@@ -32,8 +34,8 @@ public class CalendarController {
     @GetMapping("/daily")
     @ApiOperation(value = "1일 1홈동 조회", notes = "<strong>토큰</strong>을 통해 사용자의 1일 1홈동을 조회한다. - 해당 달에 아무 데이터도 없는 경우도 고려해주기!(json array 형태로 안나옴 -> empty String)")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "year", value = "조회할 년도", required = true, dataType = "Integer", paramType = "query"),
-            @ApiImplicitParam(name = "month", value = "조회할 달", required = true, dataType = "Integer", paramType = "query")
+            @ApiImplicitParam(name = "year", value = "조회할 년도", required = true, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "month", value = "조회할 달", required = true, dataType = "int", paramType = "query")
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "1일 1홈동 조회 성공(데이터 없는 경우도)"),
@@ -44,6 +46,12 @@ public class CalendarController {
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<List<DailyCalendarRes>> getDailyCalendar(@RequestParam(required = true) int year, @RequestParam(required = true) int month) {
         return ResponseEntity.ok(calenderService.getDailyCalendar(year, month));
+    }
+
+    @GetMapping("/day-count")
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<ContinuousDayCountRes> getContinousDayCount() {
+        return ResponseEntity.ok(calenderService.getContinousDayCount());
     }
 
 }

@@ -32,4 +32,5 @@ public class BadgeRes {
         this.pushUp = new BadgeDetail();
         this.homedongKing = false;
     }
+
 }

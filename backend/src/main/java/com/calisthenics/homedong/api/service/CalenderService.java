@@ -1,7 +1,9 @@
 package com.calisthenics.homedong.api.service;
 
+import com.calisthenics.homedong.api.response.ContinuousDayCountRes;
 import com.calisthenics.homedong.api.response.DailyCalendarRes;
 import com.calisthenics.homedong.api.response.DailyRecord;
+import com.calisthenics.homedong.api.response.IContinuousDayCountRes;
 import com.calisthenics.homedong.db.entity.User;
 import com.calisthenics.homedong.db.repository.EntryRepositry;
 import com.calisthenics.homedong.db.repository.GameRepository;
@@ -65,4 +67,18 @@ public class CalenderService {
 
         return dailyCalendarResList;
     }
+
+    public ContinuousDayCountRes getContinousDayCount() {
+        User user = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
+
+        if(user == null) {
+            throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
+        }
+
+        IContinuousDayCountRes iContinuousDayCountRes = gameRepository.getContinuousDayCount(user.getUserId()).orElse(null);
+        ContinuousDayCountRes continuousDayCountRes = new ContinuousDayCountRes(iContinuousDayCountRes.getFromDate(), iContinuousDayCountRes.getToDate(), iContinuousDayCountRes.getDuration(), iContinuousDayCountRes.getWorkToday() == 1? true : false);
+
+        return continuousDayCountRes;
+    }
+
 }
