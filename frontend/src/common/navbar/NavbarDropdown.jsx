@@ -3,14 +3,12 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Avatar } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
-import { logout } from '../../features/auth/authSlice';
+import { deleteToken } from '../api/JWT-common';
 
 import defaultImage from '../../assets/default.png';
 
 export default function SimpleMenu() {
-  const dispatch = useDispatch();
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -23,15 +21,8 @@ export default function SimpleMenu() {
   };
 
   const handleLogout = () => {
-    dispatch(logout())
-      .unwrap()
-      .then((res) => {
-        console.log('로그아웃', 'component', res);
-      })
-      .catch((err) => {
-        console.log('로그아웃 에러', err);
-        history.push('/login');
-      });
+    deleteToken();
+    history.push('/login');
   };
 
   return (

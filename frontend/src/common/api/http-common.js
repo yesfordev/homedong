@@ -3,7 +3,7 @@ import { getToken } from './JWT-common';
 
 const token = getToken();
 if (token) {
-  // axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 }
 
 export default axios.create({
@@ -12,5 +12,3 @@ export default axios.create({
     'Content-Type': 'application/json',
   },
 });
-
-// set authorization header

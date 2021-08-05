@@ -1,11 +1,17 @@
 import { useState, React, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { checkNickname, modifyNickname, modifyPassword } from '../authSlice';
+import {
+  checkNickname,
+  modifyNickname,
+  modifyPassword,
+  setNicknameCheckedFalse,
+} from '../authSlice';
 
 // style
 const Wrapper = styled.div`
@@ -39,19 +45,39 @@ function ModifyUserInfo() {
   const [newNickname, setNickname] = useState('');
   const [newPassword, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
-  const { nickname } = useSelector((state) => state.auth.user);
   const { isNicknameChecked } = useSelector((state) => state.auth);
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // setState when user change input
   function handleNickname(event) {
     const { value } = event.target;
+    if (isNicknameChecked) {
+      dispatch(setNicknameCheckedFalse());
+    }
     if (value.length < 7) {
-      setNickname(value);
+      setNickname(value.trim());
       return true;
     }
     return false;
+  }
+
+  function doCheckNickname() {
+    if (newNickname) {
+      dispatch(checkNickname(newNickname))
+        .unwrap()
+        .then((res) => {
+          console.log(res);
+          alert('사용가능한 닉네임입니다');
+        })
+        .catch((err) => {
+          console.log(err.status);
+          alert('중복된 닉네임입니다');
+        });
+    } else {
+      alert('입력해주세요');
+    }
   }
 
   // submit when user click button
@@ -59,13 +85,25 @@ function ModifyUserInfo() {
     event.preventDefault();
     const { name } = event.target;
     const data = {
-      nickname: newNickname,
-      password: newPassword,
+      newNickname,
+      newPassword,
     };
     return name === 'nickname'
       ? dispatch(modifyNickname(data))
-      : dispatch(modifyPassword(data));
+          .unwrap()
+          .then(() => {
+            alert('닉네임 수정 완료');
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+      : dispatch(modifyPassword(data))
+          .unwrap()
+          .then(() => {
+            history.push('/');
+          });
   }
+
   // validation (same password)
   useEffect(() => {
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
@@ -100,7 +138,7 @@ function ModifyUserInfo() {
             onChange={handleNickname}
             color="secondary"
             name="nickname"
-            value={newNickname || nickname}
+            value={newNickname}
             validators={['required']}
             errorMessages={['닉네임을 입력해주세요']}
             helperText="최대 6글자입니다."
@@ -112,14 +150,10 @@ function ModifyUserInfo() {
             size="small"
             fullWidth
           />
-          <Button
-            onClick={() => {
-              dispatch(checkNickname(newNickname || nickname));
-            }}
-          >
+          <Button onClick={doCheckNickname} disabled={isNicknameChecked}>
             중복확인
           </Button>
-          <Button type="submit" disabled={isNicknameChecked}>
+          <Button type="submit" disabled={!isNicknameChecked}>
             변경하기
           </Button>
         </ValidatorForm>
