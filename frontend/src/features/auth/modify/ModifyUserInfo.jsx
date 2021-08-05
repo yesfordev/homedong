@@ -41,7 +41,6 @@ function ModifyUserInfo() {
   const [repeatPassword, setRepeatPassword] = useState('');
   const { nickname } = useSelector((state) => state.auth.user);
   const { isNicknameChecked } = useSelector((state) => state.auth);
-  console.log(nickname, isNicknameChecked);
   const classes = useStyles();
   const dispatch = useDispatch();
 

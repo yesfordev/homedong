@@ -1,14 +1,8 @@
 import React from 'react';
-// import { useSelector } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import isAuthenticated from '../api/isAuthenticated';
 
-// const PrivateRoute = ({ isAuthenticated, component: Component, ...rest }) =>
-//   isAuthenticated ? <Component {...rest} /> : <Redirect to="/login" />;
-
 function PrivateRoute({ component: Component, ...rest }) {
-  // 문제
-  // const { isAuthenticated } = useSelector((state) => state.auth);
   return (
     <Route
       {...rest}

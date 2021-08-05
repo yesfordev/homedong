@@ -63,6 +63,19 @@ export const logout = createAsyncThunk(
   }
 );
 
+// 비밀번호 확인
+export const checkPassword = createAsyncThunk(
+  'CHECK_PASSWORD',
+  async (password, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('/api/user/check_password', password);
+      return response;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
 // 닉네임 변경
 export const modifyNickname = createAsyncThunk(
   'MODIFY_NICKNAME',
@@ -118,8 +131,6 @@ const authSlice = createSlice({
       },
     },
   },
-  // 조사 필요, return 값 찾아야함
-  // fullfilled -> 완료되었을 때 무슨 일을 할지? (signup은 로그인 시켜준다, 이런것?)
   extraReducers: {
     [signup.fulfilled]: (state) => {
       console.log('reducer', state);
