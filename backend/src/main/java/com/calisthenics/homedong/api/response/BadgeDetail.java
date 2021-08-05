@@ -10,8 +10,7 @@ import lombok.*;
 @Setter
 @Builder
 @AllArgsConstructor
-@ApiModel("BadgeDetailResponse")
-public class BadgeDetailRes {
+public class BadgeDetail {
 
     private boolean beginner;
 
@@ -19,7 +18,7 @@ public class BadgeDetailRes {
 
     private boolean advanced;
 
-    public BadgeDetailRes() {
+    public BadgeDetail() {
         this.beginner = false;
         this.intermediate = false;
         this.advanced = false;
