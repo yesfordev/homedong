@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, BrowserRouter } from 'react-router-dom';
+import { Switch, BrowserRouter, Route } from 'react-router-dom';
 
 // style
 import { StylesProvider } from '@material-ui/core/styles';
@@ -14,6 +14,7 @@ import MyPage from '../features/mypage/MyPage';
 import CheckPassword from '../features/mypage/CheckPassword';
 import ModifyUserInfo from '../features/auth/modify/ModifyUserInfo';
 import Home from '../features/home/Home';
+import EmailChecked from '../features/auth/signup/EmailChecked';
 
 // routes
 import PrivateRoute from '../common/Routes/PrivateRoute';
@@ -47,6 +48,7 @@ function App() {
           <Switch>
             <PublicRoute restricted path="/login" component={Login} />
             <PublicRoute restricted path="/signup" component={SignUp} />
+            <Route path="/emailchecked" component={EmailChecked} />
             <PrivateRoute exact path="/" component={Home} />
             <PrivateRoute path="/tutorial" component={MyPage} />
             <PrivateRoute path="/rank" component={MyPage} />
