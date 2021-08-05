@@ -24,7 +24,6 @@ public class MakeRoomReq {
     private String gameType;
 
     @ApiModelProperty(name = "비밀번호", example="password")
-    @NotNull
     @Size(max = 50)
     private String password;
 }
