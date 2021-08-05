@@ -1,6 +1,7 @@
 package com.calisthenics.homedong.api.controller;
 
 import com.calisthenics.homedong.api.request.FindRoomReq;
+import com.calisthenics.homedong.api.request.LeaveRoomReq;
 import com.calisthenics.homedong.api.request.MakeRoomReq;
 import com.calisthenics.homedong.api.request.QuickRoomReq;
 import com.calisthenics.homedong.api.response.RoomRes;
@@ -16,12 +17,14 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import com.calisthenics.homedong.error.ErrorResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -183,5 +186,43 @@ public class RoomController {
         roomService.makeRoom(roomId, quickRoomReq);
 
         return ResponseEntity.ok(roomService.getRoomRes(token, roomId, quickRoomReq.getGameType()));
+    }
+
+    @PutMapping("/")
+    @ApiOperation(value = "참가자가 방을 나갈 경우 사용", notes = "<strong>방 나가기</strong>를 통해 방 정보 OFF로 변경 및 방 관리 map에서 해당 정보 삭제")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "방 나가기 성공"),
+            @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
+    })
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity leaveRoom(@RequestBody LeaveRoomReq leaveRoomReq) throws OpenViduJavaClientException, OpenViduHttpException {
+        /************ 방 생성 로직 - 에러핸들링 수정 ************/
+        String token = leaveRoomReq.getToken();
+        String roomId = leaveRoomReq.getRoomId();
+
+        // 방이 없거나 참가자가 없다면 err
+        if (this.mapSessions.get(roomId) == null || this.mapSessionNamesTokens.get(roomId) == null) {
+            System.out.println("Problems in the app server: the SESSION does not exist");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        // 토큰이 유효하지 않다면 err
+        if (this.mapSessionNamesTokens.get(roomId).remove(token) == null) {
+            System.out.println("Problems in the app server: the TOKEN wasn't valid");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        // 마지막 참가자가 나갔다면
+        if (this.mapSessionNamesTokens.get(roomId).isEmpty()) {
+            // 방 관리 map에서 삭제
+            this.mapSessions.remove(roomId);
+
+            // DB에서 OFF로 업데이트
+            roomService.updateStatus(roomId);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -74,6 +74,18 @@ public class RoomService {
         return roomRepository.findQuickRoomIds(quickRoomReq.getGameType(), true, "ON");
     }
 
+    @Transactional
+    public void updateStatus(String roomId) {
+        Room updateRoom = roomRepository.findById(roomId).orElse(null);
+
+        if (updateRoom == null) {
+            throw new RoomNotFoundException(roomId);
+        }
+
+        updateRoom.setStatus("OFF");
+        roomRepository.save(updateRoom);
+    }
+
     public RoomRes getRoomRes(String token, String roomId, String gameType) {
         RoomRes roomRes = new RoomRes();
         User user = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
