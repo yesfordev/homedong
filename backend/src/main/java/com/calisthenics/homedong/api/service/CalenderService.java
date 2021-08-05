@@ -76,6 +76,11 @@ public class CalenderService {
         }
 
         IContinuousDayCountRes iContinuousDayCountRes = gameRepository.getContinuousDayCount(user.getUserId()).orElse(null);
+
+        if(iContinuousDayCountRes == null) {
+            return new ContinuousDayCountRes();
+        }
+
         ContinuousDayCountRes continuousDayCountRes = new ContinuousDayCountRes(iContinuousDayCountRes.getFromDate(), iContinuousDayCountRes.getToDate(), iContinuousDayCountRes.getDuration(), iContinuousDayCountRes.getWorkToday() == 1? true : false);
 
         return continuousDayCountRes;
