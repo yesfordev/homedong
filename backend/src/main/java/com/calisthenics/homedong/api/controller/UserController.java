@@ -153,7 +153,7 @@ public class UserController {
     @PutMapping("/user/nickname")
     @ApiOperation(value = "현재 닉네임 변경", notes = "<strong>token과 변경할 닉네임 </strong>를 이용해 해당 유저의 닉네임을 변경한다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "비밀번호 매치 여부 확인, true: 현재 비밀번호 일치, false: 현재 비밀번호 틀림"),
+            @ApiResponse(code = 200, message = "닉네임 변경 성공"),
             @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
             @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
             @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
