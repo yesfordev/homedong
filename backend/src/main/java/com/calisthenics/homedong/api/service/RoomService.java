@@ -1,11 +1,13 @@
 package com.calisthenics.homedong.api.service;
 
+import com.calisthenics.homedong.api.request.FindRoomReq;
 import com.calisthenics.homedong.api.request.MakeRoomReq;
 import com.calisthenics.homedong.api.response.RoomRes;
 import com.calisthenics.homedong.db.entity.Room;
 import com.calisthenics.homedong.db.entity.User;
 import com.calisthenics.homedong.db.repository.RoomRepository;
 import com.calisthenics.homedong.db.repository.UserRepository;
+import com.calisthenics.homedong.error.exception.custom.RoomNotFoundException;
 import com.calisthenics.homedong.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,18 @@ public class RoomService {
                 .status("ON")
                 .build();
         roomRepository.save(room);
+    }
+
+    @Transactional
+    public Room findRoom(final FindRoomReq findRoomReq) {
+        Room room = roomRepository.findByRoomIdAndAndPasswordAndStatus(findRoomReq.getRoomId(), findRoomReq.getPassword(), "ON").orElse(null);
+
+        // 케이스 나눠서 체크해줘야 할지 고민
+        if (room == null) {
+            throw new RoomNotFoundException(findRoomReq.getRoomId());
+        }
+        
+        return room;
     }
 
     public RoomRes getRoomRes(String token, String roomId, String gameType) {

@@ -7,9 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Seo Youngeun on 2021-08-03
+ * with Yeseul Kim😘 on 2021-08-05
  */
 @Repository
 public interface RoomRepository extends JpaRepository<Room, String> {
@@ -22,4 +24,5 @@ public interface RoomRepository extends JpaRepository<Room, String> {
 
     Room findByRoomId(String roomId);
 
+    Optional<Room> findByRoomIdAndAndPasswordAndStatus(String roomId, String password, String Status);
 }
