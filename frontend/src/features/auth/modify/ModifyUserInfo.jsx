@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core/styles';
+import { deleteToken } from '../../../common/api/JWT-common';
 
 import {
   checkNickname,
@@ -99,8 +100,10 @@ function ModifyUserInfo() {
           })
       : dispatch(modifyPassword(data))
           .unwrap()
-          .then(() => {
-            history.push('/');
+          .then(async () => {
+            deleteToken();
+            await history.push('/');
+            await alert('다시 로그인해주세요😮');
           });
   }
 

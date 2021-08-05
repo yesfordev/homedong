@@ -9,6 +9,7 @@ export const signup = createAsyncThunk(
   async (userInfo, { rejectWithValue }) => {
     try {
       const response = await axios.post('/api/signup', userInfo);
+      console.log('action');
       return response;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -117,13 +118,6 @@ const authSlice = createSlice({
     //   },
   },
   extraReducers: {
-    [signup.fulfilled]: (state) => {
-      console.log('reducer', state);
-    },
-    [signup.rejected]: (state) => {
-      console.log('reducer 회원가입 실패');
-      state.user = {};
-    },
     [login.fulfilled]: (state) => {
       state.isAuthenticated = true;
       console.log('reducer 로그인 성공');

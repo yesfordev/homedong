@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import isAuthenticated from '../api/isAuthenticated';
 
-function LoginRoute({ component: Component, restricted, ...rest }) {
+function PublicRoute({ component: Component, restricted, ...rest }) {
   return (
     <Route
       {...rest}
@@ -16,4 +16,4 @@ function LoginRoute({ component: Component, restricted, ...rest }) {
     />
   );
 }
-export default LoginRoute;
+export default PublicRoute;
