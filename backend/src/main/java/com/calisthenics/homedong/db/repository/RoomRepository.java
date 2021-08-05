@@ -10,9 +10,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Seo Youngeun on 2021-08-03
+ * with Yeseul Kim😘 on 2021-08-05
  */
 @Repository
 public interface RoomRepository extends JpaRepository<Room, String> {
@@ -24,6 +26,11 @@ public interface RoomRepository extends JpaRepository<Room, String> {
     List<BestRecordRes> getBestRecordByUserId(@Param("userId") Integer userId);
 
     Room findByRoomId(String roomId);
+
+    Optional<Room> findByRoomIdAndAndPasswordAndStatus(String roomId, String password, String Status);
+
+    @Query(value="SELECT r.roomId FROM Room r WHERE r.gameType = ?1 and r.isPublic = ?2 and r.status = ?3")
+    List<String> findQuickRoomIds(String gameType, boolean isPublic, String status);
 
     @Query("select new com.calisthenics.homedong.api.response.DailyCalendarRes(function('date_format', g.createdAt, '%Y-%m-%d') as date) " +
             "from Game g join g.entries e " +
@@ -38,5 +45,4 @@ public interface RoomRepository extends JpaRepository<Room, String> {
             "group by function('date_format', g.createdAt, '%Y-%m-%d'), r.gameType " +
             "order by date asc")
     List<DailyRecord> getDailyRecord(@Param("userId") Integer userId, @Param("year") int year, @Param("month") int month);
-
 }
