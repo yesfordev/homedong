@@ -2,6 +2,7 @@ package com.calisthenics.homedong.api.controller;
 
 import com.calisthenics.homedong.api.request.FindRoomReq;
 import com.calisthenics.homedong.api.request.MakeRoomReq;
+import com.calisthenics.homedong.api.request.QuickRoomReq;
 import com.calisthenics.homedong.api.response.RoomRes;
 import com.calisthenics.homedong.api.service.RoomService;
 import com.calisthenics.homedong.db.entity.Room;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -126,5 +128,60 @@ public class RoomController {
         this.mapSessionNamesTokens.get(roomId).put(token, OpenViduRole.PUBLISHER);
 
         return ResponseEntity.ok(roomService.getRoomRes(token, roomId, gameType));
+    }
+
+    @PostMapping("/quick")
+    @ApiOperation(value = "빠른 시작을 할 때 사용", notes = "<strong>빠른 시작</strong>을 통해 선택한 종목의 방이 있으면 반환하고 없다면 새로 생성 후 토큰, 방이름, 게임종류, 닉네임 반환")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "빠른 시작 성공"),
+            @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
+    })
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<RoomRes> quickRoom(@RequestBody QuickRoomReq quickRoomReq) throws OpenViduJavaClientException, OpenViduHttpException {
+        // 세션 연결을 하기 위해 전달해야 될 정보 설정(사용자 정보 닉네임 넘겨줄 건지?)
+        ConnectionProperties connectionProperties = new ConnectionProperties.Builder().
+                type(ConnectionType.WEBRTC).
+                data("nickname").
+                role(OpenViduRole.PUBLISHER).
+                build();
+
+        List<String> roomIds = roomService.quickRoom(quickRoomReq);
+        /************ 참가할 방이 존재한다면 ************/
+        if (!roomIds.isEmpty()) {
+            // 해당 종목의 방마다 참가할 수 있는지 확인
+            for (String roomId : roomIds) {
+                // 검색하는 방이 존재하지 않거나 인원초과일 경우
+                if (this.mapSessions.get(roomId) == null || mapSessionNamesTokens.get(roomId).size() > LIMIT) continue;
+
+                // 참가할 수 있다면
+                // 세션에 연결 후 프론트에서 연결을 위한 토큰 반환
+                String token = this.mapSessions.get(roomId).createConnection(connectionProperties).getToken();
+
+                // 방 관리 map에 저장
+                this.mapSessionNamesTokens.get(roomId).put(token, OpenViduRole.PUBLISHER);
+
+                return ResponseEntity.ok(roomService.getRoomRes(token, roomId, quickRoomReq.getGameType()));
+            }
+        }
+        /************ 참가할 방이 존재하지 않다면 ************/
+        // 오픈비두 세션 생성
+        Session session = this.openVidu.createSession();
+        // 세션에 연결 후 프론트에서 연결을 위한 토큰 반환
+        String token = session.createConnection(connectionProperties).getToken();
+
+        // 방 번호 난수 생성
+        String roomId = RandomNumberUtil.getRandomNumber();
+
+        // 방 관리 map에 저장
+        this.mapSessions.put(roomId, session);
+        this.mapSessionNamesTokens.put(roomId, new ConcurrentHashMap<>());
+        this.mapSessionNamesTokens.get(roomId).put(token, OpenViduRole.PUBLISHER);
+
+        // DB 저장
+        roomService.makeRoom(roomId, quickRoomReq);
+
+        return ResponseEntity.ok(roomService.getRoomRes(token, roomId, quickRoomReq.getGameType()));
     }
 }

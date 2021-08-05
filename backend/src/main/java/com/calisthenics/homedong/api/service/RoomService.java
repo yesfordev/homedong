@@ -2,6 +2,7 @@ package com.calisthenics.homedong.api.service;
 
 import com.calisthenics.homedong.api.request.FindRoomReq;
 import com.calisthenics.homedong.api.request.MakeRoomReq;
+import com.calisthenics.homedong.api.request.QuickRoomReq;
 import com.calisthenics.homedong.api.response.RoomRes;
 import com.calisthenics.homedong.db.entity.Room;
 import com.calisthenics.homedong.db.entity.User;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * Created by Seo Youngeun on 2021-08-05
@@ -44,6 +46,18 @@ public class RoomService {
     }
 
     @Transactional
+    public void makeRoom(String roomId, final QuickRoomReq quickRoomReq) {
+        Room room = Room.builder()
+                .roomId(roomId)
+                .gameType(quickRoomReq.getGameType())
+                .isPublic(true)
+                .password("")
+                .status("ON")
+                .build();
+        roomRepository.save(room);
+    }
+
+    @Transactional
     public Room findRoom(final FindRoomReq findRoomReq) {
         Room room = roomRepository.findByRoomIdAndAndPasswordAndStatus(findRoomReq.getRoomId(), findRoomReq.getPassword(), "ON").orElse(null);
 
@@ -53,6 +67,11 @@ public class RoomService {
         }
         
         return room;
+    }
+
+    @Transactional
+    public List<String> quickRoom(final QuickRoomReq quickRoomReq) {
+        return roomRepository.findQuickRoomIds(quickRoomReq.getGameType(), true, "ON");
     }
 
     public RoomRes getRoomRes(String token, String roomId, String gameType) {

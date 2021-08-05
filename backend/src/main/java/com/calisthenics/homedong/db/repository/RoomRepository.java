@@ -25,4 +25,7 @@ public interface RoomRepository extends JpaRepository<Room, String> {
     Room findByRoomId(String roomId);
 
     Optional<Room> findByRoomIdAndAndPasswordAndStatus(String roomId, String password, String Status);
+
+    @Query(value="SELECT r.roomId FROM Room r WHERE r.gameType = ?1 and r.isPublic = ?2 and r.status = ?3")
+    List<String> findQuickRoomIds(String gameType, boolean isPublic, String status);
 }
