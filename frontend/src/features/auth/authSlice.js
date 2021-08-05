@@ -95,6 +95,19 @@ export const modifyPassword = createAsyncThunk(
   }
 );
 
+// 회원탈퇴
+export const deleteUser = createAsyncThunk(
+  'DELETE_USER',
+  async (arg, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete('/api/user');
+      return response;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
 const initialState = {
   user: {},
   isNicknameChecked: false,

@@ -1,6 +1,6 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 
 // style
 import { Container, Button } from '@material-ui/core';
@@ -17,6 +17,10 @@ import defaultImage from '../../assets/default.png';
 import Navbar from '../../common/navbar/Navbar';
 import MyTable from './MyTable';
 import Calender from './Calender';
+
+// action
+import { deleteToken } from '../../common/api/JWT-common';
+import { deleteUser } from '../auth/authSlice';
 
 // 전체 컨테이너
 const Wrapper = styled(Container)`
@@ -86,7 +90,23 @@ const Footer = styled.footer``;
 
 export default function MyPage() {
   const { nickname, email } = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+  const history = useHistory();
   const badgeLen = 5;
+
+  const doDeleteUser = () => {
+    dispatch(deleteUser())
+      .unwrap()
+      .then(() => {
+        console.log('component - 회원탈퇴');
+        deleteToken();
+        history.push('/login');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <Navbar />
@@ -139,6 +159,7 @@ export default function MyPage() {
               color="secondary"
               size="small"
               startIcon={<DeleteIcon />}
+              onClick={doDeleteUser}
             >
               회원탈퇴
             </Button>
