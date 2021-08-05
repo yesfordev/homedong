@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, BrowserRouter } from 'react-router-dom';
+import { Switch, BrowserRouter, Route } from 'react-router-dom';
 
 // style
 import { StylesProvider } from '@material-ui/core/styles';
@@ -48,11 +48,7 @@ function App() {
           <Switch>
             <PublicRoute restricted path="/login" component={Login} />
             <PublicRoute restricted path="/signup" component={SignUp} />
-            <PublicRoute
-              restricted={false}
-              path="/emailchecked"
-              component={EmailChecked}
-            />
+            <Route path="/emailchecked" component={EmailChecked} />
             <PrivateRoute exact path="/" component={Home} />
             <PrivateRoute path="/tutorial" component={MyPage} />
             <PrivateRoute path="/rank" component={MyPage} />
