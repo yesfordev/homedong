@@ -5,22 +5,22 @@ import Badge1 from '../../assets/badge1.png';
 
 const content = ({ date, view }) => {
   // test dates
-  const dates = [
+  const days = [
     [7, 1],
     [7, 3],
     [7, 5],
   ];
-  return dates.map(([m, d]) => {
+  return days.map(([m, d]) => {
     return view === 'month' &&
       date.getMonth() === m - 1 &&
       date.getDate() === d ? (
-      <img alt="prize" src={Badge1} style={{ width: '70%' }} />
+      <img alt="prize" key={[m, d]} src={Badge1} style={{ width: '70%' }} />
     ) : null;
   });
 };
 
-const onClick = (V) => {
-  console.log(`클릭한 날짜는 ${V}`);
+const onClick = () => {
+  console.log('클릭한 날짜는');
 };
 
 function Calender() {
@@ -31,7 +31,7 @@ function Calender() {
         onChange={onChange}
         value={value}
         tileContent={content}
-        onClick={onClick(value)}
+        onClick={onClick()}
       />
     </div>
   );

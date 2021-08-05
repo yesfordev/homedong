@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Container, Button } from '@material-ui/core';
-import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
+import styled from 'styled-components';
+import { Container, Button } from '@material-ui/core';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
+import { checkPassword } from '../auth/authSlice';
 
 // style
 const Wrapper = styled(Container)`
@@ -25,12 +27,29 @@ const PasswordContainer = styled.div`
 
 function CheckPassword() {
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
   const history = useHistory();
 
   // function
   function handleSubmit(e) {
     e.preventDefault();
-    history.push('/modifyuserinfo');
+    const data = {
+      password,
+    };
+    dispatch(checkPassword(data))
+      .unwrap()
+      .then((res) => {
+        const isValid = res.data.check;
+        if (isValid) {
+          history.push('/modifyuserinfo');
+        } else {
+          alert('비밀번호 다시');
+        }
+      })
+      .catch((err) => {
+        const message = err.response.data.status;
+        alert(message);
+      });
   }
 
   return (
