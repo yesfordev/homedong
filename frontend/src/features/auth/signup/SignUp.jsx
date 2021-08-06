@@ -34,7 +34,7 @@ const useStyles = makeStyles({
 });
 
 // logic
-function SignUp() {
+export default function SignUp() {
   // local state
   const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
@@ -197,5 +197,3 @@ function SignUp() {
     </Wrapper>
   );
 }
-
-export default SignUp;

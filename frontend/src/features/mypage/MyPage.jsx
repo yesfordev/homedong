@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -21,6 +21,7 @@ import Calender from './Calender';
 // action
 import { deleteToken } from '../../common/api/JWT-common';
 import { deleteUser } from '../auth/authSlice';
+import { loadBadge, loadBestRecord } from './mypageSlice';
 
 // 전체 컨테이너
 const Wrapper = styled(Container)`
@@ -93,6 +94,11 @@ export default function MyPage() {
   const dispatch = useDispatch();
   const history = useHistory();
   const badgeLen = 5;
+
+  useEffect(() => {
+    dispatch(loadBadge());
+    dispatch(loadBestRecord());
+  }, []);
 
   const doDeleteUser = () => {
     dispatch(deleteUser())

@@ -33,7 +33,7 @@ const Links = styles.ul`
   }
 `;
 
-function Navbar() {
+export default function Navbar() {
   const [isMakeOpen, setIsMakeOpen] = useState(false);
   const handleMakeModal = () => setIsMakeOpen(false);
   const [isFindOpen, setIsFindOpen] = useState(false);
@@ -65,5 +65,3 @@ function Navbar() {
     </Wrapper>
   );
 }
-
-export default Navbar;

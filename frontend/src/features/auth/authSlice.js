@@ -50,6 +50,18 @@ export const login = createAsyncThunk(
   }
 );
 
+export const loadUser = createAsyncThunk(
+  'LOAD_USER',
+  async (arg, { rejectWithValue }) => {
+    try {
+      const response = await axios.get('api/user/me');
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
 // 비밀번호 확인
 export const checkPassword = createAsyncThunk(
   'CHECK_PASSWORD',
@@ -121,14 +133,10 @@ const authSlice = createSlice({
     setNicknameCheckedFalse: (state) => {
       state.isNicknameChecked = false;
     },
-    // loadUser: {
-    //   reducer: (state, action) => {
-    //     state.isAuthenticated = action.payload;
-    //   },
-    //   prepare: () => {
-    //     const token = !!getToken();
-    //     return { payload: token };
-    //   },
+    resetUser: (state) => {
+      console.log('resetUser');
+      state.user = {};
+    },
   },
   extraReducers: {
     [login.fulfilled]: (state) => {
@@ -148,8 +156,11 @@ const authSlice = createSlice({
     [modifyNickname.fulfilled]: (state) => {
       state.isNicknameChecked = false;
     },
+    [loadUser.fulfilled]: (state, action) => {
+      state.user = action.payload;
+    },
   },
 });
 
-export const { setNicknameCheckedFalse, loadUser } = authSlice.actions;
+export const { setNicknameCheckedFalse, resetUser } = authSlice.actions;
 export default authSlice.reducer;

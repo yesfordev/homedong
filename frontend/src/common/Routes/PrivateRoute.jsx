@@ -1,8 +1,15 @@
-import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { Route, Redirect, useLocation } from 'react-router-dom';
 import isAuthenticated from '../api/isAuthenticated';
+import { loadUser } from '../../features/auth/authSlice';
 
-function PrivateRoute({ component: Component, ...rest }) {
+export default function PrivateRoute({ component: Component, ...rest }) {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadUser());
+  }, [location]);
   return (
     <Route
       {...rest}
@@ -12,4 +19,3 @@ function PrivateRoute({ component: Component, ...rest }) {
     />
   );
 }
-export default PrivateRoute;

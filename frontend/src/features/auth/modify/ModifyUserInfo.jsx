@@ -41,7 +41,7 @@ const useStyles = makeStyles({
 });
 
 // logic
-function ModifyUserInfo() {
+export default function ModifyUserInfo() {
   // local state
   const [newNickname, setNickname] = useState('');
   const [newPassword, setPassword] = useState('');
@@ -205,5 +205,3 @@ function ModifyUserInfo() {
     </Wrapper>
   );
 }
-
-export default ModifyUserInfo;
