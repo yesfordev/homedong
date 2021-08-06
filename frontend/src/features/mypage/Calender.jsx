@@ -19,20 +19,11 @@ const content = ({ date, view }) => {
   });
 };
 
-const onClick = () => {
-  console.log('클릭한 날짜는');
-};
-
 function Calender() {
   const [value, onChange] = useState(new Date());
   return (
     <div>
-      <Main
-        onChange={onChange}
-        value={value}
-        tileContent={content}
-        onClick={onClick()}
-      />
+      <Main onChange={onChange} value={value} tileContent={content} />
     </div>
   );
 }

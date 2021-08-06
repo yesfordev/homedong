@@ -3,6 +3,7 @@ import React from 'react';
 import Navbar from '../../common/navbar/Navbar';
 
 function Home() {
+  console.log('home');
   return (
     <div>
       <Navbar />

@@ -31,6 +31,7 @@ const mypageSlice = createSlice({
     badgeInfo: {},
     bestRecordInfo: {},
     dailyInfo: {},
+    badgesOwned: [],
   },
   reducers: {
     resetMyPageInfo: (state) => {
@@ -38,10 +39,24 @@ const mypageSlice = createSlice({
       state.bestRecordInfo = {};
       state.dailyInfo = {};
     },
+    loadBadgesOwned: (state) => {
+      const { badgeInfo } = state;
+      Object.entries(badgeInfo).forEach(([exercise, detailInfo]) => {
+        if (detailInfo === false) {
+          state.badgesOwned.push([exercise, 'best']);
+        }
+        Object.entries(detailInfo).forEach(([level, value]) => {
+          if (value === false) {
+            state.badgesOwned.push([exercise, level]);
+          }
+        });
+      });
+    },
   },
   extraReducers: {
     [loadBadge.fulfilled]: (state, action) => {
       state.badgeInfo = action.payload;
+      state.badgesOwned = [];
     },
     [loadBestRecord.fulfilled]: (state, action) => {
       state.bestRecordInfo = action.payload;
@@ -49,5 +64,5 @@ const mypageSlice = createSlice({
   },
 });
 
-export const { resetMyPageInfo } = mypageSlice.actions;
+export const { resetMyPageInfo, loadBadgesOwned } = mypageSlice.actions;
 export default mypageSlice.reducer;

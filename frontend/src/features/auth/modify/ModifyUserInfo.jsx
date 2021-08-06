@@ -42,6 +42,7 @@ const useStyles = makeStyles({
 
 // logic
 export default function ModifyUserInfo() {
+  console.log('usermodify');
   // local state
   const [newNickname, setNickname] = useState('');
   const [newPassword, setPassword] = useState('');

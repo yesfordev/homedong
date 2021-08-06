@@ -9,9 +9,11 @@ import EditIcon from '@material-ui/icons/Edit';
 import styled from 'styled-components';
 
 // image
-import Badge1 from '../../assets/badge1.png';
-import Badge2 from '../../assets/badge2.png';
 import defaultImage from '../../assets/default.png';
+// import Beginner from '../../assets/beginner.svg';
+// import Intermediate from '../../assets/intermediate.svg';
+// import Advanced from '../../assets/advanced.svg';
+import badgeImages from '../../assets/badgeImages';
 
 // component
 import Navbar from '../../common/navbar/Navbar';
@@ -21,7 +23,8 @@ import Calender from './Calender';
 // action
 import { deleteToken } from '../../common/api/JWT-common';
 import { deleteUser } from '../auth/authSlice';
-import { loadBadge, loadBestRecord } from './mypageSlice';
+import { loadBadge, loadBestRecord, loadBadgesOwned } from './mypageSlice';
+// import { getMonth } from '../../common/api/getTime';
 
 // 전체 컨테이너
 const Wrapper = styled(Container)`
@@ -91,12 +94,19 @@ const Footer = styled.footer``;
 
 export default function MyPage() {
   const { nickname, email } = useSelector((state) => state.auth.user);
+  const { badgesOwned } = useSelector((state) => state.mypage);
   const dispatch = useDispatch();
   const history = useHistory();
-  const badgeLen = 5;
+  const badgeLen = badgesOwned.length;
+  console.log('mypage');
+  // console.log(badgesOwned);
 
   useEffect(() => {
-    dispatch(loadBadge());
+    dispatch(loadBadge())
+      .unwrap()
+      .then(() => {
+        dispatch(loadBadgesOwned());
+      });
     dispatch(loadBestRecord());
   }, []);
 
@@ -104,7 +114,6 @@ export default function MyPage() {
     dispatch(deleteUser())
       .unwrap()
       .then(() => {
-        console.log('component - 회원탈퇴');
         deleteToken();
         history.push('/login');
       })
@@ -146,11 +155,16 @@ export default function MyPage() {
             <MyTable />
           </Record>
           <Badges>
-            <Badge badgeLen={badgeLen} src={Badge1} alt="image" />
-            <Badge badgeLen={badgeLen} src={Badge2} alt="image" />
-            <Badge badgeLen={badgeLen} src={Badge1} alt="image" />
-            <Badge badgeLen={badgeLen} src={Badge1} alt="image" />
-            <Badge badgeLen={badgeLen} src={Badge1} alt="image" />
+            {badgesOwned.map((badgeOwned) => {
+              const [kind, level] = badgeOwned;
+              return (
+                <Badge
+                  badgeLen={badgeLen}
+                  key={badgeOwned}
+                  src={badgeImages[kind][level]}
+                />
+              );
+            })}
           </Badges>
           <Calender />
           <Footer>
