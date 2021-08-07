@@ -14,6 +14,7 @@ import com.calisthenics.homedong.db.repository.UserRepository;
 import com.calisthenics.homedong.error.exception.custom.UserNotFoundException;
 import com.calisthenics.homedong.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,9 @@ public class GameService {
     private final UserRepository userRepository;
     private final EntryRepositry entryRepositry;
     private final RecordService recordService;
+
+    @Value("${custom.gameTypeCount}")
+    private int gameTypeCount;
 
     @Autowired
     public GameService(GameRepository gameRepository, RoomRepository roomRepository,
@@ -79,40 +83,18 @@ public class GameService {
 
         BadgeRes currentBadgeRes = recordService.getBadgeRecord();
 
-        BadgeRes gameBadgeRes = new BadgeRes();
+        BadgeRes gameBadgeRes = new BadgeRes(gameTypeCount);
 
-        if(currentBadgeRes.getSquat().isBeginner() && !previousBadgeRes.getSquat().isBeginner()) {
-            gameBadgeRes.getSquat().setBeginner(true);
-        }
-        if(currentBadgeRes.getSquat().isIntermediate() && !previousBadgeRes.getSquat().isIntermediate()) {
-            gameBadgeRes.getSquat().setIntermediate(true);
-        }
-        if(currentBadgeRes.getSquat().isAdvanced() && !previousBadgeRes.getSquat().isAdvanced()) {
-            gameBadgeRes.getSquat().setAdvanced(true);
-        }
-
-        if(currentBadgeRes.getSitUp().isBeginner() && !previousBadgeRes.getSitUp().isBeginner()) {
-            gameBadgeRes.getSitUp().setBeginner(true);
-        }
-        if(currentBadgeRes.getSitUp().isIntermediate() && !previousBadgeRes.getSitUp().isIntermediate()) {
-            gameBadgeRes.getSitUp().setIntermediate(true);
-        }
-        if(currentBadgeRes.getSitUp().isAdvanced() && !previousBadgeRes.getSitUp().isAdvanced()) {
-            gameBadgeRes.getSitUp().setAdvanced(true);
-        }
-
-        if(currentBadgeRes.getPushUp().isBeginner() && !previousBadgeRes.getPushUp().isBeginner()) {
-            gameBadgeRes.getPushUp().setBeginner(true);
-        }
-        if(currentBadgeRes.getPushUp().isIntermediate() && !previousBadgeRes.getPushUp().isIntermediate()) {
-            gameBadgeRes.getPushUp().setIntermediate(true);
-        }
-        if(currentBadgeRes.getPushUp().isAdvanced() && !previousBadgeRes.getPushUp().isAdvanced()) {
-            gameBadgeRes.getPushUp().setAdvanced(true);
-        }
-
-        if(currentBadgeRes.isHomedongKing() && !previousBadgeRes.isHomedongKing()) {
-            gameBadgeRes.setHomedongKing(true);
+        for (int gameIdx = 0; gameIdx < gameTypeCount; gameIdx++) {
+            if(currentBadgeRes.getBadges().get(gameIdx).isBeginner() && !previousBadgeRes.getBadges().get(gameIdx).isBeginner()) {
+                gameBadgeRes.getBadges().get(gameIdx).setBeginner(true);
+            }
+            if(currentBadgeRes.getBadges().get(gameIdx).isIntermediate() && !previousBadgeRes.getBadges().get(gameIdx).isIntermediate()) {
+                gameBadgeRes.getBadges().get(gameIdx).setIntermediate(true);
+            }
+            if(currentBadgeRes.getBadges().get(gameIdx).isAdvanced() && !previousBadgeRes.getBadges().get(gameIdx).isAdvanced()) {
+                gameBadgeRes.getBadges().get(gameIdx).setAdvanced(true);
+            }
         }
 
         return gameBadgeRes;

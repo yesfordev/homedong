@@ -57,8 +57,8 @@ public class CalendarController {
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<ContinuousDayCountRes> getContinousDayCount() {
-        return ResponseEntity.ok(calenderService.getContinousDayCount());
+    public ResponseEntity<ContinuousDayCountRes> getContinuousDayCount() {
+        return ResponseEntity.ok(calenderService.getContinuousDayCount());
     }
 
 }

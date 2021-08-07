@@ -24,8 +24,8 @@ public class Room {
     @Column(name = "room_id", length = 50)
     private String roomId;
 
-    @Column(name = "game_type", length = 10)
-    private String gameType;
+    @Column(name = "game_type")
+    private Integer gameType;
 
     @Column(name = "is_public")
     private boolean isPublic;

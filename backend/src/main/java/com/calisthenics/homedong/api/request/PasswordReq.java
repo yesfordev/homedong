@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -17,7 +18,7 @@ import javax.validation.constraints.Size;
 public class PasswordReq {
 
     @ApiModelProperty(name = "현재 유저 password", example = "yesyes")
-    @NotNull
+    @NotEmpty(message = "password may not be empty")
     @Size(min = 3, max = 100)
     private String password;
 

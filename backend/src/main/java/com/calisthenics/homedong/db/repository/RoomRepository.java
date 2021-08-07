@@ -30,7 +30,7 @@ public interface RoomRepository extends JpaRepository<Room, String> {
     Optional<Room> findByRoomIdAndAndPasswordAndStatus(String roomId, String password, String Status);
 
     @Query(value="SELECT r.roomId FROM Room r WHERE r.gameType = ?1 and r.isPublic = ?2 and r.status = ?3")
-    List<String> findQuickRoomIds(String gameType, boolean isPublic, String status);
+    List<String> findQuickRoomIds(Integer gameType, boolean isPublic, String status);
 
     @Query("select new com.calisthenics.homedong.api.response.DailyCalendarRes(function('date_format', g.createdAt, '%Y-%m-%d') as date) " +
             "from Game g join g.entries e " +

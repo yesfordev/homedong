@@ -22,8 +22,8 @@ public class RoomRes {
     @ApiModelProperty(name = "방 번호", example = "KUXY0XR9B5")
     private String roomId;
 
-    @ApiModelProperty(name = "게임 타입", example = "squat")
-    private String gameType;
+    @ApiModelProperty(name = "게임 타입", example = "1")
+    private Integer gameType;
 
     @ApiModelProperty(name = "닉네임", example = "ysys")
     private String nickname;

@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -18,12 +17,12 @@ import javax.validation.constraints.Size;
 @ApiModel("MakeRoomRequest")
 public class MakeRoomReq {
 
-    @ApiModelProperty(name = "게임 타입", example="squat")
-    @NotNull
-    @Size(max = 10)
-    private String gameType;
+    @ApiModelProperty(name = "게임 타입", example="1")
+    @NotNull(message = "gameType may not be empty")
+    private Integer gameType;
 
     @ApiModelProperty(name = "비밀번호", example="password")
+    @NotNull(message = "password may not be null")
     @Size(max = 50)
     private String password;
 }

@@ -12,13 +12,16 @@ import lombok.*;
 @AllArgsConstructor
 public class BadgeDetail {
 
+    private Integer gameType;
+
     private boolean beginner;
 
     private boolean intermediate;
 
     private boolean advanced;
 
-    public BadgeDetail() {
+    public BadgeDetail(Integer gameType) {
+        this.gameType = gameType;
         this.beginner = false;
         this.intermediate = false;
         this.advanced = false;

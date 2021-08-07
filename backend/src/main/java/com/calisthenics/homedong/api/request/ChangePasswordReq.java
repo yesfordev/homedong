@@ -16,8 +16,8 @@ import javax.validation.constraints.Size;
 public class ChangePasswordReq {
 
     @ApiModelProperty(name = "변경할 유저 password", example = "yesyes")
-    @NotNull
-    @Size(min = 3, max = 100)
+    @NotNull(message = "changePassword may not be empty")
+    @Size(min = 3, max = 20)
     private String changePassword;
 
 }

@@ -61,7 +61,7 @@ public class RoomController {
     }
     
     @PostMapping("/")
-    @ApiOperation(value = "방을 만들 때 사용", notes = "<strong>방 만들기</strong>을 통해 세션과 토큰을 생성 후 토큰, 방이름, 게임종류, 닉네임 반환")
+    @ApiOperation(value = "방을 만들 때 사용", notes = "<strong>방 만들기</strong>을 통해 세션과 토큰을 생성 후 토큰, 방이름, 게임종류, 닉네임 반환 => password 없을시, 빈문자열 넣기")
     @ApiResponses({
             @ApiResponse(code = 200, message = "방 만들기 성공"),
             @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
@@ -98,7 +98,7 @@ public class RoomController {
     }
 
     @PostMapping("/search")
-    @ApiOperation(value = "방을 검색할 때 사용", notes = "<strong>방 검색</strong>을 통해 검색하는 방이 존재한다면 토큰, 방이름, 게임종류, 닉네임을 반환")
+    @ApiOperation(value = "방을 검색할 때 사용", notes = "<strong>방 검색</strong>을 통해 검색하는 방이 존재한다면 토큰, 방이름, 게임종류, 닉네임을 반환 => password 없을시, 빈문자열 넣기")
     @ApiResponses({
             @ApiResponse(code = 200, message = "방 검색 성공"),
             @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
@@ -110,7 +110,7 @@ public class RoomController {
         // 검색할 방이 존재하는지 확인
         Room room = roomService.findRoom(findRoomReq);
         String roomId = room.getRoomId();
-        String gameType = room.getGameType();
+        Integer gameType = room.getGameType();
 
         // 세션 연결을 하기 위해 전달해야 될 정보 설정(사용자 정보 닉네임 넘겨줄 건지?)
         ConnectionProperties connectionProperties = new ConnectionProperties.Builder().

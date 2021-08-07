@@ -12,6 +12,7 @@ import com.calisthenics.homedong.db.repository.UserRepository;
 import com.calisthenics.homedong.error.exception.custom.UserNotFoundException;
 import com.calisthenics.homedong.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public class CalenderService {
     private final GameRepository gameRepository;
     private final EntryRepositry entryRepositry;
     private final UserRepository userRepository;
+
+    @Value("${custom.gameTypeCount}")
+    private int gameTypeCount;
 
     @Autowired
     public CalenderService(RoomRepository roomRepository, GameRepository gameRepository,
@@ -45,19 +49,17 @@ public class CalenderService {
         List<DailyCalendarRes> dailyCalendarResList = roomRepository.getDailyDateByUserId(user.getUserId(), year, month);
         List<DailyRecord> dailyRecordList = roomRepository.getDailyRecord(user.getUserId(), year, month);
 
+        for(DailyCalendarRes dailyCalendarRes : dailyCalendarResList) {
+            dailyCalendarRes.makeDailyRecord(gameTypeCount);
+        }
         int dailyRecordIdx = 0;
         for(DailyCalendarRes dailyCalendarRes : dailyCalendarResList) {
             while(dailyRecordIdx < dailyRecordList.size()) {
                 DailyRecord curDailyRecord = dailyRecordList.get(dailyRecordIdx);
 
                 if(dailyCalendarRes.getDate().equals(curDailyRecord.getDate())) {
-                    if(curDailyRecord.getGameType().equals("squat")) {
-                        dailyCalendarRes.getDailyRecord().setSquat(curDailyRecord.getRecord());
-                    } else if(curDailyRecord.getGameType().equals("sitUp")) {
-                        dailyCalendarRes.getDailyRecord().setSitUp(curDailyRecord.getRecord());
-                    } else if(curDailyRecord.getGameType().equals("pushUp")) {
-                        dailyCalendarRes.getDailyRecord().setPushUp(curDailyRecord.getRecord());
-                    }
+                    int gameType = curDailyRecord.getGameType();
+                    dailyCalendarRes.getDailyRecord().get(gameType-1).setRecord(curDailyRecord.getRecord());
                     ++dailyRecordIdx;
                 } else {
                     break;
@@ -68,7 +70,7 @@ public class CalenderService {
         return dailyCalendarResList;
     }
 
-    public ContinuousDayCountRes getContinousDayCount() {
+    public ContinuousDayCountRes getContinuousDayCount() {
         User user = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
 
         if(user == null) {
