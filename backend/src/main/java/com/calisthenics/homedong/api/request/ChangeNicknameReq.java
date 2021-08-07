@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 public class ChangeNicknameReq {
 
     @ApiModelProperty(name = "변경할 유저 nickname", example = "홈동짱")
-    @NotNull
+    @NotNull(message = "changePassword may not be empty")
     @Size(min = 2, max = 10)
     private String changeNickname;
 }
