@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 @ApiModel("QuickRoomRequest")
 public class QuickRoomReq {
 
-    @ApiModelProperty(name = "게임 타입", example="squat")
+    @ApiModelProperty(name = "게임 타입", example="1")
     @NotNull(message = "gameType may not be empty")
     private Integer gameType;
 }
