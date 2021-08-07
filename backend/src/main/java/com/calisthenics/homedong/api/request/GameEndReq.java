@@ -16,16 +16,12 @@ import javax.validation.constraints.Size;
 @ApiModel("GameEndRequest")
 public class GameEndReq {
 
-//    @ApiModelProperty(name = "진행된 방 id", example = "3")
-//    @NotNull
-//    private String roomId;
-
     @ApiModelProperty(name = "진행된 게임 id", example = "7")
     @NotNull
-    private int gameId;
+    private Integer gameId;
 
     @ApiModelProperty(name = "게임에서 달성한 기록", example = "40")
     @NotNull
-    private int count;
+    private Integer count;
 
 }

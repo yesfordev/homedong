@@ -20,7 +20,7 @@ public class BadgeDetail {
 
     private boolean advanced;
 
-    public BadgeDetail(int gameType) {
+    public BadgeDetail(Integer gameType) {
         this.gameType = gameType;
         this.beginner = false;
         this.intermediate = false;

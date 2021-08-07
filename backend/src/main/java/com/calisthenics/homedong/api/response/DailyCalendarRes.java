@@ -26,7 +26,7 @@ public class DailyCalendarRes {
         this.date = date;
     }
 
-    public void makeDailyRecord(int gameTypeCount) {
+    public void makeDailyRecord(Integer gameTypeCount) {
         for(int idx = 0; idx < gameTypeCount; idx++) {
             dailyRecord.add(new DailyCalendarDetail(idx+1));
         }
