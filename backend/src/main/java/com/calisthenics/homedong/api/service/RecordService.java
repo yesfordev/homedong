@@ -6,8 +6,10 @@ import com.calisthenics.homedong.db.entity.User;
 import com.calisthenics.homedong.db.repository.RoomRepository;
 import com.calisthenics.homedong.db.repository.UserRepository;
 import com.calisthenics.homedong.error.exception.custom.UserNotFoundException;
+import com.calisthenics.homedong.util.BadgeUtil;
 import com.calisthenics.homedong.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -20,10 +22,21 @@ public class RecordService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
 
+    @Value("${custom.gameTypeCount}")
+    private int gameTypeCount;
+
+    private Map<Integer, String> gameMap = new HashMap<>();
+    private BadgeUtil badgeUtil;
+    private int getAdvancedBadge;
+
     @Autowired
     public RecordService(RoomRepository roomRepository, UserRepository userRepository) {
         this.roomRepository = roomRepository;
         this.userRepository = userRepository;
+
+        gameMap.put(1, "SQUAT");
+        gameMap.put(2, "PUSHUP");
+        gameMap.put(3, "BURPEE");
     }
 
     public List<BestRecordRes> getBestRecord() {
@@ -35,18 +48,18 @@ public class RecordService {
 
         List<BestRecordRes> bestRecordResList = roomRepository.getBestRecordByUserId(user.getUserId());
 
-        Map<String, Integer> recordTemp = new HashMap<>();
+        Set<Integer> gameTypeTemp = new HashSet<>();
 
-        recordTemp.put("squat", -1);
-        recordTemp.put("sitUp", -1);
-        recordTemp.put("pushUp", -1);
-
-        for(BestRecordRes bestRecordRes : bestRecordResList) {
-            recordTemp.remove(bestRecordRes.getGameType());
+        for (int idx = 1; idx <= gameTypeCount; idx++) {
+            gameTypeTemp.add(idx);
         }
 
-        for(String key : recordTemp.keySet()) {
-            bestRecordResList.add(new BestRecordRes(key, recordTemp.get(key)));
+        for(BestRecordRes bestRecordRes : bestRecordResList) {
+            gameTypeTemp.remove(bestRecordRes.getGameType());
+        }
+
+        for(Integer key : gameTypeTemp) {
+            bestRecordResList.add(new BestRecordRes(key, -1));
         }
 
         return bestRecordResList;
@@ -54,50 +67,37 @@ public class RecordService {
 
     public BadgeRes getBadgeRecord() {
         List<BestRecordRes> bestRecordResList = getBestRecord();
-        BadgeRes badgeRes = new BadgeRes();
+        BadgeRes badgeRes = new BadgeRes(gameTypeCount);
 
-        int getAdvancedBadge = 0;
+        getAdvancedBadge = 0;
+
         for(BestRecordRes bestRecordRes : bestRecordResList) {
-            if(bestRecordRes.getGameType().equals("squat")) {
-                if(bestRecordRes.getBestRecord() >= 100) {
-                    badgeRes.getSquat().setBeginner(true);
-                }
-                if(bestRecordRes.getBestRecord() >= 200) {
-                    badgeRes.getSquat().setIntermediate(true);
-                }
-                if(bestRecordRes.getBestRecord() >= 500) {
-                    badgeRes.getSquat().setAdvanced(true);
-                    ++getAdvancedBadge;
-                }
-            } else if(bestRecordRes.getGameType().equals("sitUp")) {
-                if(bestRecordRes.getBestRecord() >= 60) {
-                    badgeRes.getSitUp().setBeginner(true);
-                }
-                if(bestRecordRes.getBestRecord() >= 80) {
-                    badgeRes.getSitUp().setIntermediate(true);
-                }
-                if(bestRecordRes.getBestRecord() >= 120) {
-                    badgeRes.getSitUp().setAdvanced(true);
-                    ++getAdvancedBadge;
-                }
-            } else if(bestRecordRes.getGameType().equals("pushUp")) {
-                if(bestRecordRes.getBestRecord() >= 60) {
-                    badgeRes.getPushUp().setBeginner(true);
-                }
-                if(bestRecordRes.getBestRecord() >= 80) {
-                    badgeRes.getPushUp().setIntermediate(true);
-                }
-                if(bestRecordRes.getBestRecord() >= 120) {
-                    badgeRes.getPushUp().setAdvanced(true);
-                    ++getAdvancedBadge;
-                }
-            }
+            updateBadgeRes(bestRecordRes, badgeRes);
+        }
 
-            if(getAdvancedBadge == 3) {
-                badgeRes.setHomedongKing(true);
-            }
+        if(getAdvancedBadge == 3) {
+            badgeRes.setHomedongKing(true);
         }
 
         return badgeRes;
     }
+
+
+    private void updateBadgeRes(BestRecordRes bestRecordRes, BadgeRes badgeRes) {
+        int gameType = bestRecordRes.getGameType();
+
+        BadgeUtil game = badgeUtil.valueOf(gameMap.get(gameType));
+
+        if(bestRecordRes.getBestRecord() >= game.getBeginner()) {
+            badgeRes.getBadges().get(gameType - 1).setBeginner(true);
+        }
+        if(bestRecordRes.getBestRecord() >= game.getIntermediate()) {
+            badgeRes.getBadges().get(gameType - 1).setIntermediate(true);
+        }
+        if(bestRecordRes.getBestRecord() >= game.getAdvanced()) {
+            badgeRes.getBadges().get(gameType - 1).setAdvanced(true);
+            ++getAdvancedBadge;
+        }
+    }
+
 }

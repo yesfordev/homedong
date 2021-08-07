@@ -15,8 +15,8 @@ import lombok.*;
 @ApiModel("BestRecordResponse")
 public class BestRecordRes {
 
-    @ApiModelProperty(name = "게임 종목(squat, sitUp, pushUp)", example = "squat")
-    private String gameType;
+    @ApiModelProperty(name = "게임 종목(1: squat, 2: pushup, 3: burpee)", example = "1")
+    private Integer gameType;
 
     @ApiModelProperty(name = "최고 기록", example = "300")
     private Integer bestRecord;

@@ -14,16 +14,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DailyCalendarDetail {
 
-    private Integer squat;
+    private Integer gameType;
 
-    private Integer sitUp;
+    private Integer record;
 
-    private Integer pushUp;
-
-    public DailyCalendarDetail() {
-        this.squat = -1;
-        this.sitUp = -1;
-        this.pushUp = -1;
+    public DailyCalendarDetail(Integer gameType) {
+        this.gameType = gameType;
+        this.record = -1;
     }
 
 }

@@ -16,7 +16,8 @@ public class DailyRecord {
 
     private String date;
 
-    private String gameType;
+    private Integer gameType;
 
     private Integer record;
+
 }
