@@ -68,7 +68,7 @@ public class CalenderService {
         return dailyCalendarResList;
     }
 
-    public ContinuousDayCountRes getContinousDayCount() {
+    public ContinuousDayCountRes getContinuousDayCount() {
         User user = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
 
         if(user == null) {
