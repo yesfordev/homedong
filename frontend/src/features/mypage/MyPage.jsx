@@ -86,6 +86,9 @@ const Badge = styled.img`
   border-radius: 50%;
 `;
 
+// 메세지
+const Message = styled.p``;
+
 // 1일 1동
 // const Calender = styled.section``;
 
@@ -94,7 +97,10 @@ const Footer = styled.footer``;
 
 export default function MyPage() {
   const { nickname, email } = useSelector((state) => state.auth.user);
-  const { badgesOwned } = useSelector((state) => state.mypage);
+  const { badgesOwned, consecutiveRecordInfo } = useSelector(
+    (state) => state.mypage
+  );
+  const { duration, workToday } = consecutiveRecordInfo;
   const dispatch = useDispatch();
   const history = useHistory();
   const badgeLen = badgesOwned.length;
@@ -164,6 +170,13 @@ export default function MyPage() {
               );
             })}
           </Badges>
+          {workToday ? (
+            <Message>
+              현재, {duration}일동안 운동하셨어요!! 오늘도 하셨네요😀
+            </Message>
+          ) : (
+            <Message>{duration}일동안 운동하셨는데..오늘도 하셔야죠!😥</Message>
+          )}
           <Calender />
           <Footer>
             <Button variant="contained" size="small">

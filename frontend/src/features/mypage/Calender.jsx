@@ -24,18 +24,17 @@ const content = ({ date, view }) => {
 function Calender() {
   const [value] = useState(new Date());
   const dispatch = useDispatch();
-  useEffect(() => {
-    console.log(value.getMonth(), value.getFullYear(), '날짜');
-    dispatch(loadDailyRecord(value.getMonth() + 1, value.getFullYear()));
-    dispatch(loadConsecutiveRecord());
-  }, []);
 
   function loadRecord(currentDate) {
-    const month = currentDate.getMonth() + 1;
-    const year = currentDate.getFullYear();
+    const validDate = currentDate || value;
+    const month = validDate.getMonth() + 1;
+    const year = validDate.getFullYear();
     dispatch(loadDailyRecord({ month, year }));
-    dispatch(loadConsecutiveRecord());
   }
+  useEffect(() => {
+    loadRecord();
+    dispatch(loadConsecutiveRecord());
+  }, []);
   return (
     <div>
       <Main
