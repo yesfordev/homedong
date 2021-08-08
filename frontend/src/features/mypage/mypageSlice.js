@@ -25,13 +25,41 @@ export const loadBestRecord = createAsyncThunk(
   }
 );
 
+export const loadDailyRecord = createAsyncThunk(
+  'LOAD_DAILY_RECORD',
+  async ({ month, year }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get('api/calendar/daily', {
+        params: { month, year },
+      });
+      return response.data;
+    } catch (err) {
+      console.log(err);
+      return rejectWithValue;
+    }
+  }
+);
+
+export const loadConsecutiveRecord = createAsyncThunk(
+  'LOAD_CONSECUTIVE_RECORD',
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await axios.get('/api/calendar/day-count');
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
 const mypageSlice = createSlice({
   name: 'mypage',
   initialState: {
     badgeInfo: {},
     bestRecordInfo: {},
-    dailyInfo: {},
+    dailyRecordInfo: {},
     badgesOwned: [],
+    consecutiveRecordInfo: {},
   },
   reducers: {
     resetMyPageInfo: (state) => {
@@ -40,15 +68,24 @@ const mypageSlice = createSlice({
       state.dailyInfo = {};
     },
     loadBadgesOwned: (state) => {
+      const gameTypes = ['sitUp', 'pushUp', 'squat'];
+      let gameType = '';
       const { badgeInfo } = state;
       Object.entries(badgeInfo).forEach(([exercise, detailInfo]) => {
+        // 홈동킹
         if (detailInfo === false) {
           state.badgesOwned.push([exercise, 'best']);
         }
-        Object.entries(detailInfo).forEach(([level, value]) => {
-          if (value === false) {
-            state.badgesOwned.push([exercise, level]);
-          }
+        // 각 운동 뱃지 탐색
+        Array.from(detailInfo).forEach((detailObject) => {
+          Object.entries(detailObject).forEach(([key, value]) => {
+            if (key === 'gameType') {
+              gameType = gameTypes[value - 1];
+            }
+            if (value === false) {
+              state.badgesOwned.push([gameType, key]);
+            }
+          });
         });
       });
     },
@@ -60,6 +97,12 @@ const mypageSlice = createSlice({
     },
     [loadBestRecord.fulfilled]: (state, action) => {
       state.bestRecordInfo = action.payload;
+    },
+    [loadDailyRecord.fulfilled]: (state, action) => {
+      state.dailyRecordInfo = action.payload;
+    },
+    [loadConsecutiveRecord.fulfilled]: (state, action) => {
+      state.consecutiveRecordInfo = action.payload;
     },
   },
 });

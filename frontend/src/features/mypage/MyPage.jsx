@@ -98,8 +98,6 @@ export default function MyPage() {
   const dispatch = useDispatch();
   const history = useHistory();
   const badgeLen = badgesOwned.length;
-  console.log('mypage');
-  // console.log(badgesOwned);
 
   useEffect(() => {
     dispatch(loadBadge())
