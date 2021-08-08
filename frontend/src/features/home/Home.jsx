@@ -1,12 +1,13 @@
 import React from 'react';
 // import styles from 'styled-components';
-import Navbar from '../../common/navbar/Navbar';
+import Navbar from '../../common/navbar/navbar';
 
 function Home() {
   return (
-    <div>
+    <>
       <Navbar />
-    </div>
+      <h1>this is mainpage</h1>
+    </>
   );
 }
 
