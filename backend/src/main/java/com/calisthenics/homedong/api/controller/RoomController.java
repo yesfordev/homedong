@@ -7,6 +7,8 @@ import com.calisthenics.homedong.api.request.QuickRoomReq;
 import com.calisthenics.homedong.api.response.RoomRes;
 import com.calisthenics.homedong.api.service.RoomService;
 import com.calisthenics.homedong.db.entity.Room;
+import com.calisthenics.homedong.error.exception.InvalidValueException;
+import com.calisthenics.homedong.error.exception.custom.RoomStatusIsNotAvailableException;
 import com.calisthenics.homedong.error.exception.custom.RoomNotFoundException;
 import com.calisthenics.homedong.util.RandomNumberUtil;
 import io.openvidu.java.client.*;
@@ -24,7 +26,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -77,7 +78,6 @@ public class RoomController {
                 role(OpenViduRole.PUBLISHER).
                 build();
 
-        /************ 방 생성 로직 - 에러핸들링 수정 ************/
         // 오픈비두 세션 생성
         Session session = this.openVidu.createSession();
         // 세션에 연결 후 프론트에서 연결을 위한 토큰 반환
@@ -103,6 +103,8 @@ public class RoomController {
             @ApiResponse(code = 200, message = "방 검색 성공"),
             @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
             @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 404, message = "방 정보가 없습니다.", response = ErrorResponse.class),
+            @ApiResponse(code = 409, message = "방 인원초과.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
     @PreAuthorize("hasAnyRole('USER')")
@@ -119,9 +121,13 @@ public class RoomController {
                 role(OpenViduRole.PUBLISHER).
                 build();
 
-        // 검색하는 방이 존재하지 않거나 인원초과일 경우
-        if (this.mapSessions.get(roomId) == null || this.mapSessionNamesTokens.get(roomId).size() > LIMIT) {
+        // 검색하는 방이 존재하지 않을 경우
+        if (this.mapSessions.get(roomId) == null) {
             throw new RoomNotFoundException(roomId);
+        }
+        // 인원초과일 경우
+        if (this.mapSessionNamesTokens.get(roomId).size() > LIMIT) {
+            throw new RoomStatusIsNotAvailableException(room.getStatus());
         }
 
         // 세션에 연결 후 프론트에서 연결을 위한 토큰 반환
@@ -143,7 +149,7 @@ public class RoomController {
     })
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<RoomRes> quickRoom(@RequestBody QuickRoomReq quickRoomReq) throws OpenViduJavaClientException, OpenViduHttpException {
-        // 세션 연결을 하기 위해 전달해야 될 정보 설정(사용자 정보 닉네임 넘겨줄 건지?)
+        // 세션 연결을 하기 위해 전달해야 될 정보 설정(사용자 정보 어떤 거 넘겨줄 건지?)
         ConnectionProperties connectionProperties = new ConnectionProperties.Builder().
                 type(ConnectionType.WEBRTC).
                 data("nickname").
@@ -194,24 +200,22 @@ public class RoomController {
             @ApiResponse(code = 200, message = "방 나가기 성공"),
             @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
             @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 404, message = "방 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity leaveRoom(@RequestBody LeaveRoomReq leaveRoomReq) throws OpenViduJavaClientException, OpenViduHttpException {
-        /************ 방 생성 로직 - 에러핸들링 수정 ************/
         String token = leaveRoomReq.getToken();
         String roomId = leaveRoomReq.getRoomId();
 
-        // 방이 없거나 참가자가 없다면 err
+        // 나가려는 방이 없다면
         if (this.mapSessions.get(roomId) == null || this.mapSessionNamesTokens.get(roomId) == null) {
-            System.out.println("Problems in the app server: the SESSION does not exist");
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new RoomNotFoundException(roomId);
         }
 
-        // 토큰이 유효하지 않다면 err
+        // 토큰이 유효하지 않다면
         if (this.mapSessionNamesTokens.get(roomId).remove(token) == null) {
-            System.out.println("Problems in the app server: the TOKEN wasn't valid");
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new InvalidValueException(token);
         }
 
         // 마지막 참가자가 나갔다면

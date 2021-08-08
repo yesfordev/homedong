@@ -22,8 +22,17 @@ public enum ErrorCode {
     EMAIL_DUPLICATION(409, "U001", "Email is Duplication"),
     AUTH_EMAIL_SEND_FAIL(500, "U002", "Auth Email Send Fail"),
     NICKNAME_DUPLICATION(409, "U003", "Nickname is Duplication"),
-    CURRENT_PASSWORD_NOT_MATCH_EXCEPTION(400, "U004", "Current password not match exception")
+    CURRENT_PASSWORD_NOT_MATCH_EXCEPTION(400, "U004", "Current password not match exception"),
+
+
+    // Room
+    ROOM_IS_NOT_AVAILABLE(409, "R001", "Room Status is Not Available"),
+    ROOM_IS_FULL(409, "R001", "Room is Full"),
+    ROOM_IS_ON_GAME(409, "R002", "Room is on Game"),
+    ROOM_IS_OFFLINE(409, "R003", "Room is OFF"),
+    ROOM_PASSWORD_NOT_MATCH(400, "R004", "Room password is Not Match")
     ;
+
 
     private final String code;
     private final String message;
