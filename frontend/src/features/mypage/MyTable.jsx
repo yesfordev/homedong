@@ -28,18 +28,19 @@ function createData(name, squat, pushUp, burpee) {
 export default function MyTable() {
   const classes = useStyles();
   const { bestRecordInfo } = useSelector((state) => state.mypage);
+  console.log(bestRecordInfo);
   // const gameTypes = ['squat', 'pushup', 'burpee'];
-  const myBestRecord = ['내 최고 기록'];
-  const myRank = ['랭킹'];
-  let gameType;
-  Array.from(bestRecordInfo).forEach((record) => {
-    Object.entries(record).map(([key, value]) => {
-      if (key === 'gameType') {
-        gameType = value;
-      }
-      return console.log(gameTypes[value - 1], key, '11');
-    });
-  });
+  // const myBestRecord = ['내 최고 기록'];
+  // const myRank = ['랭킹'];
+  // let gameType;
+  // Array.from(bestRecordInfo).forEach((record) => {
+  //   Object.entries(record).map(([key, value]) => {
+  //     if (key === 'gameType') {
+  //       gameType = value;
+  //     }
+  //     return console.log(gameTypes[value - 1], key, '11');
+  //   });
+  // });
 
   const rows = [
     createData('내 최고 기록', -1, 6.0, 24),

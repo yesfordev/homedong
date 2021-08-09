@@ -16,7 +16,7 @@ import defaultImage from '../../assets/default.png';
 import badgeImages from '../../assets/badgeImages';
 
 // component
-import Navbar from '../../common/navbar/navbar';
+import Navbar from '../../common/navbar/Navbar';
 import MyTable from './MyTable';
 import Calender from './Calender';
 
