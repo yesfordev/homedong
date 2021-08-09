@@ -2,7 +2,7 @@ import React from 'react';
 import styles from 'styled-components';
 import { Container } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import Navbar from '../../common/navbar';
+import Navbar from '../../common/navbar/Navbar';
 import Kind from './Kind';
 import pushup from '../../assets/pushup.svg';
 import situp from '../../assets/situp.svg';
