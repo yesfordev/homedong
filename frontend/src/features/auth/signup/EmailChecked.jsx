@@ -23,7 +23,7 @@ const Title = styled.p`
   white-space: pre-wrap;
 `;
 
-function EmailChecked() {
+export default function EmailChecked() {
   return (
     <Wrapper>
       <Logo />
@@ -37,5 +37,3 @@ function EmailChecked() {
     </Wrapper>
   );
 }
-
-export default EmailChecked;

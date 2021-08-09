@@ -1,6 +1,6 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 
 // style
 import { Container, Button } from '@material-ui/core';
@@ -9,14 +9,22 @@ import EditIcon from '@material-ui/icons/Edit';
 import styled from 'styled-components';
 
 // image
-import Badge1 from '../../assets/badge1.png';
-import Badge2 from '../../assets/badge2.png';
 import defaultImage from '../../assets/default.png';
+// import Beginner from '../../assets/beginner.svg';
+// import Intermediate from '../../assets/intermediate.svg';
+// import Advanced from '../../assets/advanced.svg';
+import badgeImages from '../../assets/badgeImages';
 
 // component
 import Navbar from '../../common/navbar/navbar';
 import MyTable from './MyTable';
 import Calender from './Calender';
+
+// action
+import { deleteToken } from '../../common/api/JWT-common';
+import { deleteUser } from '../auth/authSlice';
+import { loadBadge, loadBestRecord, loadBadgesOwned } from './mypageSlice';
+// import { getMonth } from '../../common/api/getTime';
 
 // 전체 컨테이너
 const Wrapper = styled(Container)`
@@ -78,6 +86,9 @@ const Badge = styled.img`
   border-radius: 50%;
 `;
 
+// 메세지
+const Message = styled.p``;
+
 // 1일 1동
 // const Calender = styled.section``;
 
@@ -86,7 +97,35 @@ const Footer = styled.footer``;
 
 export default function MyPage() {
   const { nickname, email } = useSelector((state) => state.auth.user);
-  const badgeLen = 5;
+  const { badgesOwned, consecutiveRecordInfo } = useSelector(
+    (state) => state.mypage
+  );
+  const { duration, workToday } = consecutiveRecordInfo;
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const badgeLen = badgesOwned.length;
+
+  useEffect(() => {
+    dispatch(loadBadge())
+      .unwrap()
+      .then(() => {
+        dispatch(loadBadgesOwned());
+      });
+    dispatch(loadBestRecord());
+  }, []);
+
+  const doDeleteUser = () => {
+    dispatch(deleteUser())
+      .unwrap()
+      .then(() => {
+        deleteToken();
+        history.push('/login');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <Navbar />
@@ -120,12 +159,24 @@ export default function MyPage() {
             <MyTable />
           </Record>
           <Badges>
-            <Badge badgeLen={badgeLen} src={Badge1} alt="image" />
-            <Badge badgeLen={badgeLen} src={Badge2} alt="image" />
-            <Badge badgeLen={badgeLen} src={Badge1} alt="image" />
-            <Badge badgeLen={badgeLen} src={Badge1} alt="image" />
-            <Badge badgeLen={badgeLen} src={Badge1} alt="image" />
+            {badgesOwned.map((badgeOwned) => {
+              const [kind, level] = badgeOwned;
+              return (
+                <Badge
+                  badgeLen={badgeLen}
+                  key={badgeOwned}
+                  src={badgeImages[kind][level]}
+                />
+              );
+            })}
           </Badges>
+          {workToday ? (
+            <Message>
+              현재, {duration}일동안 운동하셨어요!! 오늘도 하셨네요😀
+            </Message>
+          ) : (
+            <Message>{duration}일동안 운동하셨는데..오늘도 하셔야죠!😥</Message>
+          )}
           <Calender />
           <Footer>
             <Button variant="contained" size="small">
@@ -139,6 +190,7 @@ export default function MyPage() {
               color="secondary"
               size="small"
               startIcon={<DeleteIcon />}
+              onClick={doDeleteUser}
             >
               회원탈퇴
             </Button>

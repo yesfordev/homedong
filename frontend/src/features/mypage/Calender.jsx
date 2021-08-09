@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar as Main } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import { useDispatch } from 'react-redux';
 import Badge1 from '../../assets/badge1.png';
+import { loadDailyRecord, loadConsecutiveRecord } from './mypageSlice';
 
 const content = ({ date, view }) => {
   // test dates
@@ -19,19 +21,29 @@ const content = ({ date, view }) => {
   });
 };
 
-const onClick = () => {
-  console.log('클릭한 날짜는');
-};
-
 function Calender() {
-  const [value, onChange] = useState(new Date());
+  const [value] = useState(new Date());
+  const dispatch = useDispatch();
+
+  function loadRecord(currentDate) {
+    const validDate = currentDate || value;
+    const month = validDate.getMonth() + 1;
+    const year = validDate.getFullYear();
+    dispatch(loadDailyRecord({ month, year }));
+  }
+  useEffect(() => {
+    loadRecord();
+    dispatch(loadConsecutiveRecord());
+  }, []);
   return (
     <div>
       <Main
-        onChange={onChange}
+        onChange={() => console.log(value)}
+        onActiveStartDateChange={({ activeStartDate }) =>
+          loadRecord(activeStartDate)
+        }
         value={value}
         tileContent={content}
-        onClick={onClick()}
       />
     </div>
   );

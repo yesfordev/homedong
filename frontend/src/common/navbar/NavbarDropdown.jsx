@@ -1,16 +1,20 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Avatar } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom';
 import { deleteToken } from '../api/JWT-common';
+import { resetUser } from '../../features/auth/authSlice';
+import { resetMyPageInfo } from '../../features/mypage/mypageSlice';
 
 import defaultImage from '../../assets/default.png';
 
 export default function SimpleMenu() {
-  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -22,6 +26,8 @@ export default function SimpleMenu() {
 
   const handleLogout = () => {
     deleteToken();
+    dispatch(resetUser());
+    dispatch(resetMyPageInfo());
     history.push('/login');
   };
 

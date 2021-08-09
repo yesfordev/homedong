@@ -1,15 +1,16 @@
-import axios from 'axios';
+import baseAxios from 'axios';
 import { getToken } from './JWT-common';
 
-const token = getToken();
-if (token) {
-  console.log('token', token);
-  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-}
-
-export default axios.create({
+const axios = baseAxios.create({
   baseURL: '/',
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
+axios.interceptors.request.use((config) => {
+  config.headers.Authorization = `Bearer ${getToken()}`;
+  return config;
+});
+
+export default axios;

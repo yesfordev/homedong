@@ -34,10 +34,10 @@ const Links = styled.ul`
   }
 `;
 
-function Navbar() {
+export default function Navbar() {
   const [isMakeOpen, setIsMakeOpen] = useState(false);
-  const handleMakeModal = () => setIsMakeOpen(false);
   const [isFindOpen, setIsFindOpen] = useState(false);
+  const handleMakeModal = () => setIsMakeOpen(false);
   const handleFindModal = () => setIsFindOpen(false);
   return (
     <Wrapper>
@@ -66,5 +66,3 @@ function Navbar() {
     </Wrapper>
   );
 }
-
-export default Navbar;
