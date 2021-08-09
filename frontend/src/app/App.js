@@ -19,11 +19,8 @@ import Tutorial from '../features/tutorial/Tutorial';
 import Rank from '../features/rank/Rank';
 
 // routes
-import PrivateRoute from '../common/Routes/PrivateRoute';
-import PublicRoute from '../common/Routes/PublicRoute';
-
-// action
-// import { loadUser } from './features/auth/authSlice';
+import PrivateRoute from '../common/routes/PrivateRoute';
+import PublicRoute from '../common/routes/PublicRoute';
 
 const Wrapper = styled.div`
   background-color: rgba(246, 245, 253, 1);
