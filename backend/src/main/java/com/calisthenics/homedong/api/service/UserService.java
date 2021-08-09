@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
+import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +42,7 @@ public class UserService {
     }
 
     @Transactional
-    public User signup(final SignUpReq signUpReq) {
+    public User signup(final SignUpReq signUpReq) throws MessagingException, UnknownHostException {
         if (userRepository.findOneWithRolesByEmail(signUpReq.getEmail()).orElse(null) != null) {
             throw new EmailDuplicateException(signUpReq);
         }
@@ -50,7 +52,7 @@ public class UserService {
                 .roleName("ROLE_USER")
                 .build();
 
-        String authKey = mailService.sendAuthMail(signUpReq.getEmail());
+        String authKey = mailService.sendAuthMail(signUpReq.getEmail(), signUpReq.getNickname());
 
         User user = User.builder()
                 .email(signUpReq.getEmail())
