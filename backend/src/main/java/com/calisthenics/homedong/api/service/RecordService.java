@@ -42,7 +42,7 @@ public class RecordService {
     public List<BestRecordRes> getBestRecord() {
         User user = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
 
-        if(user == null) {
+        if (user == null) {
             throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
         }
 
@@ -54,13 +54,20 @@ public class RecordService {
             gameTypeTemp.add(idx);
         }
 
-        for(BestRecordRes bestRecordRes : bestRecordResList) {
+        for (BestRecordRes bestRecordRes : bestRecordResList) {
             gameTypeTemp.remove(bestRecordRes.getGameType());
         }
 
-        for(Integer key : gameTypeTemp) {
+        for (Integer key : gameTypeTemp) {
             bestRecordResList.add(new BestRecordRes(key, -1));
         }
+
+        Collections.sort(bestRecordResList, new Comparator<BestRecordRes>() {
+            @Override
+            public int compare(BestRecordRes o1, BestRecordRes o2) {
+                return o1.getGameType() - o2.getGameType();
+            }
+        });
 
         return bestRecordResList;
     }
@@ -71,11 +78,11 @@ public class RecordService {
 
         getAdvancedBadge = 0;
 
-        for(BestRecordRes bestRecordRes : bestRecordResList) {
+        for (BestRecordRes bestRecordRes : bestRecordResList) {
             updateBadgeRes(bestRecordRes, badgeRes);
         }
 
-        if(getAdvancedBadge == 3) {
+        if (getAdvancedBadge == 3) {
             badgeRes.setHomedongKing(true);
         }
 
@@ -88,13 +95,13 @@ public class RecordService {
 
         BadgeUtil game = badgeUtil.valueOf(gameMap.get(gameType));
 
-        if(bestRecordRes.getBestRecord() >= game.getBeginner()) {
+        if (bestRecordRes.getBestRecord() >= game.getBeginner()) {
             badgeRes.getBadges().get(gameType - 1).setBeginner(true);
         }
-        if(bestRecordRes.getBestRecord() >= game.getIntermediate()) {
+        if (bestRecordRes.getBestRecord() >= game.getIntermediate()) {
             badgeRes.getBadges().get(gameType - 1).setIntermediate(true);
         }
-        if(bestRecordRes.getBestRecord() >= game.getAdvanced()) {
+        if (bestRecordRes.getBestRecord() >= game.getAdvanced()) {
             badgeRes.getBadges().get(gameType - 1).setAdvanced(true);
             ++getAdvancedBadge;
         }

@@ -77,8 +77,7 @@ public class RankingService {
      * cache 삭제
      */
     @CacheEvict(allEntries = true, value = "ranking", cacheManager = "rankCacheManager")
-//    @Scheduled(cron = "0 0 0 * * *")
-    @Scheduled(cron = "*/5 * * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void cacheEvict() {
         log.info("all cache remove");
     }
