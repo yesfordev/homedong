@@ -2,7 +2,11 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import isAuthenticated from '../api/isAuthenticated';
 
-function PublicRoute({ component: Component, restricted, ...rest }) {
+export default function PublicRoute({
+  component: Component,
+  restricted,
+  ...rest
+}) {
   return (
     <Route
       {...rest}
@@ -16,4 +20,3 @@ function PublicRoute({ component: Component, restricted, ...rest }) {
     />
   );
 }
-export default PublicRoute;

@@ -15,31 +15,18 @@ import CheckPassword from '../features/mypage/CheckPassword';
 import ModifyUserInfo from '../features/auth/modify/ModifyUserInfo';
 import Home from '../features/home/Home';
 import EmailChecked from '../features/auth/signup/EmailChecked';
+import Tutorial from '../features/tutorial/Tutorial';
+import Rank from '../features/rank/Rank';
 
 // routes
-import PrivateRoute from '../common/Routes/PrivateRoute';
-import PublicRoute from '../common/Routes/PublicRoute';
-
-// action
-// import { loadUser } from './features/auth/authSlice';
+import PrivateRoute from '../common/routes/PrivateRoute';
+import PublicRoute from '../common/routes/PublicRoute';
 
 const Wrapper = styled.div`
   background-color: rgba(246, 245, 253, 1);
 `;
 
-// function checkPageChanged() {
-//   const location = useLocation();
-//   const dispatch = useDispatch();
-//   // location이 변화할 때마다 jwt 상태 체크
-//   useEffect(() => {
-//     dispatch(loadUser());
-//   }, [location]);
-//   console.log('페이지변화하여 jwt체크');
-// }
-
 function App() {
-  // page가 변화는 지 체크해서 jwt 상태를 체크해주는 함수
-  // checkPageChanged();
   return (
     <StylesProvider injectFirst>
       <Wrapper>
@@ -50,8 +37,8 @@ function App() {
             <PublicRoute restricted path="/signup" component={SignUp} />
             <Route path="/emailchecked" component={EmailChecked} />
             <PrivateRoute exact path="/" component={Home} />
-            <PrivateRoute path="/tutorial" component={MyPage} />
-            <PrivateRoute path="/rank" component={MyPage} />
+            <PrivateRoute path="/tutorial" component={Tutorial} />
+            <PrivateRoute path="/rank" component={Rank} />
             <PrivateRoute path="/mypage" component={MyPage} />
             <PrivateRoute path="/checkpassword" component={CheckPassword} />
             <PrivateRoute path="/modifyuserinfo" component={ModifyUserInfo} />

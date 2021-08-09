@@ -9,6 +9,8 @@ import com.calisthenics.homedong.db.entity.User;
 import com.calisthenics.homedong.db.repository.RoomRepository;
 import com.calisthenics.homedong.db.repository.UserRepository;
 import com.calisthenics.homedong.error.exception.custom.RoomNotFoundException;
+import com.calisthenics.homedong.error.exception.custom.RoomPasswordNotMatchException;
+import com.calisthenics.homedong.error.exception.custom.RoomStatusIsNotAvailableException;
 import com.calisthenics.homedong.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,14 +61,21 @@ public class RoomService {
 
     @Transactional
     public Room findRoom(final FindRoomReq findRoomReq) {
-        Room room = roomRepository.findByRoomIdAndAndPasswordAndStatus(findRoomReq.getRoomId(), findRoomReq.getPassword(), "ON").orElse(null);
+        Room room = roomRepository.findByRoomId(findRoomReq.getRoomId());
 
-        // 케이스 나눠서 체크해줘야 할지 고민
         if (room == null) {
             throw new RoomNotFoundException(findRoomReq.getRoomId());
         }
-        
-        return room;
+
+        if (!room.getPassword().equals(findRoomReq.getPassword())) {
+            throw new RoomPasswordNotMatchException(room.getRoomId());
+        }
+
+        if (!room.getStatus().equals("ON")) {
+            throw new RoomStatusIsNotAvailableException(room.getStatus());
+        }
+
+        return roomRepository.findByRoomIdAndAndPasswordAndStatus(findRoomReq.getRoomId(), findRoomReq.getPassword(), "ON").orElse(null);
     }
 
     @Transactional

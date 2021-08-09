@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import styles from 'styled-components';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import MakeRoomModal from './MakeRoomModal';
 import FindRoomModal from './FindRoomModal';
 import DropDownMenu from './NavbarDropdown';
 
-const Wrapper = styles.div`
+const Wrapper = styled.div`
   height: 65px;
   display: flex;
   justify-content: space-between;
@@ -15,32 +15,33 @@ const Wrapper = styles.div`
   border-bottom: solid rgba(248, 208, 83, 1);
 `;
 
-const Logo = styles.div`
+const Logo = styled(Link)`
   width: 50px;
   height: 100%;
-  background-image: url(https://picsum.photos/50/65)
+  background-image: url(https://picsum.photos/50/65);
 `;
 
-const Links = styles.ul`
+const Links = styled.ul`
   display: flex;
   justify-content: center;
   align-items: center;
   & > * {
     margin-right: 25px;
     cursor: pointer;
-  } > button {
+  }
+  > button {
     font-size: 1rem;
   }
 `;
 
-function Navbar() {
+export default function Navbar() {
   const [isMakeOpen, setIsMakeOpen] = useState(false);
-  const handleMakeModal = () => setIsMakeOpen(false);
   const [isFindOpen, setIsFindOpen] = useState(false);
+  const handleMakeModal = () => setIsMakeOpen(false);
   const handleFindModal = () => setIsFindOpen(false);
   return (
     <Wrapper>
-      <Logo />
+      <Logo to="/" />
       <MakeRoomModal
         fullWidth
         isOpen={isMakeOpen}
@@ -65,5 +66,3 @@ function Navbar() {
     </Wrapper>
   );
 }
-
-export default Navbar;

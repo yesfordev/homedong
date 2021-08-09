@@ -26,7 +26,7 @@ const LoginContainer = styled.div`
 `;
 
 // component
-function Login() {
+export default function Login() {
   const history = useHistory();
   const dispatch = useDispatch();
   // state
@@ -93,5 +93,3 @@ function Login() {
     </Wrapper>
   );
 }
-
-export default Login;
