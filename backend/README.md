@@ -8,7 +8,7 @@
 
 ## build 없이 실행시키기
 
-![](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/d3f1fa5e-4937-4689-85ce-0341a0160e0e/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210723%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210723T065044Z&X-Amz-Expires=86400&X-Amz-Signature=b84564b2704f22fc3c477cb641b67a7e9930a647667f89c0560f0969db2e5b3b&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
+![image](/uploads/195eedfb85eae5f2b6441a2adcb6062a/image.png)
 
 오른쪽에 Gradle 탭을 누르고 Tasks → application 탭의 bootRun을 누른 후, frontend 및 backend 프로그램에 이상이 없으면, frontend 파일의 빌드가 먼저 이루어진 후 서버가 실행됩니다.
 
@@ -27,3 +27,14 @@ build/libs 경로로 이동하여 아래의 실행시키면 됩니다.
 ```bash
 java -jar homedong-1.0-SNAPSHOT.jar
 ```
+
+
+## Redis 실행시키기
+로컬 개발 환경에서 이 과정이 생략되면 Spring Boot 서버가 실행되지 않습니다.
+
+```bash
+docker run -p 6379:6379 --name redis_db -d redis
+
+docker exec -i -t redis_db redis-cli
+```
+위 두가지 명령어를 차례로 실행시키면, 도커로 redis를 실행시켜서 Spring Boot 서버가 정상 작동 됩니다.
