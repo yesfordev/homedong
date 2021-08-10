@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-
 import styled from 'styled-components';
 import { Container, Button } from '@material-ui/core';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { useDispatch } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { login } from '../authSlice';
 
 // style
@@ -33,6 +33,7 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   // function
+
   function handleSubmit(e) {
     e.preventDefault();
     const data = {
@@ -45,7 +46,19 @@ export default function Login() {
         history.push('/');
       })
       .catch((err) => {
-        alert(err.status);
+        if (err.status === 401 || err.status === 400) {
+          toast.error('😥 아이디와 비밀번호를 다시 한 번 확인 해주세요!', {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        } else if (err.status === 500) {
+          history.push('/error');
+        }
       });
   }
 
@@ -85,9 +98,9 @@ export default function Login() {
             }}
           />
           <Button type="submit">로그인</Button>
-          <Button>
-            <Link to="/signup">회원가입</Link>
-          </Button>
+          <Link to="/signup">
+            <Button>회원가입</Button>
+          </Link>
         </ValidatorForm>
       </LoginContainer>
     </Wrapper>

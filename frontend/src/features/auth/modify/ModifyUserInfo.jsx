@@ -2,6 +2,7 @@ import { useState, React, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
 import { Button } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core/styles';
@@ -42,7 +43,6 @@ const useStyles = makeStyles({
 
 // logic
 export default function ModifyUserInfo() {
-  console.log('usermodify');
   // local state
   const [newNickname, setNickname] = useState('');
   const [newPassword, setPassword] = useState('');
@@ -69,13 +69,17 @@ export default function ModifyUserInfo() {
     if (newNickname) {
       dispatch(checkNickname(newNickname))
         .unwrap()
-        .then((res) => {
-          console.log(res);
-          alert('사용가능한 닉네임입니다');
+        .then(() => {
+          toast.success('😀 사용가능한 닉네임입니다');
         })
         .catch((err) => {
-          console.log(err.status);
-          alert('중복된 닉네임입니다');
+          if (err.status === 400) {
+            toast.error('😀 입력한 정보를 다시 확인해주세요');
+          } else if (err.status === 409) {
+            toast.error('😀 이미 존재하는 닉네임입니다');
+          } else if (err.status === 500) {
+            history.push('/error');
+          }
         });
     } else {
       alert('입력해주세요');
@@ -94,17 +98,36 @@ export default function ModifyUserInfo() {
       ? dispatch(modifyNickname(data))
           .unwrap()
           .then(() => {
-            alert('닉네임 수정 완료');
+            toast.info('😀 닉네임 변경이 완료되었습니다');
           })
           .catch((err) => {
-            console.log(err);
+            if (err.status === 400) {
+              toast.error('😀 입력한 정보를 다시 확인해주세요');
+            } else if (err.status === 401) {
+              toast.error('😀 로그인이 필요합니다');
+            } else if (err.status === 409) {
+              toast.error('😀 이미 존재하는 닉네임입니다');
+            } else if (err.status === 500) {
+              history.push('/error');
+            } // 404에러 처리
           })
       : dispatch(modifyPassword(data))
           .unwrap()
-          .then(async () => {
+          .then(() => {
             deleteToken();
-            await history.push('/');
-            await alert('다시 로그인해주세요😮');
+            history.push('/');
+            toast.success(
+              '😀비밀번호 수정이 완료되었습니다. 다시 로그인해주세요'
+            );
+          })
+          .catch((err) => {
+            if (err.status === 400) {
+              toast.error('😀 입력한 정보를 다시 확인해주세요');
+            } else if (err.status === 401) {
+              toast.error('😀 다시 로그인해주세요');
+            } else if (err.status === 500) {
+              history.push('/error');
+            } // 404에러 처리 필요
           });
   }
 
