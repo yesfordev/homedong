@@ -10,12 +10,17 @@ import com.calisthenics.homedong.error.ErrorResponse;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.util.Map;
 
 /**
@@ -43,7 +48,7 @@ public class UserController {
             @ApiResponse(code = 409, message = "이메일 중복 에러(회원가입 불가)", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러 or 이메일 전송 에러", response = ErrorResponse.class)
     })
-    public ResponseEntity<User> signup(@Valid @RequestBody SignUpReq signUpReq) {
+    public ResponseEntity signup(@Valid @RequestBody SignUpReq signUpReq) throws UnknownHostException, MessagingException {
         userService.signup(signUpReq);
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -56,11 +61,15 @@ public class UserController {
             @ApiResponse(code = 404, message = "해당 이메일을 가진 유저가 없음", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
-    public ResponseEntity confirmEmail(@RequestParam Map<String, String> map) {
+    public ResponseEntity confirmEmail(@RequestParam Map<String, String> map) throws URISyntaxException {
         //email, authKey가 일치할 경우 authStatus 업데이트
         userService.updateAuthStatus(map);
 
-        return new ResponseEntity(HttpStatus.OK);
+        URI redirectUri = new URI("https://www.naver.com/");
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(redirectUri);
+
+        return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
     }
 
     @GetMapping("/user/me")
