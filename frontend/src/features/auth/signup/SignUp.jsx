@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core/styles';
+import { toast } from 'react-toastify';
 import { signup, checkNickname, setNicknameCheckedFalse } from '../authSlice';
 
 // style
@@ -61,8 +62,11 @@ export default function SignUp() {
   function isValidNickname() {
     dispatch(checkNickname(nickname))
       .unwrap()
-      .catch((err) => {
-        alert(err.data.message);
+      .then(() => {
+        toast.success(`😀 사용할 수 있는 닉네임입니다`);
+      })
+      .catch(() => {
+        toast.error(`😥 닉네임이 중복되었습니다`);
       });
   }
 
@@ -77,12 +81,17 @@ export default function SignUp() {
     dispatch(signup(data))
       .unwrap()
       .then(() => {
-        console.log('component');
+        toast.success('😀 회원가입에 성공했습니다');
         history.push('/login');
       })
       .catch((err) => {
-        alert(err.status, err.message);
-        console.log('unwrap', err.status);
+        if (err.status === 400) {
+          toast.error('😥 입력된 정보를 다시 확인해주세요');
+        } else if (err.status === 409) {
+          toast.error('😥 중복된 이메일이 존재합니다.');
+        } else if (err.status === 500) {
+          history.push('/error');
+        }
       });
   }
 
@@ -189,9 +198,9 @@ export default function SignUp() {
           <Button disabled={!isNicknameChecked || !email} type="submit">
             Submit
           </Button>
-          <Button>
-            <Link to="/login">로그인</Link>
-          </Button>
+          <Link to="/login">
+            <Button>로그인</Button>
+          </Link>
         </ValidatorForm>
       </LoginContainer>
     </Wrapper>

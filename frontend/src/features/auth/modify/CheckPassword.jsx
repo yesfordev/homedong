@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import { Container, Button } from '@material-ui/core';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
-import { checkPassword } from '../auth/authSlice';
+import { checkPassword } from '../authSlice';
 
 // style
 const Wrapper = styled(Container)`
@@ -43,12 +43,18 @@ function CheckPassword() {
         if (isValid) {
           history.push('/modifyuserinfo');
         } else {
-          alert('비밀번호 다시');
+          toast.error('😥 비밀번호를 다시 입력해주세요');
         }
       })
       .catch((err) => {
-        const message = err.response.data.status;
-        alert(message);
+        if (err.status === 400) {
+          toast.error('😥 비밀번호를 다시 입력해주세요');
+        } else if (err.status === 401) {
+          toast.error('😥 로그인을 다시 해주세요!');
+          history.push('/login');
+        } else if (err.status === 500) {
+          history.push('/error');
+        } // 404페이지
       });
   }
 

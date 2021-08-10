@@ -57,7 +57,7 @@ export const loadUser = createAsyncThunk(
       const response = await axios.get('api/user/me');
       return response.data;
     } catch (err) {
-      return rejectWithValue(err);
+      return rejectWithValue(err.response);
     }
   }
 );
@@ -70,7 +70,7 @@ export const checkPassword = createAsyncThunk(
       const response = await axios.post('/api/user/check_password', password);
       return response;
     } catch (err) {
-      return rejectWithValue(err);
+      return rejectWithValue(err.response);
     }
   }
 );

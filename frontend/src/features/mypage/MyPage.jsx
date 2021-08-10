@@ -4,27 +4,22 @@ import { Link, useHistory } from 'react-router-dom';
 
 // style
 import { Container, Button } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
 
 // image
 import defaultImage from '../../assets/default.png';
-// import Beginner from '../../assets/beginner.svg';
-// import Intermediate from '../../assets/intermediate.svg';
-// import Advanced from '../../assets/advanced.svg';
 import badgeImages from '../../assets/badgeImages';
 
 // component
 import Navbar from '../../common/navbar/Navbar';
 import MyTable from './MyTable';
 import Calender from './Calender';
+import DeleteModal from './DeleteModal';
 
 // action
-import { deleteToken } from '../../common/api/JWT-common';
-import { deleteUser } from '../auth/authSlice';
 import { loadBadge, loadBestRecord, loadBadgesOwned } from './mypageSlice';
-// import { getMonth } from '../../common/api/getTime';
 
 // 전체 컨테이너
 const Wrapper = styled(Container)`
@@ -103,6 +98,7 @@ export default function MyPage() {
   const { duration, workToday } = consecutiveRecordInfo;
   const dispatch = useDispatch();
   const history = useHistory();
+
   const badgeLen = badgesOwned.length;
 
   useEffect(() => {
@@ -110,21 +106,26 @@ export default function MyPage() {
       .unwrap()
       .then(() => {
         dispatch(loadBadgesOwned());
-      });
-    dispatch(loadBestRecord());
-  }, []);
-
-  const doDeleteUser = () => {
-    dispatch(deleteUser())
-      .unwrap()
-      .then(() => {
-        deleteToken();
-        history.push('/login');
       })
       .catch((err) => {
-        console.log(err);
+        if (err.status === 401) {
+          toast.error('😥 로그인을 다시 해주세요!');
+          history.push('/login');
+        } else if (err.status === 500) {
+          history.push('/error');
+        }
       });
-  };
+    dispatch(loadBestRecord())
+      .unwrap()
+      .catch((err) => {
+        if (err.status === 401) {
+          toast.error('😥 로그인을 다시 해주세요!');
+          history.push('/login');
+        } else if (err.status === 500) {
+          history.push('/error');
+        }
+      });
+  }, []);
 
   return (
     <>
@@ -179,21 +180,7 @@ export default function MyPage() {
           )}
           <Calender />
           <Footer>
-            <Button variant="contained" size="small">
-              1:1문의
-            </Button>
-            <Button variant="contained" size="small">
-              FAQ
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              size="small"
-              startIcon={<DeleteIcon />}
-              onClick={doDeleteUser}
-            >
-              회원탈퇴
-            </Button>
+            <DeleteModal />
           </Footer>
         </Main>
       </Wrapper>
