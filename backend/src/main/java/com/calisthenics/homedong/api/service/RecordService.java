@@ -8,6 +8,7 @@ import com.calisthenics.homedong.db.repository.UserRepository;
 import com.calisthenics.homedong.error.exception.custom.UserNotFoundException;
 import com.calisthenics.homedong.util.BadgeUtil;
 import com.calisthenics.homedong.util.SecurityUtil;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,9 @@ public class RecordService {
             throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
         }
 
-        List<BestRecordRes> bestRecordResList = roomRepository.getBestRecordByUserId(user.getUserId());
+        // 최고 기록
+        Integer userId = user.getUserId();
+        List<BestRecordRes> bestRecordResList = roomRepository.getBestRecordByUserId(userId);
 
         Set<Integer> gameTypeTemp = new HashSet<>();
 
@@ -60,6 +63,14 @@ public class RecordService {
 
         for (Integer key : gameTypeTemp) {
             bestRecordResList.add(new BestRecordRes(key, -1));
+        }
+
+        for (BestRecordRes bestRecordRes : bestRecordResList) {
+            Integer ranking = roomRepository.findRankingByUserId(bestRecordRes.getGameType(), userId).orElse(null);
+
+            if (ranking != null) {
+                bestRecordRes.setRanking(ranking);
+            }
         }
 
         Collections.sort(bestRecordResList, new Comparator<BestRecordRes>() {
