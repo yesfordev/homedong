@@ -17,12 +17,12 @@ import javax.validation.constraints.Size;
 @ApiModel("MakeRoomRequest")
 public class MakeRoomReq {
 
-    @ApiModelProperty(name = "게임 타입", example="1")
-    @NotNull(message = "gameType may not be empty")
+    @ApiModelProperty(name = "게임 타입(1,2,3)", example="1")
+    @NotNull(message = "게임 타입은 필수 입력 값입니다.")
     private Integer gameType;
 
     @ApiModelProperty(name = "비밀번호", example="password")
-    @NotNull(message = "password may not be null")
+    @NotNull(message = "비밀번호는 필수 입력 값입니다.")
     @Size(max = 50)
     private String password;
 }

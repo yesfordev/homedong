@@ -19,12 +19,12 @@ import javax.validation.constraints.Size;
 public class FindRoomReq {
 
     @ApiModelProperty(name = "방 번호", example="QB8TKZC05P")
-    @NotEmpty(message = "roomId may not be empty")
+    @NotEmpty(message = "방 번호는 필수 입력 값입니다.")
     @Size(max = 50)
     private String roomId;
 
     @ApiModelProperty(name = "비밀번호", example="password")
-    @NotNull(message = "password may not be empty")
+    @NotNull(message = "방 비밀번호는 필수 입력 값입니다.")
     @Size(max = 50)
     private String password;
 }

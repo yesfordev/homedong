@@ -19,12 +19,12 @@ import javax.validation.constraints.Size;
 public class LeaveRoomReq {
 
     @ApiModelProperty(name = "토큰", example="wss://localhost:4443?sessionId=ses_E0S5Tf1VCv&token=tok_PoTqZQ1K7loI37CM")
-    @NotEmpty(message = "token may not be empty")
+    @NotEmpty(message = "토큰은 필수 입력 값입니다.")
     @Size(max = 50)
     private String token;
 
     @ApiModelProperty(name = "방 번호", example="QB8TKZC05P")
-    @NotEmpty(message = "roomId may not be empty")
+    @NotEmpty(message = "방 번호는 필수 입력 값입니다.")
     @Size(max = 50)
     private String roomId;
 }

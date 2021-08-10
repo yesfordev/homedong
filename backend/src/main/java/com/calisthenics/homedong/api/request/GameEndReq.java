@@ -16,11 +16,11 @@ import javax.validation.constraints.NotNull;
 public class GameEndReq {
 
     @ApiModelProperty(name = "진행된 게임 id", example = "7")
-    @NotNull(message = "gameId may not be empty")
+    @NotNull(message = "게임 id는 필수 입력 값입니다.")
     private Integer gameId;
 
     @ApiModelProperty(name = "게임에서 달성한 기록", example = "40")
-    @NotNull(message = "count may not be empty")
+    @NotNull(message = "갯수는 필수 입력 값입니다.")
     private Integer count;
 
 }
