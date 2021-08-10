@@ -186,6 +186,13 @@ dependencies {
     
     // Openvidu 의존성
     implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.18.0'
+
+    // redis cache 의존성
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '2.5.0'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-cache
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-cache', version: '2.4.3'
+
 }
 
 test {
