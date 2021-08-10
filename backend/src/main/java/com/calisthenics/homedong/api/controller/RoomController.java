@@ -61,7 +61,7 @@ public class RoomController {
         this.openVidu = new OpenVidu(OPENVIDU_URL, SECRET);
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     @ApiOperation(value = "방을 만들 때 사용", notes = "<strong>방 만들기</strong>을 통해 세션과 토큰을 생성 후 토큰, 방이름, 게임종류, 닉네임 반환 => password 없을시, 빈문자열 넣기")
     @ApiResponses({
             @ApiResponse(code = 200, message = "방 만들기 성공"),
@@ -204,7 +204,7 @@ public class RoomController {
         return ResponseEntity.ok(roomService.getRoomRes(token, roomId, quickRoomReq.getGameType()));
     }
 
-    @PutMapping("/")
+    @PutMapping("")
     @ApiOperation(value = "참가자가 방을 나갈 경우 사용", notes = "<strong>방 나가기</strong>를 통해 방 정보 OFF로 변경 및 방 관리 map에서 해당 정보 삭제")
     @ApiResponses({
             @ApiResponse(code = 200, message = "방 나가기 성공"),
