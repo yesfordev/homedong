@@ -62,7 +62,7 @@ public class GameService {
     public BadgeRes endGame(GameEndReq gameEndReq) {
         User user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithRolesByEmail).orElse(null);
 
-        if(user == null) {
+        if (user == null) {
             throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
         }
 
@@ -86,13 +86,13 @@ public class GameService {
         BadgeRes gameBadgeRes = new BadgeRes(gameTypeCount);
 
         for (int gameIdx = 0; gameIdx < gameTypeCount; gameIdx++) {
-            if(currentBadgeRes.getBadges().get(gameIdx).isBeginner() && !previousBadgeRes.getBadges().get(gameIdx).isBeginner()) {
+            if (currentBadgeRes.getBadges().get(gameIdx).isBeginner() && !previousBadgeRes.getBadges().get(gameIdx).isBeginner()) {
                 gameBadgeRes.getBadges().get(gameIdx).setBeginner(true);
             }
-            if(currentBadgeRes.getBadges().get(gameIdx).isIntermediate() && !previousBadgeRes.getBadges().get(gameIdx).isIntermediate()) {
+            if (currentBadgeRes.getBadges().get(gameIdx).isIntermediate() && !previousBadgeRes.getBadges().get(gameIdx).isIntermediate()) {
                 gameBadgeRes.getBadges().get(gameIdx).setIntermediate(true);
             }
-            if(currentBadgeRes.getBadges().get(gameIdx).isAdvanced() && !previousBadgeRes.getBadges().get(gameIdx).isAdvanced()) {
+            if (currentBadgeRes.getBadges().get(gameIdx).isAdvanced() && !previousBadgeRes.getBadges().get(gameIdx).isAdvanced()) {
                 gameBadgeRes.getBadges().get(gameIdx).setAdvanced(true);
             }
         }

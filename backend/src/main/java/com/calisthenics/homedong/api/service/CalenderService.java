@@ -42,22 +42,22 @@ public class CalenderService {
     public List<DailyCalendarRes> getDailyCalendar(int year, int month) {
         User user = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
 
-        if(user == null) {
+        if (user == null) {
             throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
         }
 
         List<DailyCalendarRes> dailyCalendarResList = roomRepository.getDailyDateByUserId(user.getUserId(), year, month);
         List<DailyRecord> dailyRecordList = roomRepository.getDailyRecord(user.getUserId(), year, month);
 
-        for(DailyCalendarRes dailyCalendarRes : dailyCalendarResList) {
+        for (DailyCalendarRes dailyCalendarRes : dailyCalendarResList) {
             dailyCalendarRes.makeDailyRecord(gameTypeCount);
         }
         int dailyRecordIdx = 0;
-        for(DailyCalendarRes dailyCalendarRes : dailyCalendarResList) {
-            while(dailyRecordIdx < dailyRecordList.size()) {
+        for (DailyCalendarRes dailyCalendarRes : dailyCalendarResList) {
+            while (dailyRecordIdx < dailyRecordList.size()) {
                 DailyRecord curDailyRecord = dailyRecordList.get(dailyRecordIdx);
 
-                if(dailyCalendarRes.getDate().equals(curDailyRecord.getDate())) {
+                if (dailyCalendarRes.getDate().equals(curDailyRecord.getDate())) {
                     int gameType = curDailyRecord.getGameType();
                     dailyCalendarRes.getDailyRecord().get(gameType-1).setRecord(curDailyRecord.getRecord());
                     ++dailyRecordIdx;
@@ -73,13 +73,13 @@ public class CalenderService {
     public ContinuousDayCountRes getContinuousDayCount() {
         User user = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
 
-        if(user == null) {
+        if (user == null) {
             throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
         }
 
         IContinuousDayCountRes iContinuousDayCountRes = gameRepository.getContinuousDayCount(user.getUserId()).orElse(null);
 
-        if(iContinuousDayCountRes == null) {
+        if (iContinuousDayCountRes == null) {
             return new ContinuousDayCountRes();
         }
 

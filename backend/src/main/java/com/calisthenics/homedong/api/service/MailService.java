@@ -58,11 +58,9 @@ public class MailService {
         emailcontent.append(
                 " <div" 																																																	+
                 "	style=\"font-family: 'Apple SD Gothic Neo', 'sans-serif' !important; width: 500px; height: 600px; border-top: 4px solid #FFD43A; margin: 100px auto; padding: 30px 0; box-sizing: border-box; color: #000000;\">"		+
-//                "<style> img { display: block; margin: 0px auto; } </style>" +
                 "<img src=\"https://user-images.githubusercontent.com/31542907/128824079-c8368805-bafa-4366-8f29-84bd3bc17251.png\" " +
                 "style=\"margin: 0 auto; display: block;\" width=\"350\"/>" +
                 "	<h1 style=\"margin: 0; padding: 0 5px; font-size: 28px; font-weight: 400; text-align: center;\">"																															+
-//                "		<span style=\"font-size: 15px; margin: 0 0 10px 3px;\">HOMEDONG</span><br />"																												+
                 "		<span style=\"color: #6A60A9; text-align: center;\">메일인증</span> 안내입니다."																																				+
                 "	</h1>\n"																																																+
                 "	<p style=\"font-size: 16px; line-height: 26px; margin-top: 50px; padding: 0 5px; color: #000000;\">"																													+

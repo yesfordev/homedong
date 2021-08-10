@@ -92,14 +92,14 @@ public class UserService {
     }
 
     public void checkDuplicateNickname(String nickname) {
-        if(userRepository.findAllByNickname(nickname).size() > 0) {
+        if (userRepository.findAllByNickname(nickname).size() > 0) {
             throw new NicknameDuplicateException(nickname);
         }
     }
 
     @Transactional
     public void deleteUser() {
-        if(userRepository.deleteByEmail(SecurityUtil.getCurrentEmail().orElse("")) == 0) {
+        if (userRepository.deleteByEmail(SecurityUtil.getCurrentEmail().orElse("")) == 0) {
             throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
         }
     }
@@ -107,13 +107,13 @@ public class UserService {
     public Map<String, Boolean> checkPassword(PasswordReq passwordReq) {
         User user = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
 
-        if(user == null) {
+        if (user == null) {
             throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(null));
         }
 
         Map<String, Boolean> check = new HashMap<>();
 
-        if(!passwordEncoder.matches(passwordReq.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(passwordReq.getPassword(), user.getPassword())) {
             check.put("check", false);
         } else {
             check.put("check", true);
@@ -126,7 +126,7 @@ public class UserService {
     public void updatePassword(ChangePasswordReq changePasswordReq) {
         User updateUser = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
 
-        if(updateUser == null) {
+        if (updateUser == null) {
             throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(null));
         }
 
@@ -139,7 +139,7 @@ public class UserService {
     public void updateNickname(ChangeNicknameReq changeNicknameReq) {
         User updateUser = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse(null)).orElse(null);
 
-        if(updateUser == null) {
+        if (updateUser == null) {
             throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(null));
         }
 
