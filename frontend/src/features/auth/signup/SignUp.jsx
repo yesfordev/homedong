@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import { makeStyles } from '@material-ui/core/styles';
+import { Container, makeStyles } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import { signup, checkNickname, setNicknameCheckedFalse } from '../authSlice';
+import { CommonButton } from '../login/Login';
+import logo from '../../../assets/logo.svg';
 
 // style
 const Wrapper = styled.div`
@@ -14,18 +15,29 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 `;
 
-const LoginContainer = styled.div`
-  height: 80%;
-  width: 80%;
+const LogoWrapper = styled(Container)`
+  height: 10%;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Logo = styled.img`
+  width: 400px;
+  height: 200px;
+`;
+
+const LoginContainer = styled(Container)`
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-`;
-const Title = styled.span`
-  font-size: 2.5rem;
 `;
 
 const useStyles = makeStyles({
@@ -127,8 +139,11 @@ export default function SignUp() {
 
   return (
     <Wrapper>
+      <LogoWrapper>
+        <Logo src={logo} />
+      </LogoWrapper>
+
       <LoginContainer>
-        <Title>LOGO</Title>
         <ValidatorForm
           onSubmit={handleSubmit}
           className={classes.validatorForm}
@@ -150,12 +165,13 @@ export default function SignUp() {
             size="small"
             fullWidth
           />
-          <Button
+          <CommonButton
+            mauve
             disabled={isNicknameChecked || !nickname}
             onClick={isValidNickname}
           >
             중복확인
-          </Button>
+          </CommonButton>
           <TextValidator
             label="Email"
             onChange={(e) => setEmail(e.target.value)}
@@ -205,11 +221,15 @@ export default function SignUp() {
             size="small"
             fullWidth
           />
-          <Button disabled={!isNicknameChecked || !email} type="submit">
+          <CommonButton
+            yellow
+            disabled={!isNicknameChecked || !email}
+            type="submit"
+          >
             Submit
-          </Button>
+          </CommonButton>
           <Link to="/login">
-            <Button>로그인</Button>
+            <CommonButton mauve>로그인</CommonButton>
           </Link>
         </ValidatorForm>
       </LoginContainer>
