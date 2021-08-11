@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -54,9 +54,21 @@ export default function SignUp() {
   const { isNicknameChecked } = useSelector((state) => state.auth);
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
+  const [isValid, setIsValid] = useState(false);
+  const errRef = useRef(null);
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (isNicknameChecked || !nickname || errRef.current.invalid[0]) {
+        setIsValid(false);
+      } else {
+        setIsValid(true);
+      }
+    }, 10);
+  }, [nickname, errRef.current, isNicknameChecked]);
 
   // setState when user change input
   function handleNickname(event) {
@@ -147,6 +159,7 @@ export default function SignUp() {
         <ValidatorForm
           onSubmit={handleSubmit}
           className={classes.validatorForm}
+          onError={(errors) => console.log(errors)}
         >
           <TextValidator
             label="닉네임"
@@ -154,8 +167,11 @@ export default function SignUp() {
             color="secondary"
             name="nickname"
             value={nickname}
-            validators={['required']}
-            errorMessages={['정보를 입력해주세요']}
+            validators={['required', 'matchRegexp:^[가-힣|a-z|A-Z|0-9|]+$']}
+            errorMessages={[
+              '정보를 입력해주세요',
+              '한글,영문,숫자만 입력해주세요',
+            ]}
             helperText="최대 6글자입니다."
             variant="outlined"
             InputLabelProps={{
@@ -164,10 +180,11 @@ export default function SignUp() {
             margin="normal"
             size="small"
             fullWidth
+            ref={errRef}
           />
           <CommonButton
             mauve="true"
-            disabled={isNicknameChecked || !nickname}
+            disabled={!isValid}
             onClick={isValidNickname}
           >
             중복확인
