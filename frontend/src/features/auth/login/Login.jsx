@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Container, Button } from '@material-ui/core';
+import { Container, Button, makeStyles } from '@material-ui/core';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { useDispatch } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { login } from '../authSlice';
+import logo from '../../../assets/logo(angled).svg';
 
 // style
 
@@ -16,13 +17,48 @@ const Wrapper = styled(Container)`
   align-items: center;
 `;
 
-const Title = styled.div`
-  font-size: 2.5rem;
+const LogoWrapper = styled(Container)`
+  width: 50%;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+`;
+
+const LoginWrapper = styled(Container)`
+  width: 50%;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Logo = styled.img`
+  width: 100%;
+  height: 100%;
 `;
 
 const LoginContainer = styled.div`
+  width: 100%;
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
+`;
+
+const UseStyles = makeStyles({
+  text: {
+    backgroundColor: '#eee',
+  },
+});
+
+export const CommonButton = styled(Button)`
+  width: 100%;
+  border-radius: 6px;
+  margin: 1em 0 0.25em;
+  padding: 0.3em 1em;
+  background: ${(props) => (props.yellow ? '#fbd14b' : '#9fa9d8')};
+  color: ${(props) => (props.mauve ? 'white' : 'black')};
 `;
 
 // component
@@ -65,44 +101,53 @@ export default function Login() {
   // render
   return (
     <Wrapper>
-      <LoginContainer>
-        <Title>LOGO</Title>
-        <ValidatorForm onSubmit={handleSubmit}>
-          <TextValidator
-            label="이메일"
-            onChange={(e) => setEmail(e.target.value.replace(/\s/g, ''))}
-            name="email"
-            value={email}
-            validators={['required', 'isEmail']}
-            errorMessages={[
-              '정보를 입력해주세요',
-              '이메일 형식으로 입력해주세요',
-            ]}
-            variant="outlined"
-            autoFocus
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-          <TextValidator
-            label="비밀번호"
-            onChange={(e) => setPassword(e.target.value.replace(/\s/g, ''))}
-            value={password}
-            name="password"
-            type="password"
-            validators={['required']}
-            errorMessages={['정보를 입력해주세요']}
-            variant="outlined"
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-          <Button type="submit">로그인</Button>
-          <Link to="/signup">
-            <Button>회원가입</Button>
-          </Link>
-        </ValidatorForm>
-      </LoginContainer>
+      <LogoWrapper>
+        <Logo to="/" src={logo} />
+      </LogoWrapper>
+
+      <LoginWrapper>
+        <LoginContainer>
+          <ValidatorForm onSubmit={handleSubmit}>
+            <TextValidator
+              label="이메일"
+              onChange={(e) => setEmail(e.target.value.replace(/\s/g, ''))}
+              name="email"
+              value={email}
+              validators={['required', 'isEmail']}
+              errorMessages={[
+                '정보를 입력해주세요',
+                '이메일 형식으로 입력해주세요',
+              ]}
+              variant="outlined"
+              autoFocus
+              InputLabelProps={{
+                shrink: true,
+              }}
+              className={UseStyles.text}
+            />
+            <TextValidator
+              label="비밀번호"
+              onChange={(e) => setPassword(e.target.value.replace(/\s/g, ''))}
+              value={password}
+              name="password"
+              type="password"
+              validators={['required']}
+              errorMessages={['정보를 입력해주세요']}
+              variant="outlined"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              className={UseStyles.text}
+            />
+            <CommonButton yellow type="submit">
+              로그인
+            </CommonButton>
+            <Link to="/signup">
+              <CommonButton mauve>회원가입</CommonButton>
+            </Link>
+          </ValidatorForm>
+        </LoginContainer>
+      </LoginWrapper>
     </Wrapper>
   );
 }
