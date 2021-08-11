@@ -4,8 +4,11 @@ import { Link } from 'react-router-dom';
 import MakeRoomModal from './MakeRoomModal';
 import FindRoomModal from './FindRoomModal';
 import DropDownMenu from './NavbarDropdown';
-import logo from '../../assets/logo(not).svg';
+import logo from '../../assets/logo(basic).svg';
 import tutorial from '../../assets/tutorial.svg';
+import makeroom from '../../assets/makeroom.svg';
+import searchroom from '../../assets/searchroom.svg';
+import ranking from '../../assets/ranking.svg';
 
 const Wrapper = styled.div`
   height: 65px;
@@ -17,9 +20,21 @@ const Wrapper = styled.div`
   border-bottom: solid rgba(248, 208, 83, 0.5);
 `;
 
+const HeaderWrapper = styled.div`
+  margin: 0 2em 0 2em;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+`;
+
 const Logo = styled.img`
-  width: 100px;
-  height: 100%;
+  width: 200px;
+  height: 100px;
+`;
+
+const List = styled.img`
+  height: 45px;
 `;
 
 const Links = styled.ul`
@@ -27,7 +42,8 @@ const Links = styled.ul`
   justify-content: center;
   align-items: center;
   & > * {
-    margin-right: 25px;
+    margin-right: 10px;
+    margin-left: 10px;
     cursor: pointer;
   }
   > button {
@@ -42,32 +58,36 @@ export default function Navbar() {
   const handleFindModal = () => setIsFindOpen(false);
   return (
     <Wrapper>
-      <Link to="/">
-        <Logo src={logo} />
-      </Link>
-      <MakeRoomModal
-        fullWidth
-        isOpen={isMakeOpen}
-        handleModalClose={handleMakeModal}
-      />
-      <FindRoomModal
-        fullWidth
-        isOpen={isFindOpen}
-        handleModalClose={handleFindModal}
-      />
-      <Links>
-        <Link to="/tutorial">
-          <Logo src={tutorial} />
+      <HeaderWrapper>
+        <Link to="/">
+          <Logo src={logo} />
         </Link>
-        <button type="button" onClick={() => setIsMakeOpen(true)}>
-          방만들기
-        </button>
-        <button type="button" onClick={() => setIsFindOpen(true)}>
-          방찾기
-        </button>
-        <Link to="/rank">랭킹</Link>
-        <DropDownMenu />
-      </Links>
+        <MakeRoomModal
+          fullWidth
+          isOpen={isMakeOpen}
+          handleModalClose={handleMakeModal}
+        />
+        <FindRoomModal
+          fullWidth
+          isOpen={isFindOpen}
+          handleModalClose={handleFindModal}
+        />
+        <Links>
+          <Link to="/tutorial">
+            <List src={tutorial} />
+          </Link>
+          <button type="button" onClick={() => setIsMakeOpen(true)}>
+            <List src={makeroom} />
+          </button>
+          <button type="button" onClick={() => setIsFindOpen(true)}>
+            <List src={searchroom} />
+          </button>
+          <Link to="/rank">
+            <List src={ranking} />
+          </Link>
+          <DropDownMenu />
+        </Links>
+      </HeaderWrapper>
     </Wrapper>
   );
 }
