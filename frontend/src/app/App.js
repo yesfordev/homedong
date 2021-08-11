@@ -55,7 +55,7 @@ function App() {
             <PrivateRoute path="/mypage" component={MyPage} />
             <PrivateRoute path="/checkpassword" component={CheckPassword} />
             <PrivateRoute path="/modifyuserinfo" component={ModifyUserInfo} />
-            <Route component={Error404} />
+            <Route path="*" component={Error404} />
           </Switch>
         </BrowserRouter>
         <StyledToastContainer
