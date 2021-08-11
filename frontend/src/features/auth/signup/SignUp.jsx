@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -54,9 +54,31 @@ export default function SignUp() {
   const { isNicknameChecked } = useSelector((state) => state.auth);
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
+  const [isValidInputNickname, setIsValidInputNickname] = useState(false);
+  const errRef = useRef(null);
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (isNicknameChecked || !nickname || errRef.current.invalid[0]) {
+        setIsValidInputNickname(false);
+      } else {
+        setIsValidInputNickname(true);
+      }
+    }, 10);
+  }, [nickname, errRef.current, isNicknameChecked]);
+
+  // validation (same password)
+  useEffect(() => {
+    ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
+      if (value !== password) {
+        return false;
+      }
+      return true;
+    });
+  }, [repeatPassword]);
 
   // setState when user change input
   function handleNickname(event) {
@@ -65,7 +87,25 @@ export default function SignUp() {
       dispatch(setNicknameCheckedFalse());
     }
     if (value.length < 7) {
-      setNickname(value);
+      setNickname(value.replace(/\s/g, ''));
+      return true;
+    }
+    return false;
+  }
+
+  function handlePassword(event) {
+    const { value } = event.target;
+    if (value.length <= 16) {
+      setPassword(value.replace(/\s/g, ''));
+      return true;
+    }
+    return false;
+  }
+
+  function handleRepeatPassword(event) {
+    const { value } = event.target;
+    if (value.length <= 16) {
+      setRepeatPassword(value.replace(/\s/g, ''));
       return true;
     }
     return false;
@@ -107,36 +147,6 @@ export default function SignUp() {
       });
   }
 
-  // validation (same password)
-  useEffect(() => {
-    ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
-      if (value !== password) {
-        return false;
-      }
-      return true;
-    });
-  }, [repeatPassword]);
-
-  // validation (password 길이)
-  useEffect(() => {
-    ValidatorForm.addValidationRule('passwordLength', (value) => {
-      if (value.length >= 8 <= 16) {
-        return false;
-      }
-      return true;
-    });
-  }, [repeatPassword]);
-
-  // validation (maxlength)
-  useEffect(() => {
-    ValidatorForm.addValidationRule('maxNumber', (value) => {
-      if (value.length > 6) {
-        return false;
-      }
-      return true;
-    });
-  }, [nickname]);
-
   return (
     <Wrapper>
       <LogoWrapper>
@@ -154,8 +164,11 @@ export default function SignUp() {
             color="secondary"
             name="nickname"
             value={nickname}
-            validators={['required']}
-            errorMessages={['정보를 입력해주세요']}
+            validators={['required', 'matchRegexp:^[가-힣|a-z|A-Z|0-9|]+$']}
+            errorMessages={[
+              '정보를 입력해주세요',
+              '한글,영문,숫자만 입력해주세요',
+            ]}
             helperText="최대 6글자입니다."
             variant="outlined"
             InputLabelProps={{
@@ -164,21 +177,25 @@ export default function SignUp() {
             margin="normal"
             size="small"
             fullWidth
+            ref={errRef}
           />
           <CommonButton
-            mauve
-            disabled={isNicknameChecked || !nickname}
+            mauve="true"
+            disabled={!isValidInputNickname}
             onClick={isValidNickname}
           >
             중복확인
           </CommonButton>
           <TextValidator
-            label="Email"
-            onChange={(e) => setEmail(e.target.value)}
+            label="이메일"
+            onChange={(e) => setEmail(e.target.value.replace(/\s/g, ''))}
             name="email"
             value={email}
             validators={['required', 'isEmail']}
-            errorMessages={['정보를 입력해주세요', 'email is not valid']}
+            errorMessages={[
+              '정보를 입력해주세요',
+              '유효하지 않은 이메일 형식입니다',
+            ]}
             InputLabelProps={{
               shrink: true,
             }}
@@ -189,12 +206,18 @@ export default function SignUp() {
           />
           <TextValidator
             label="비밀번호"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handlePassword}
             name="password"
             type="password"
             value={password}
-            validators={['required']}
-            errorMessages={['정보를 입력해주세요']}
+            validators={[
+              'required',
+              'matchRegexp:^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*[@$!%*#?&]).{8,16}$',
+            ]}
+            errorMessages={[
+              '정보를 입력해주세요',
+              '영어, 숫자, 특수문자 적어도 한 개 이상 포함해주세요(8~16자)',
+            ]}
             InputLabelProps={{
               shrink: true,
             }}
@@ -204,7 +227,7 @@ export default function SignUp() {
           />
           <TextValidator
             label="비밀번호 확인"
-            onChange={(e) => setRepeatPassword(e.target.value)}
+            onChange={handleRepeatPassword}
             type="password"
             name="repeatPassword"
             value={repeatPassword}
@@ -222,14 +245,16 @@ export default function SignUp() {
             fullWidth
           />
           <CommonButton
-            yellow
-            disabled={!isNicknameChecked || !email}
+            yellow="true"
+            disabled={
+              !isNicknameChecked || !email || !password || !repeatPassword
+            }
             type="submit"
           >
-            Submit
+            회원가입
           </CommonButton>
           <Link to="/login">
-            <CommonButton mauve>로그인</CommonButton>
+            <CommonButton mauve="true">로그인</CommonButton>
           </Link>
         </ValidatorForm>
       </LoginContainer>

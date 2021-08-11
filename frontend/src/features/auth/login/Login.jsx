@@ -139,11 +139,11 @@ export default function Login() {
               }}
               className={UseStyles.text}
             />
-            <CommonButton yellow type="submit">
+            <CommonButton yellow="true" type="submit">
               로그인
             </CommonButton>
             <Link to="/signup">
-              <CommonButton mauve>회원가입</CommonButton>
+              <CommonButton mauve="true">회원가입</CommonButton>
             </Link>
           </ValidatorForm>
         </LoginContainer>
