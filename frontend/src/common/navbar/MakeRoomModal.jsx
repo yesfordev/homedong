@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -9,6 +8,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
+import { CommonButton } from '../../features/auth/login/Login';
+import logo from '../../assets/logo(basic).svg';
 
 const ImageContainer = styled.div`
   display: flex;
@@ -21,31 +22,50 @@ const ImageField = styled.img`
 `;
 
 const useStyles = makeStyles({
+  back: {
+    opacity: 0.97,
+    borderRadius: 50,
+    padding: '0 50px 0 100px',
+  },
   dialog: {
+    background: '#f6f5fd',
+  },
+  dialogContent: {
     display: 'flex',
     flexDirection: 'column',
+    background: '#f6f5fd',
   },
-  dialogactions: {
-    display: 'flex',
-    justifyContent: 'center',
+  dialogAction: {
+    background: '#f6f5fd',
+    flexDirection: 'row',
   },
 });
+
+const Logo = styled.img`
+  width: 400px;
+  height: 100px;
+`;
 
 export default function MakeRoomModal({ isOpen, handleModalClose }) {
   const classes = useStyles();
   return (
     <div>
       <Dialog
+        className={classes.back}
         open={isOpen}
         onClose={handleModalClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title" style={{ textAlign: 'center' }}>
-          방 만들기
+        <DialogTitle
+          className={classes.dialog}
+          id="form-dialog-title"
+          style={{ textAlign: 'center' }}
+        >
+          <Logo src={logo} />
         </DialogTitle>
-        <DialogContent className={classes.dialog}>
+        <DialogContent className={classes.dialogContent}>
           <DialogContentText>
-            방은 Private으로 만들어지며, 비밀번호를 설정해주시면 됩니다!
+            Private으로 만들 경우, 비밀번호를 설정해주시면 됩니다!
           </DialogContentText>
           <ImageContainer>
             <ImageField src="https://picsum.photos/50" />
@@ -54,13 +74,13 @@ export default function MakeRoomModal({ isOpen, handleModalClose }) {
           </ImageContainer>
           <TextField autoFocus margin="dense" id="password" label="비밀번호" />
         </DialogContent>
-        <DialogActions className={classes.dialogactions}>
-          <Button onClick={handleModalClose} color="primary">
+        <DialogActions className={classes.dialogAction}>
+          <CommonButton mauve onClick={handleModalClose} color="primary">
             방만들기
-          </Button>
-          <Button onClick={handleModalClose} color="secondary">
+          </CommonButton>
+          <CommonButton yellow onClick={handleModalClose} color="secondary">
             취소
-          </Button>
+          </CommonButton>
         </DialogActions>
       </Dialog>
     </div>
