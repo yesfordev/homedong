@@ -12,7 +12,7 @@ const Wrapper = styles(Container)`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90vh;
+  height: 100vh;
 `;
 
 const kindLists = [
