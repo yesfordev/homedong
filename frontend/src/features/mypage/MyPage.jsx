@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 
 // style
-import { Container, Button } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
@@ -22,7 +22,7 @@ import DeleteModal from './DeleteModal';
 import { loadBadge, loadBestRecord, loadBadgesOwned } from './mypageSlice';
 
 // 전체 컨테이너
-const Wrapper = styled(Container)`
+const Wrapper = styled.div`
   display: flex;
   padding: 65px 0px 0px 0px;
   height: 200vh;

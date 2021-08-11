@@ -3,14 +3,13 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
-import { Container } from '@material-ui/core';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { checkPassword } from '../authSlice';
 import { CommonButton } from '../login/Login';
 import logo from '../../../assets/logo(angled).svg';
 
 // style
-const Wrapper = styled(Container)`
+const Wrapper = styled.div`
   display: flex;
   height: 100vh;
   justify-content: center;
@@ -18,7 +17,7 @@ const Wrapper = styled(Container)`
   flex-direction: column;
 `;
 
-const LogoWrapper = styled(Container)`
+const LogoWrapper = styled.div`
   height: 10%;
   display: flex;
   height: 100vh;

@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Container, Button } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { ReactComponent as LogoImage } from '../../../assets/logo.svg';
 
-const Wrapper = styled(Container)`
+const Wrapper = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
