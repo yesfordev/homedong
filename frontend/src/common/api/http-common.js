@@ -2,7 +2,7 @@ import baseAxios from 'axios';
 import { getToken } from './JWT-common';
 
 const axios = baseAxios.create({
-  baseURL: '/',
+  baseURL: 'http://localhost:8080',
   headers: {
     'Content-Type': 'application/json',
   },

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -25,27 +26,30 @@ function createData(name, squat, pushUp, burpee) {
   return { name, newBurpee, newSquat, newPushUp };
 }
 
+function handleData(data, rows) {
+  const names = ['내 최고 기록', '랭킹'];
+  const bestRecords = [];
+  const rankings = [];
+
+  if (data) {
+    Array.from(data).forEach((record) => {
+      const { bestRecord, ranking } = record;
+      bestRecords.push(bestRecord);
+      rankings.push(ranking);
+    });
+    rows.push(createData(names[0], ...bestRecords));
+    rows.push(createData(names[1], ...rankings));
+  }
+}
+
 export default function MyTable() {
+  const rows = [];
   const classes = useStyles();
   const { bestRecordInfo } = useSelector((state) => state.mypage);
-  console.log(bestRecordInfo);
-  // const gameTypes = ['squat', 'pushup', 'burpee'];
-  // const myBestRecord = ['내 최고 기록'];
-  // const myRank = ['랭킹'];
-  // let gameType;
-  // Array.from(bestRecordInfo).forEach((record) => {
-  //   Object.entries(record).map(([key, value]) => {
-  //     if (key === 'gameType') {
-  //       gameType = value;
-  //     }
-  //     return console.log(gameTypes[value - 1], key, '11');
-  //   });
-  // });
 
-  const rows = [
-    createData('내 최고 기록', -1, 6.0, 24),
-    createData('랭킹', 237, 9.0, 37),
-  ];
+  if (bestRecordInfo) {
+    handleData(bestRecordInfo, rows);
+  }
 
   return (
     <TableContainer component={Paper} className={classes.container}>
@@ -53,9 +57,9 @@ export default function MyTable() {
         <TableHead>
           <TableRow selected>
             <TableCell />
-            <TableCell align="center">윗몸일으키기</TableCell>
             <TableCell align="center">스쿼트</TableCell>
-            <TableCell align="center">팔굽혀펴기</TableCell>
+            <TableCell align="center">푸쉬업</TableCell>
+            <TableCell align="center">버피</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -64,9 +68,9 @@ export default function MyTable() {
               <TableCell align="center" component="th" scope="row">
                 {row.name}
               </TableCell>
-              <TableCell align="center">{row.newBurpee}</TableCell>
               <TableCell align="center">{row.newSquat}</TableCell>
               <TableCell align="center">{row.newPushUp}</TableCell>
+              <TableCell align="center">{row.newBurpee}</TableCell>
             </TableRow>
           ))}
         </TableBody>

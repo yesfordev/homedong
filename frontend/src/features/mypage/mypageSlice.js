@@ -34,8 +34,7 @@ export const loadDailyRecord = createAsyncThunk(
       });
       return response.data;
     } catch (err) {
-      console.log(err);
-      return rejectWithValue;
+      return rejectWithValue(err);
     }
   }
 );
