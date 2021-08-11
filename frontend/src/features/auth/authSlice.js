@@ -9,7 +9,7 @@ export const signup = createAsyncThunk(
   async (userInfo, { rejectWithValue }) => {
     try {
       const response = await axios.post('/api/signup', userInfo);
-      console.log('action');
+      console.log(response.status);
       return response;
     } catch (err) {
       return rejectWithValue(err.response);

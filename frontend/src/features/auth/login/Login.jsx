@@ -143,7 +143,7 @@ export default function Login() {
               로그인
             </CommonButton>
             <Link to="/signup">
-              <CommonButton mauve>회원가입</CommonButton>
+              <CommonButton mauve="true">회원가입</CommonButton>
             </Link>
           </ValidatorForm>
         </LoginContainer>

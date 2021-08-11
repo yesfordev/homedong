@@ -166,7 +166,7 @@ export default function SignUp() {
             fullWidth
           />
           <CommonButton
-            mauve
+            mauve="true"
             disabled={isNicknameChecked || !nickname}
             onClick={isValidNickname}
           >
@@ -222,14 +222,14 @@ export default function SignUp() {
             fullWidth
           />
           <CommonButton
-            yellow
+            yellow="true"
             disabled={!isNicknameChecked || !email}
             type="submit"
           >
             Submit
           </CommonButton>
           <Link to="/login">
-            <CommonButton mauve>로그인</CommonButton>
+            <CommonButton mauve="true">로그인</CommonButton>
           </Link>
         </ValidatorForm>
       </LoginContainer>
