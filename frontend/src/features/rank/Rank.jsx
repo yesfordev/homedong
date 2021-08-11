@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+
+// style
 import styled from 'styled-components';
 import { Container } from '@material-ui/core';
+
+// feature
 import Navbar from '../../common/navbar/Navbar';
 import RankTable from './RankTable';
-import { ReactComponent as Situp } from '../../assets/situp.svg';
+
+// images
+import { ReactComponent as Burpee } from '../../assets/burpee.svg';
 import { ReactComponent as Pushup } from '../../assets/pushup.svg';
 import { ReactComponent as Squat } from '../../assets/squat.svg';
+
+// action
+import { loadRank } from './rankSlice';
 
 const Wrapper = styled(Container)`
   display: flex;
@@ -18,7 +28,7 @@ const Wrapper = styled(Container)`
 
 const Title = styled.p`
   font-weight: 600;
-  margin-top: 15px;
+  margin-bottom: 20px;
 `;
 const ImagesContainer = styled.div`
   display: flex;
@@ -34,22 +44,29 @@ const ImageContainer = styled.div`
 `;
 
 function Rank() {
+  const [exercise, setExercise] = useState(1);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadRank(exercise));
+  }, [exercise]);
+
   return (
     <>
       <Navbar />
       <Wrapper>
         <ImagesContainer>
-          <ImageContainer>
-            <Situp width="150px" height="auto" alt="situp" />
-            <Title>윗몸일으키기</Title>
+          <ImageContainer onClick={() => setExercise(1)}>
+            <Squat width="150px" height="200px" alt="squat" />
+            <Title>스쿼트</Title>
           </ImageContainer>
-          <ImageContainer>
-            <Pushup width="150px" height="auto" alt="pushup" />
+          <ImageContainer onClick={() => setExercise(2)}>
+            <Pushup width="150px" height="200px" alt="pushup" />
             <Title>팔굽혀펴기</Title>
           </ImageContainer>
-          <ImageContainer>
-            <Squat width="150px" height="auto" alt="squat" />
-            <Title>스쿼트</Title>
+          <ImageContainer onClick={() => setExercise(3)}>
+            <Burpee width="150px" height="200px" alt="burpee" />
+            <Title>버피</Title>
           </ImageContainer>
         </ImagesContainer>
         <RankTable />

@@ -4,8 +4,8 @@ import { Container } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Navbar from '../../common/navbar/Navbar';
 import Kind from './Kind';
+import burpee from '../../assets/burpee.svg';
 import pushup from '../../assets/pushup.svg';
-import situp from '../../assets/situp.svg';
 import squat from '../../assets/squat.svg';
 
 const Wrapper = styles(Container)`
@@ -22,9 +22,9 @@ const kindLists = [
     link: '/pushup',
   },
   {
-    source: situp,
-    title: '윗몸일으키기',
-    link: '/situp',
+    source: burpee,
+    title: '버피',
+    link: '/burpee',
   },
   {
     source: squat,

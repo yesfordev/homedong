@@ -105,6 +105,16 @@ export default function SignUp() {
     });
   }, [repeatPassword]);
 
+  // validation (password 길이)
+  useEffect(() => {
+    ValidatorForm.addValidationRule('passwordLength', (value) => {
+      if (value.length >= 8 <= 16) {
+        return false;
+      }
+      return true;
+    });
+  }, [repeatPassword]);
+
   // validation (maxlength)
   useEffect(() => {
     ValidatorForm.addValidationRule('maxNumber', (value) => {
