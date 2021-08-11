@@ -1,4 +1,7 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+
+// style
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -15,40 +18,40 @@ const useStyles = makeStyles({
   temp: {},
 });
 
-function createData(name, calories, fat, carbs) {
-  return { name, calories, fat, carbs };
+function createData(ranking, nickname, count, changeStatus) {
+  return { ranking, nickname, count, changeStatus };
 }
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-];
 
 export default function RankTable() {
   const classes = useStyles();
-
+  const { currentRankInfo } = useSelector((state) => state.rank);
+  // 현재 순위 정보
+  const rows = [];
+  if (currentRankInfo) {
+    currentRankInfo.forEach((item) => {
+      rows.push(createData(...item));
+    });
+  }
   return (
     <TableContainer style={{ width: '50%' }} component={Paper}>
       <Table stickyHeader className={classes.table} aria-label="a dense table">
         <TableHead>
           <TableRow hover>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+            <TableCell>순위</TableCell>
+            <TableCell align="right">닉네임</TableCell>
+            <TableCell align="right">갯수</TableCell>
+            <TableCell align="right">순위변동</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
             <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
+              <TableCell component="th" scope="row" style={{ width: '20px' }}>
+                {row.ranking}
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
+              <TableCell align="right">{row.nickname}</TableCell>
+              <TableCell align="right">{row.count}</TableCell>
+              <TableCell align="right">{row.changeStatus}</TableCell>
             </TableRow>
           ))}
         </TableBody>

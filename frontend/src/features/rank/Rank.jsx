@@ -45,6 +45,7 @@ const ImageContainer = styled.div`
 
 function Rank() {
   const [exercise, setExercise] = useState(1);
+  const title = ['스쿼트', '푸쉬업', '버피'];
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -58,17 +59,15 @@ function Rank() {
         <ImagesContainer>
           <ImageContainer onClick={() => setExercise(1)}>
             <Squat width="150px" height="200px" alt="squat" />
-            <Title>스쿼트</Title>
           </ImageContainer>
           <ImageContainer onClick={() => setExercise(2)}>
             <Pushup width="150px" height="200px" alt="pushup" />
-            <Title>팔굽혀펴기</Title>
           </ImageContainer>
           <ImageContainer onClick={() => setExercise(3)}>
             <Burpee width="150px" height="200px" alt="burpee" />
-            <Title>버피</Title>
           </ImageContainer>
         </ImagesContainer>
+        <Title>{title[exercise - 1]}</Title>
         <RankTable />
       </Wrapper>
     </>
