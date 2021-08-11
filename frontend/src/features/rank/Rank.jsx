@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 // style
 import styled from 'styled-components';
-import { Container } from '@material-ui/core';
+// import { Container } from '@material-ui/core';
 
 // feature
 import Navbar from '../../common/navbar/Navbar';
@@ -17,7 +17,7 @@ import { ReactComponent as Squat } from '../../assets/squat.svg';
 // action
 import { loadRank } from './rankSlice';
 
-const Wrapper = styled(Container)`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

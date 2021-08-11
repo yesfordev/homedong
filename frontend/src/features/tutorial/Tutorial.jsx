@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Link, animateScroll as scroll } from 'react-scroll';
 import styled from 'styled-components';
-import { Container, Button } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import LogoImage from '../../assets/logo.svg';
 
-const Wrapper = styled(Container)``;
+const Wrapper = styled.div``;
 
 const Exercise = styled.section`
   height: 100vh;

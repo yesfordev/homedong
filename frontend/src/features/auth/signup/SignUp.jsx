@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
-const LogoWrapper = styled(Container)`
+const LogoWrapper = styled.div`
   height: 10%;
   display: flex;
   height: 100vh;

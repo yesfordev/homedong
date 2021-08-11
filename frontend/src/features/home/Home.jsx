@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from 'styled-components';
-import { Container } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Navbar from '../../common/navbar/Navbar';
 import Kind from './Kind';
@@ -8,7 +7,7 @@ import burpee from '../../assets/burpee.svg';
 import pushup from '../../assets/pushup.svg';
 import squat from '../../assets/squat.svg';
 
-const Wrapper = styles(Container)`
+const Wrapper = styles.div`
   display: flex;
   justify-content: center;
   align-items: center;
