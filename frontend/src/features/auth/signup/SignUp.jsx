@@ -77,7 +77,7 @@ export default function SignUp() {
       dispatch(setNicknameCheckedFalse());
     }
     if (value.length < 7) {
-      setNickname(value);
+      setNickname(value.replace(/\s/g, ''));
       return true;
     }
     return false;
@@ -159,7 +159,6 @@ export default function SignUp() {
         <ValidatorForm
           onSubmit={handleSubmit}
           className={classes.validatorForm}
-          onError={(errors) => console.log(errors)}
         >
           <TextValidator
             label="닉네임"
@@ -191,7 +190,7 @@ export default function SignUp() {
           </CommonButton>
           <TextValidator
             label="Email"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value.replace(/\s/g, ''))}
             name="email"
             value={email}
             validators={['required', 'isEmail']}
@@ -206,12 +205,18 @@ export default function SignUp() {
           />
           <TextValidator
             label="비밀번호"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value.replace(/\s/g, ''))}
             name="password"
             type="password"
             value={password}
-            validators={['required']}
-            errorMessages={['정보를 입력해주세요']}
+            validators={[
+              'required',
+              'matchRegexp:^(?=.[A-Za-z])(?=.d)(?=.[$@$!%#?&])[A-Za-zd$@$!%*#?&]{8,16}$',
+            ]}
+            errorMessages={[
+              '정보를 입력해주세요',
+              '영어, 숫자, 특수문자 적어도 한 개 이상 포함해주세요(8~16자)',
+            ]}
             InputLabelProps={{
               shrink: true,
             }}
@@ -221,7 +226,9 @@ export default function SignUp() {
           />
           <TextValidator
             label="비밀번호 확인"
-            onChange={(e) => setRepeatPassword(e.target.value)}
+            onChange={(e) =>
+              setRepeatPassword(e.target.value.replace(/\s/g, ''))
+            }
             type="password"
             name="repeatPassword"
             value={repeatPassword}
