@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import MakeRoomModal from './MakeRoomModal';
 import FindRoomModal from './FindRoomModal';
 import DropDownMenu from './NavbarDropdown';
+import logo from '../../assets/logo(not).svg';
+import tutorial from '../../assets/tutorial.svg';
 
 const Wrapper = styled.div`
   height: 65px;
@@ -12,13 +14,12 @@ const Wrapper = styled.div`
   position: fixed;
   width: 100%;
   align-items: center;
-  border-bottom: solid rgba(248, 208, 83, 1);
+  border-bottom: solid rgba(248, 208, 83, 0.5);
 `;
 
-const Logo = styled(Link)`
-  width: 50px;
+const Logo = styled.img`
+  width: 100px;
   height: 100%;
-  background-image: url(https://picsum.photos/50/65);
 `;
 
 const Links = styled.ul`
@@ -41,7 +42,9 @@ export default function Navbar() {
   const handleFindModal = () => setIsFindOpen(false);
   return (
     <Wrapper>
-      <Logo to="/" />
+      <Link to="/">
+        <Logo src={logo} />
+      </Link>
       <MakeRoomModal
         fullWidth
         isOpen={isMakeOpen}
@@ -53,7 +56,9 @@ export default function Navbar() {
         handleModalClose={handleFindModal}
       />
       <Links>
-        <Link to="/tutorial">튜토리얼</Link>
+        <Link to="/tutorial">
+          <Logo src={tutorial} />
+        </Link>
         <button type="button" onClick={() => setIsMakeOpen(true)}>
           방만들기
         </button>
