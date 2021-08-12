@@ -58,7 +58,17 @@ export const CommonButton = styled(Button)`
   margin: 1em 0 0.25em;
   padding: 0.3em 1em;
   background: ${(props) => (props.yellow ? '#fbd14b' : '#9fa9d8')};
-  color: ${(props) => (props.mauve ? 'white' : 'black')};
+  color: ${(props) => (props.mauve ? 'white' : '#7a7a7a')};
+
+  &:hover {
+    background: ${(props) => (props.yellow ? '#ffce00' : '#8090d8')};
+    color: ${(props) => (props.mauve ? 'white' : '#262626')};
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    color: ${(props) => (props.mauve ? 'white' : 'black')};
+  }
 `;
 
 // component

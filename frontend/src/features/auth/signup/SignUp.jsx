@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import { Container, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import { signup, checkNickname, setNicknameCheckedFalse } from '../authSlice';
 import { CommonButton } from '../login/Login';
@@ -12,6 +12,7 @@ import logo from '../../../assets/logo.svg';
 // style
 const Wrapper = styled.div`
   height: 100vh;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,8 +21,6 @@ const Wrapper = styled.div`
 
 const LogoWrapper = styled.div`
   height: 10%;
-  display: flex;
-  height: 100vh;
   justify-content: center;
   align-items: center;
 `;
@@ -31,9 +30,9 @@ const Logo = styled.img`
   height: 200px;
 `;
 
-const LoginContainer = styled(Container)`
+const SignUpContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 80%;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -153,7 +152,7 @@ export default function SignUp() {
         <Logo src={logo} />
       </LogoWrapper>
 
-      <LoginContainer>
+      <SignUpContainer>
         <ValidatorForm
           onSubmit={handleSubmit}
           className={classes.validatorForm}
@@ -245,7 +244,7 @@ export default function SignUp() {
             fullWidth
           />
           <CommonButton
-            yellow="true"
+            mauve="true"
             disabled={
               !isNicknameChecked || !email || !password || !repeatPassword
             }
@@ -254,10 +253,10 @@ export default function SignUp() {
             회원가입
           </CommonButton>
           <Link to="/login">
-            <CommonButton mauve="true">로그인</CommonButton>
+            <CommonButton yellow="true">로그인</CommonButton>
           </Link>
         </ValidatorForm>
-      </LoginContainer>
+      </SignUpContainer>
     </Wrapper>
   );
 }
