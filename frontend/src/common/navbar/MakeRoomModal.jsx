@@ -10,6 +10,9 @@ import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import { CommonButton } from '../../features/auth/login/Login';
 import logo from '../../assets/logo(basic).svg';
+import burpee from '../../assets/burpee.svg';
+import pushup from '../../assets/pushup.svg';
+import squat from '../../assets/squat.svg';
 
 const ImageContainer = styled.div`
   display: flex;
@@ -18,7 +21,7 @@ const ImageContainer = styled.div`
 `;
 
 const ImageField = styled.img`
-  width: 30%;
+  width: 25%;
 `;
 
 const useStyles = makeStyles({
@@ -68,9 +71,9 @@ export default function MakeRoomModal({ isOpen, handleModalClose }) {
             Private으로 만들 경우, 비밀번호를 설정해주시면 됩니다!
           </DialogContentText>
           <ImageContainer>
-            <ImageField src="https://picsum.photos/50" />
-            <ImageField src="https://picsum.photos/50" />
-            <ImageField src="https://picsum.photos/50" />
+            <ImageField src={pushup} />
+            <ImageField src={burpee} />
+            <ImageField src={squat} />
           </ImageContainer>
           <TextField autoFocus margin="dense" id="password" label="비밀번호" />
         </DialogContent>
