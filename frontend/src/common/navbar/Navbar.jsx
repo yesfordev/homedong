@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 `;
 
 const HeaderWrapper = styled.div`
-  margin: 0 2em 0 2em;
+  margin: 0 0.5em 0 2em;
   display: flex;
   justify-content: space-between;
   width: 100%;

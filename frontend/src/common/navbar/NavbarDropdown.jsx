@@ -41,6 +41,7 @@ export default function SimpleMenu() {
         <Avatar alt="default" src={defaultImage} />
       </Button>
       <Menu
+        disableScrollLock
         id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
