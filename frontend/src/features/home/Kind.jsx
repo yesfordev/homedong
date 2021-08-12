@@ -15,8 +15,8 @@ const Image = styled.img`
   width: 60%;
 `;
 const Title = styled.span`
+  padding-top: 0.5em;
   font-size: 1.5em;
-  font-weight: bold;
   max-width: 60%;
 `;
 
