@@ -19,6 +19,7 @@ import Home from '../features/home/Home';
 import EmailChecked from '../features/auth/signup/EmailChecked';
 import Tutorial from '../features/tutorial/Tutorial';
 import Rank from '../features/rank/Rank';
+import Game from '../features/game/Game';
 import Error404 from '../common/error/Error404';
 import Error500 from '../common/error/Error500';
 
@@ -55,6 +56,7 @@ function App() {
             <PrivateRoute path="/mypage" component={MyPage} />
             <PrivateRoute path="/checkpassword" component={CheckPassword} />
             <PrivateRoute path="/modifyuserinfo" component={ModifyUserInfo} />
+            <PrivateRoute path="/game" component={Game} />
             <Route path="*" component={Error404} />
           </Switch>
         </BrowserRouter>
