@@ -33,6 +33,7 @@ import Card from '@material-ui/core/Card';
 import { Button } from '@material-ui/core';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import Navbar from '../../common/navbar/Navbar';
 import butimg from '../../assets/chatbox-icon.svg';
 import { quickStart } from '../home/homeSlice';
@@ -83,6 +84,7 @@ class Game extends Component {
       chaton: false,
       message: '',
       ishost: false,
+      timer: false,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -404,7 +406,7 @@ class Game extends Component {
   // 시작버튼
   start() {
     setTimeout(() => {
-      this.setState({ started: false });
+      this.setState({ started: false, timer: true });
       this.init();
     }, 5000);
     setTimeout(() => {
@@ -738,7 +740,19 @@ class Game extends Component {
 
   render() {
     const mySessionId = this.state.mySessionId;
-    const myUserName = this.state.myUserName;
+    const renderTime = ({ remainingTime }) => {
+      if (remainingTime === 0) {
+        return <div className="timer">Too lale...</div>;
+      }
+
+      return (
+        <div className="timer">
+          <div className="text">Remaining</div>
+          <div className="value">{remainingTime}</div>
+          <div className="text">seconds</div>
+        </div>
+      );
+    };
     const messages = this.state.messages;
     const { home } = this.props;
     // 각 slice의 state에서 원하는 변수들을 가져온다.
@@ -766,6 +780,18 @@ class Game extends Component {
       <>
         <Navbar />
         <Wrapper>
+          {this.state.timer ? (
+            <div className="timer-wrapper">
+              <CountdownCircleTimer
+                isPlaying
+                duration={10}
+                colors={[['#004777', 0.33], ['#F7B801', 0.33], ['#A30000']]}
+                onComplete={() => [this.setState({ timer: false }), 2000]}
+              >
+                {renderTime}
+              </CountdownCircleTimer>
+            </div>
+          ) : null}
           {this.state.started ? (
             <div className="demo">
               <div
