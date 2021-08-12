@@ -17,9 +17,6 @@ buildscript{
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVer}"
         classpath "io.spring.gradle:dependency-management-plugin:${springDependencyMgmtVer}.RELEASE"
         classpath "org.springframework:springloaded:${springLoadedVer}.RELEASE"
-        //이클립스인 경우를 위한 QueryDSL 플러그인. IntelliJ는 불필요. [시작]
-//        classpath "gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslPluginVer}"
-        //[끝] 
         classpath "com.github.node-gradle:gradle-node-plugin:3.1.0"
     }
 }
@@ -33,8 +30,7 @@ plugins {
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'eclipse'
 apply plugin: 'com.github.node-gradle.node'
-//이클립스인 경우를 위한 QueryDSL 플러그인. IntelliJ는 불필요.
-//apply plugin: 'com.ewerk.gradle.plugins.querydsl'
+apply plugin: 'idea'
 
 
 repositories {
@@ -46,7 +42,7 @@ repositories {
     maven { url "https://build.shibboleth.net/nexus/content/repositories/releases" }
 }
 
-group 'com.ssafy'
+group 'com.calisthenics'
 version '1.0-SNAPSHOT'
 sourceCompatibility = '1.8'
 
@@ -61,27 +57,27 @@ configurations {
     providedRuntime
 }
 
-processResources {
-    dependsOn "copyWebApp"
-}
-
-/*task npmInstall(type: NpmTask, overwrite: true) {
-    args = ['install']
-}*/
-
-task webpack(type: NpmTask, dependsOn: 'npmInstall') {
-    args = ['run','build']
-}
-
-// 추가
-task copyWebApp(type: Copy) {
-    dependsOn "webpack"
-    from "${project.projectDir}/../frontend/build"
-    into "${project.projectDir}/src/main/resources/static"
-}
-
-// processResources is a Java task. Run the webpack bundling before this task using the 'build' task in the package.json
-processResources.dependsOn 'webpack'
+//processResources {
+//    dependsOn "copyWebApp"
+//}
+//
+///*task npmInstall(type: NpmTask, overwrite: true) {
+//    args = ['install']
+//}*/
+//
+//task webpack(type: NpmTask, dependsOn: 'npmInstall') {
+//    args = ['run','build']
+//}
+//
+//// 추가
+//task copyWebApp(type: Copy) {
+//    dependsOn "webpack"
+//    from "${project.projectDir}/../frontend/build"
+//    into "${project.projectDir}/src/main/resources/static"
+//}
+//
+//// processResources is a Java task. Run the webpack bundling before this task using the 'build' task in the package.json
+//processResources.dependsOn 'webpack'
 
 //set build time and inject value to application.properties
 def buildTime() {
@@ -109,42 +105,18 @@ processResources {
     }
 }
 
-//이클립스인 경우를 위한 QueryDSL 설정. IntelliJ는 불필요. [시작]
-//def querydslDir = 'src/main/generated'
-//querydsl {
-//    library = "com.querydsl:querydsl-apt"
-//    jpa = true
-//    querydslSourcesDir = querydslDir
-//}
-//
-//sourceSets {
-//    main {
-//        java {
-//            srcDirs = ['src/main/java', querydslDir]
-//        }
-//    }
-//}
-//
-//compileQuerydsl {
-//    options.annotationProcessorPath = configurations.querydsl
-//}
-//
-//configurations {
-//    querydsl.extendsFrom compileClasspath
-//}
-//[끝]
-
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
-//    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.plugin:spring-plugin-core:2.0.0.RELEASE")
-//    testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("org.springframework.security:spring-security-test")
     annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("mysql:mysql-connector-java")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
+//    developmentOnly("org.springframework.boot:spring-boot-devtools")
+    runtimeOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     implementation('commons-io:commons-io:2.6')
@@ -194,7 +166,33 @@ dependencies {
     implementation("org.projectlombok:lombok:1.18.20")
     annotationProcessor("org.projectlombok:lombok:1.18.20")
 
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    implementation('org.springframework.boot:spring-boot-starter-test')
+
+    // 추가
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    runtimeOnly 'com.h2database:h2'
+
+    // jwt 관련 의존성
+    compile group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+    runtime group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+    runtime group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
+    // mariaDB
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' // MariaDB
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-jdbc
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.5.2'
+
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    
+    // Openvidu 의존성
+    implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.18.0'
+
+    // redis cache 의존성
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '2.5.0'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-cache
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-cache', version: '2.4.3'
+
 }
 
 test {
