@@ -1,3 +1,8 @@
+/* eslint-disable import/extensions */
+/* eslint-disable consistent-return */
+/* eslint-disable array-callback-return */
+/* eslint-disable react/style-prop-object */
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-useless-concat */
 /* eslint-disable react/no-array-index-key */
@@ -21,11 +26,20 @@
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import React, { Component, createRef } from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import { Button } from '@material-ui/core';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 import Navbar from '../../common/navbar/Navbar';
 import butimg from '../../assets/chatbox-icon.svg';
+import { quickStart } from '../home/homeSlice';
 
 import './Game.css';
+import './UserVideo.css';
+
 import Messages from './components/Messages';
 
 import UserVideoComponent from './UserVideoComponent';
@@ -37,7 +51,7 @@ const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
 const Wrapper = styled.div`
   display: flex;
   padding: 65px 0px 0px 0px;
-  height: 90vh;
+  height: 100vh;
   width: 100%;
 `;
 
@@ -46,8 +60,8 @@ class Game extends Component {
     super(props);
 
     this.state = {
-      mySessionId: 'SessionA',
-      myUserName: `Participant${Math.floor(Math.random() * 100)}`,
+      mySessionId: undefined,
+      myUserName: undefined,
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined,
@@ -94,6 +108,21 @@ class Game extends Component {
   }
 
   componentDidMount() {
+    const { doQuickStart } = this.props;
+    const data = { gameType: 1 };
+    doQuickStart(data)
+      .unwrap()
+      .then(() => {
+        const { home } = this.props;
+        // 각 slice의 state에서 원하는 변수들을 가져온다.
+        const { roomId, nickname, gameType } = home;
+        this.setState({
+          mySessionId: roomId,
+          myUserName: nickname,
+          gametype: gameType,
+        });
+        this.joinSession();
+      });
     window.addEventListener('beforeunload', this.onbeforeunload);
   }
 
@@ -422,19 +451,19 @@ class Game extends Component {
 
   // 티처블 머신
   async init() {
-    console.log('teachablemachinestart');
+    console.log(`teachablemachinestart${this.state.gametype}`);
     switch (this.state.gametype) {
-      case 'pushUp':
+      case 1:
         this.setState({
           URL: 'https://teachablemachine.withgoogle.com/models/RmHPFT0M2/',
         });
         break;
-      case 'squat':
+      case 2:
         this.setState({
           URL: 'https://teachablemachine.withgoogle.com/models/y1scUcaWN/',
         });
         break;
-      case 'burpee':
+      case 3:
         this.setState({
           URL: 'https://teachablemachine.withgoogle.com/models/j1ifbpLKk/',
         });
@@ -463,13 +492,13 @@ class Game extends Component {
   async loop(timestamp) {
     this.state.webcam.update(); // update the webcam frame
     switch (this.state.gametype) {
-      case 'pushUp':
+      case 1:
         await this.pushUppredict();
         break;
-      case 'burpee':
+      case 2:
         await this.burpeepredict();
         break;
-      case 'squat':
+      case 3:
         await this.squatpredict();
         break;
     }
@@ -591,14 +620,48 @@ class Game extends Component {
     return (
       this.state.rankdata &&
       this.state.rankdata.map((rank, index) => {
+        const useStyles = makeStyles({
+          root: {
+            minWidth: 50,
+          },
+          bullet: {
+            display: 'inline-block',
+            margin: '0 2px',
+            transform: 'scale(0.8)',
+          },
+          title: {
+            fontSize: 14,
+          },
+          pos: {
+            marginBottom: 12,
+          },
+        });
+        const classes = useStyles;
+        const bull = <span className={classes.bullet}>•</span>;
         const { nickname, count } = rank; // destructuring
-        return (
-          <tr key={index}>
-            <td>{index + 1}위</td>
-            <td>{nickname}님</td>
-            <td>{count}개</td>
-          </tr>
-        );
+        if (index < 3) {
+          return (
+            <li key={index}>
+              <Card className={classes.root} variant="outlined">
+                <CardContent>
+                  <Typography
+                    className={classes.title}
+                    color="textSecondary"
+                    gutterBottom
+                  >
+                    {index + 1}위
+                  </Typography>
+                  <Typography variant="h5" component="h2">
+                    {nickname}님
+                  </Typography>
+                  <Typography className={classes.pos} color="textSecondary">
+                    {count}개
+                  </Typography>
+                </CardContent>
+              </Card>
+            </li>
+          );
+        }
       })
     );
   }
@@ -677,216 +740,182 @@ class Game extends Component {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
     const messages = this.state.messages;
-    const rank = this.state.sortedrank;
-    const data = {};
+    const { home } = this.props;
+    // 각 slice의 state에서 원하는 변수들을 가져온다.
+    const { token, roomId, nickname, gameType } = home;
+    const useStyles = makeStyles({
+      root: {
+        minWidth: 50,
+      },
+      bullet: {
+        display: 'inline-block',
+        margin: '0 2px',
+        transform: 'scale(0.8)',
+      },
+      title: {
+        fontSize: 14,
+      },
+      pos: {
+        marginBottom: 12,
+      },
+    });
+    const classes = useStyles;
+    const bull = <span className={classes.bullet}>•</span>;
 
     return (
       <>
         <Navbar />
         <Wrapper>
-          <div className="container">
-            {this.state.started ? (
-              <div className="demo">
+          {this.state.started ? (
+            <div className="demo">
+              <div
+                className={
+                  this.state.started
+                    ? 'demo__colored-blocks'
+                    : 'demo__colored-blocks'
+                }
+              >
                 <div
                   className={
                     this.state.started
-                      ? 'demo__colored-blocks'
-                      : 'demo__colored-blocks'
+                      ? 'demo__colored-blocks-rotater'
+                      : 'demo__colored-blocks-rotater1'
                   }
                 >
-                  <div
+                  <div className="demo__colored-block" />
+                  <div className="demo__colored-block" />
+                  <div className="demo__colored-block" />
+                </div>
+                <div className="demo__colored-blocks-inner" />
+                <div
+                  className={this.state.started ? 'demo__text' : 'demo_text1'}
+                >
+                  {this.state.readystate}
+                </div>
+              </div>
+              <div className="demo__inner">
+                <svg className="demo__numbers" viewBox="0 0 100 100">
+                  <defs>
+                    <path className="demo__num-path-1" d="M40,28 55,22 55,78" />
+                    <path
+                      className="demo__num-join-1-2"
+                      d="M55,78 55,83 a17,17 0 1,0 34,0 a20,10 0 0,0 -20,-10"
+                    />
+                    <path
+                      className="demo__num-path-2"
+                      d="M69,73 l-35,0 l30,-30 a16,16 0 0,0 -22.6,-22.6 l-7,7"
+                    />
+                    <path
+                      className="demo__num-join-2-3"
+                      d="M28,69 Q25,44 34.4,27.4"
+                    />
+                    <path
+                      className="demo__num-path-3"
+                      d="M30,20 60,20 40,50 a18,15 0 1,1 -12,19"
+                    />
+                  </defs>
+                  <path
                     className={
                       this.state.started
-                        ? 'demo__colored-blocks-rotater'
-                        : 'demo__colored-blocks-rotater1'
+                        ? 'demo__numbers-path'
+                        : 'demo__numbers-path1'
                     }
-                  >
-                    <div className="demo__colored-block" />
-                    <div className="demo__colored-block" />
-                    <div className="demo__colored-block" />
-                  </div>
-                  <div className="demo__colored-blocks-inner" />
-                  <div
-                    className={this.state.started ? 'demo__text' : 'demo_text1'}
-                  >
-                    {this.state.readystate}
-                  </div>
-                </div>
-                <div className="demo__inner">
-                  <svg className="demo__numbers" viewBox="0 0 100 100">
-                    <defs>
-                      <path
-                        className="demo__num-path-1"
-                        d="M40,28 55,22 55,78"
-                      />
-                      <path
-                        className="demo__num-join-1-2"
-                        d="M55,78 55,83 a17,17 0 1,0 34,0 a20,10 0 0,0 -20,-10"
-                      />
-                      <path
-                        className="demo__num-path-2"
-                        d="M69,73 l-35,0 l30,-30 a16,16 0 0,0 -22.6,-22.6 l-7,7"
-                      />
-                      <path
-                        className="demo__num-join-2-3"
-                        d="M28,69 Q25,44 34.4,27.4"
-                      />
-                      <path
-                        className="demo__num-path-3"
-                        d="M30,20 60,20 40,50 a18,15 0 1,1 -12,19"
-                      />
-                    </defs>
-                    <path
-                      className={
-                        this.state.started
-                          ? 'demo__numbers-path'
-                          : 'demo__numbers-path1'
-                      }
-                      d="M-10,20 60,20 40,50 a18,15 0 1,1 -12,19 
+                    d="M-10,20 60,20 40,50 a18,15 0 1,1 -12,19 
                        Q25,44 34.4,27.4
                        l7,-7 a16,16 0 0,1 22.6,22.6 l-30,30 l35,0 L69,73 
                        a20,10 0 0,1 20,10 a17,17 0 0,1 -34,0 L55,83 
                        l0,-61 L40,28"
-                    />
-                  </svg>
-                </div>
-              </div>
-            ) : null}
-            {this.state.session === undefined ? (
-              <div id="join">
-                <div id="img-div">
-                  <img
-                    src="resources/images/openvidu_grey_bg_transp_cropped.png"
-                    alt="OpenVidu logo"
                   />
-                </div>
-                <div id="join-dialog" className="jumbotron vertical-center">
-                  <h1> Join a video session </h1>
-                  <form className="form-group" onSubmit={this.joinSession}>
-                    <p>
-                      <label>Participant: </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        id="userName"
-                        value={myUserName}
-                        onChange={this.handleChangeUserName}
-                        required
-                      />
-                    </p>
-                    <p>
-                      <label> Session: </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        id="sessionId"
-                        value={mySessionId}
-                        onChange={this.handleChangeSessionId}
-                        required
-                      />
-                    </p>
-                    <p className="text-center">
-                      <input
-                        className="btn btn-lg btn-success"
-                        name="commit"
-                        type="submit"
-                        value="JOIN"
-                      />
-                    </p>
-                  </form>
-                </div>
+                </svg>
               </div>
-            ) : null}
-
-            {this.state.session !== undefined ? (
-              <div id="session">
-                <div id="session-header">
-                  <h1 id="session-title">{mySessionId}</h1>
+            </div>
+          ) : null}
+          {this.state.session !== undefined ? (
+            <div id="session">
+              <div id="session-header">
+                <h1 id="session-title">{mySessionId}</h1>
+                <input
+                  className="btn btn-large btn-danger"
+                  type="button"
+                  id="buttonLeaveSession"
+                  onClick={this.leaveSession}
+                  value="Leave session"
+                />
+                {this.state.ishost ? (
                   <input
                     className="btn btn-large btn-danger"
                     type="button"
-                    id="buttonLeaveSession"
-                    onClick={this.leaveSession}
-                    value="Leave session"
+                    value="START GAME"
+                    onClick={this.startButton}
                   />
-                  {this.state.ishost ? (
-                    <input
-                      className="btn btn-large btn-danger"
-                      type="button"
-                      value="START GAME"
-                      onClick={this.startButton}
-                    />
-                  ) : null}
-                </div>
-                <div>현재상태</div>
-                <div>{this.state.status}</div>
-                <div>개수</div>
-                <div>{this.state.count}</div>
-                <table id="ranking" className="scrolltable">
-                  <tbody>{this.renderTableData()}</tbody>
-                </table>
-                <div id="video-container" className="col-md-6">
-                  {this.state.publisher !== undefined ? (
-                    <div
-                      className="stream-container col-md-6 col-xs-6"
-                      onClick={() =>
-                        this.handleMainVideoStream(this.state.publisher)
-                      }
-                    >
-                      <UserVideoComponent
-                        streamManager={this.state.publisher}
-                      />
-                    </div>
-                  ) : null}
-                  {this.state.subscribers.map((sub, i) => (
-                    <div
-                      key={i}
-                      className="stream-container col-md-6 col-xs-6"
-                      onClick={() => this.handleMainVideoStream(sub)}
-                    >
-                      <UserVideoComponent streamManager={sub} />
-                    </div>
-                  ))}
-                </div>
-                <div className="chatbox">
-                  {this.state.chaton ? (
-                    <div className="chat chatbox__support chatbox--active">
-                      <div className="chat chatbox__header" />
-                      <div
-                        className="chatbox__messages"
-                        ref={this.chatboxmessage}
-                      >
-                        {/* {this.displayElements} */}
-                        <Messages messages={messages} />
-                        <div />
-                      </div>
-                      <div className="chat chatbox__footer">
-                        <input
-                          id="chat_message"
-                          type="text"
-                          placeholder="Write a message..."
-                          onChange={this.handleChatMessageChange}
-                          onKeyPress={this.sendmessageByEnter}
-                          value={this.state.message}
-                        />
-                        <p
-                          className="chat chatbox__send--footer"
-                          onClick={this.sendmessageByClick}
-                        >
-                          Send
-                        </p>
-                      </div>
-                    </div>
-                  ) : null}
-                  <div className="chatbox__button" ref={this.chatButton}>
-                    <button onClick={this.chattoggle}>
-                      <img src={butimg} />
-                    </button>
+                ) : null}
+              </div>
+              <div>현재상태</div>
+              <div>{this.state.status}</div>
+              <div>개수</div>
+              <div>{this.state.count}</div>
+              <div className="rankingtable">
+                <ul>{this.renderTableData()} </ul>
+              </div>
+              <div id="video-container" className="video-container col-md-6">
+                {this.state.publisher !== undefined ? (
+                  <div
+                    className="stream-container col-md-6 col-xs-6"
+                    onClick={() =>
+                      this.handleMainVideoStream(this.state.publisher)
+                    }
+                  >
+                    <UserVideoComponent streamManager={this.state.publisher} />
                   </div>
+                ) : null}
+                {this.state.subscribers.map((sub, i) => (
+                  <div
+                    key={i}
+                    className="stream-container col-md-6 col-xs-6"
+                    onClick={() => this.handleMainVideoStream(sub)}
+                  >
+                    <UserVideoComponent streamManager={sub} />
+                  </div>
+                ))}
+              </div>
+              <div className="chatbox">
+                {this.state.chaton ? (
+                  <div className="chat chatbox__support chatbox--active">
+                    <div className="chat chatbox__header" />
+                    <div
+                      className="chatbox__messages"
+                      ref={this.chatboxmessage}
+                    >
+                      {/* {this.displayElements} */}
+                      <Messages messages={messages} />
+                      <div />
+                    </div>
+                    <div className="chat chatbox__footer">
+                      <input
+                        id="chat_message"
+                        type="text"
+                        placeholder="Write a message..."
+                        onChange={this.handleChatMessageChange}
+                        onKeyPress={this.sendmessageByEnter}
+                        value={this.state.message}
+                      />
+                      <p
+                        className="chat chatbox__send--footer"
+                        onClick={this.sendmessageByClick}
+                      >
+                        Send
+                      </p>
+                    </div>
+                  </div>
+                ) : null}
+                <div className="chatbox__button" ref={this.chatButton}>
+                  <button onClick={this.chattoggle}>
+                    <img src={butimg} />
+                  </button>
                 </div>
               </div>
-            ) : null}
-          </div>
+            </div>
+          ) : null}
         </Wrapper>
       </>
     );
@@ -904,5 +933,19 @@ class Game extends Component {
    *   3) The Connection.token must be consumed in Session.connect() method
    */
 }
+// authSlice, homeSlice 같이 redux(중앙집중 관리형)에서 전달받은 값을 사용하는 경우
+const mapStateToProps = (state) => ({
+  // homeSlice
+  home: state.home,
+});
 
-export default Game;
+// slice에 있는 actions(방찾기, 빠른 시작등등)을 사용하고 싶을 때
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // 빠른시작
+    // quickStart는 import { quickStart } from './homeSlice'; 구문을 이용해서 action 가져온 것
+    doQuickStart: (type) => dispatch(quickStart(type)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

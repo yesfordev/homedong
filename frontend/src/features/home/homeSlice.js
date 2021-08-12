@@ -4,15 +4,13 @@ import axios from '../../common/api/http-common';
 // input - password, gameType
 export const makeRoom = createAsyncThunk(
   'MAKE_ROOM',
-  async ([gameType, password], { rejectWithValue }) => {
+  async (data, { rejectWithValue }) => {
     try {
-      const userInfo = {
-        gameType,
-        password,
-      };
-      const response = await axios.post('/api/rooms', userInfo);
+      const response = await axios.post('/api/rooms', data);
+      console.log(response);
       return response.data;
     } catch (err) {
+      console.log(err);
       return rejectWithValue(err);
     }
   }
@@ -36,10 +34,9 @@ export const leaveRoom = createAsyncThunk(
 
 export const quickStart = createAsyncThunk(
   'QUICK_START',
-  async (gameType, { rejectWithValue }) => {
+  async (data, { rejectWithValue }) => {
     try {
-      const userInfo = { gameType };
-      const response = await axios.post('/api/rooms/quick', userInfo);
+      const response = await axios.post('/api/rooms/quick', data);
       return response.data;
     } catch (err) {
       return rejectWithValue(err);
@@ -49,23 +46,19 @@ export const quickStart = createAsyncThunk(
 
 export const findRoom = createAsyncThunk(
   'FIND_ROOM',
-  async ([password, roomId], { rejectWithValue }) => {
+  async (data, { rejectWithValue }) => {
     try {
-      console.log('findRoom', password, roomId);
-      const userInfo = {
-        password,
-        roomId,
-      };
-      console.log('search action', userInfo);
-      const response = await axios.post('api/rooms/search', userInfo);
+      console.log('search action', data);
+      const response = await axios.post('api/rooms/search', data);
       return response;
     } catch (err) {
+      console.log(err);
       return rejectWithValue(err);
     }
   }
 );
 
-const testSlice = createSlice({
+const homeSlice = createSlice({
   name: 'test',
   initialState: {
     token: '',
@@ -98,4 +91,4 @@ const testSlice = createSlice({
   },
 });
 
-export default testSlice.reducer;
+export default homeSlice.reducer;

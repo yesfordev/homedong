@@ -14,6 +14,11 @@
   --italic: 300;
   --primary: #581b98;
 }
+ul li {
+  list-style-type: none;
+  float: left;
+  padding: 20px;
+}
 
 nav {
   height: 50px;
@@ -371,7 +376,7 @@ nav {
 }
 
 .messages__item {
-  max-width: 60.6%;
+  max-width: 6 0.6%;
   width: fit-content;
 }
 
@@ -392,21 +397,15 @@ nav {
 /*팝업채팅*/
 
 /*랭킹테이블*/
-.scrolltable {
-  display: block;
-  overflow: auto;
+.rankingtable {
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
 }
-table {
-  width: 250px;
-  height: 100px;
-  border: 1px solid #000;
-  border-spacing: 0;
-}
-th {
-  border: 1px solid #000;
-  background: #ace;
-}
-td {
-  border: 1px solid #000;
+.video-container {
+  justify-content: center;
 }
 /*랭킹테이블*/
+#session {
+  width: 100%;
+}
