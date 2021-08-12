@@ -850,8 +850,8 @@ class Game extends Component {
                 </div>
                 <div className="chatbox">
                   {this.state.chaton ? (
-                    <div className="chatbox__support chatbox--active">
-                      <div className="chatbox__header" />
+                    <div className="chat chatbox__support chatbox--active">
+                      <div className="chat chatbox__header" />
                       <div
                         className="chatbox__messages"
                         ref={this.chatboxmessage}
@@ -860,7 +860,7 @@ class Game extends Component {
                         <Messages messages={messages} />
                         <div />
                       </div>
-                      <div className="chatbox__footer">
+                      <div className="chat chatbox__footer">
                         <input
                           id="chat_message"
                           type="text"
@@ -870,7 +870,7 @@ class Game extends Component {
                           value={this.state.message}
                         />
                         <p
-                          className="chatbox__send--footer"
+                          className="chat chatbox__send--footer"
                           onClick={this.sendmessageByClick}
                         >
                           Send
