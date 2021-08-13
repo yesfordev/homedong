@@ -6,15 +6,12 @@ import { motion } from 'framer-motion';
 import burpee from '../../assets/burpee.svg';
 import pushup from '../../assets/pushup.svg';
 import squat from '../../assets/squat.svg';
-import Navbar from '../../common/navbar/Navbar';
-
 // import LogoImage from '../../assets/logo.svg';
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 65px;
 `;
 
 const Exercise = styled.section`

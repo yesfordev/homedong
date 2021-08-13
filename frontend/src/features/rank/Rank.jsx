@@ -28,7 +28,7 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled(motion.p)`
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 600;
   margin: 20px 0;
 `;

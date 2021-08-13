@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 // style
-import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -12,10 +11,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import styled from 'styled-components';
 
-const useStyles = makeStyles({
-  temp: {},
-});
-
 const CustomTableContainer = styled(TableContainer)`
   width: 50%;
   border-radius: 10px;
@@ -23,6 +18,8 @@ const CustomTableContainer = styled(TableContainer)`
     font-size: 1.7rem;
     padding: 20px 0;
     font-weight: 550;
+    background-color: rgba(159, 169, 216, 0.5);
+    color: rgba(0, 0, 0, 0.6);
   }
   & td {
     font-size: 1.3rem;
@@ -37,7 +34,7 @@ function createData(ranking, nickname, count, changeStatus, changeRanking) {
   let finalChangeStatus;
   let finalRanking;
   if (changeStatus === 'noChange') {
-    finalChangeStatus = '🔺';
+    finalChangeStatus = '-';
   } else if (changeStatus === `up`) {
     finalChangeStatus = `🔺${changeRanking}`;
   } else if (changeStatus === 'down') {
@@ -59,7 +56,6 @@ function createData(ranking, nickname, count, changeStatus, changeRanking) {
 }
 
 export default function RankTable() {
-  const classes = useStyles();
   const { currentRankInfo } = useSelector((state) => state.rank);
   // 현재 순위 정보
   const rows = [];
@@ -74,7 +70,6 @@ export default function RankTable() {
         padding="normal"
         size="small"
         stickyHeader
-        className={classes.table}
         aria-label="a dense table"
       >
         <caption>매일 자정에 업데이트됩니다</caption>
