@@ -25,8 +25,8 @@ import java.util.Random;
 public class MailService {
     private final JavaMailSender javaMailSender;
 
-    @Value("${server.port}")
-    private String serverPort;
+    @Value("${custom.host}")
+    private String serverAddress;
 
     //인증코드 난수 발생
     private String getAuthCode(int size) {
@@ -47,7 +47,6 @@ public class MailService {
 
     public String sendAuthMail(String email, String nickname) throws MessagingException, UnknownHostException {
         String authKey = getAuthCode(6);
-        String serverAddress = InetAddress.getLocalHost().getHostAddress();
 
         StringBuffer emailcontent = new StringBuffer();
         emailcontent.append("<!DOCTYPE html>");
@@ -73,7 +72,7 @@ public class MailService {
                 "		감사합니다."																																															+
                 "	</p>"																																																	+
                 "	<a style=\"color: #FFF; text-decoration: none; text-align: center;\""																																	+
-                "	href=\"http://" + serverAddress + ":" + serverPort + "/api/signup/confirm?email=" + email + "&authKey=" + authKey + "\" target=\"_blank\">"														+
+                "	href=\"" + serverAddress + "/api/signup/confirm?email=" + email + "&authKey=" + authKey + "\" target=\"_blank\">"														+
                 "<div style=\"margin: 0 auto;\">" +
                 "		<p"																																																	+
                 "			style=\"display: inline-block; width: 210px; height: 45px; margin: 30px 5px 50px; background: #6A60A9; line-height: 45px; vertical-align: middle; font-size: 16px;\">"							+
