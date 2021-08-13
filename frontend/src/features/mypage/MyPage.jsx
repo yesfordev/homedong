@@ -10,7 +10,10 @@ import { toast } from 'react-toastify';
 
 // image
 import defaultImage from '../../assets/default.png';
-import badgeImages from '../../assets/badgeImages';
+import badgeImages from '../../assets/badges/badgeImages';
+import burpee from '../../assets/burpee.svg';
+import pushUp from '../../assets/pushup.svg';
+import squat from '../../assets/squat.svg';
 
 // component
 import Navbar from '../../common/navbar/Navbar';
@@ -27,6 +30,10 @@ const Wrapper = styled.div`
   padding: 65px 0px 0px 0px;
   height: 200vh;
   width: 100%;
+
+  @media (max-width: 767px) {
+    height: auto;
+  }
 `;
 
 // 사이드바
@@ -76,38 +83,78 @@ const Record = styled.section``;
 // 뱃지
 const Badges = styled.section`
   display: flex;
-  flex-wrap: wrap;
+  justify-content: ${(props) => (props.isHomeDongKing ? 'center' : '')};
+  flex-direction: row;
+  
+
+  @media (max-width: 767px) {
+    display: block;
+    margin-top: 10px;
 `;
 
+// 운동종류
+const ExerciseKind = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+// 운동종류 이미지
+const ExerciseImage = styled.img`
+  width: 50%;
+  margin: 40px auto;
+  @media (max-width: 767px) {
+    width: 100%;
+  }
+`;
+
+// 뱃지 컨테이너
+const BadgeContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+// 뱃지
 const Badge = styled.img`
-  width: ${(props) => 100 / props.badgeLen}%;
-  border-radius: 50%;
+  width: calc(100% / 3);
+  filter: ${(props) => (props.isPresent ? 'grayscale(0%)' : 'grayscale(100%)')};
+  opacity: ${(props) => (props.isPresent ? '1' : '0.3')};
 `;
 
 // 메세지
 const Message = styled.p``;
-
-// 1일 1동
-// const Calender = styled.section``;
 
 // footer
 const Footer = styled.footer``;
 
 export default function MyPage() {
   const { nickname, email } = useSelector((state) => state.auth.user);
-  const { badgesOwned, consecutiveRecordInfo } = useSelector(
+  // badgesOwned
+  const { consecutiveRecordInfo, badgesOwned } = useSelector(
     (state) => state.mypage
   );
   const { duration, workToday } = consecutiveRecordInfo;
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const badgeLen = badgesOwned.length;
+  // badge 가지고 있는 것 추출하는 함수
+  // 각 경기에 대한 뱃지 이미지의 색을 살려준다.
+
+  function drawBadge() {
+    badgesOwned.forEach((badgeOwned) => {
+      const [kind, level] = badgeOwned;
+      if (kind !== 'sitUp' && kind !== 'homedongKing') {
+        console.log(kind, level, badgesOwned);
+        badgeImages[kind][level][1] = true;
+      }
+    });
+  }
 
   useEffect(() => {
     dispatch(loadBadge())
       .unwrap()
       .then(() => {
+        console.log('drawBadge');
         dispatch(loadBadgesOwned());
       })
       .catch((err) => {
@@ -129,6 +176,10 @@ export default function MyPage() {
         }
       });
   }, []);
+
+  useEffect(() => {
+    drawBadge();
+  }, [badgesOwned]);
 
   return (
     <>
@@ -162,18 +213,75 @@ export default function MyPage() {
             <Title>내 기록</Title>
             <MyTable />
           </Record>
-          <Badges>
-            {badgesOwned.map((badgeOwned) => {
-              const [kind, level] = badgeOwned;
-              return (
-                <Badge
-                  badgeLen={badgeLen}
-                  key={badgeOwned}
-                  src={badgeImages[kind][level]}
-                />
-              );
-            })}
-          </Badges>
+          {badgeImages.homedongKing.best[1] === true ? (
+            <Badges isHomeDongKing>
+              <Badge isPresent src={badgeImages.homedongKing.best[0]} />
+            </Badges>
+          ) : (
+            <Badges>
+              <ExerciseKind>
+                <ExerciseImage src={squat} alt="badge" />
+                <BadgeContainer>
+                  <Badge
+                    isPresent={badgeImages.squat.beginner[1]}
+                    src={badgeImages.squat.beginner[0]}
+                    alt="badge"
+                  />
+                  <Badge
+                    isPresent={badgeImages.squat.intermediate[1]}
+                    src={badgeImages.squat.intermediate[0]}
+                    alt="badge"
+                  />
+                  <Badge
+                    isPresent={badgeImages.squat.advanced[1]}
+                    src={badgeImages.squat.advanced[0]}
+                    alt="badge"
+                  />
+                </BadgeContainer>
+              </ExerciseKind>
+              <ExerciseKind>
+                <ExerciseImage src={burpee} alt="badge" />
+                <BadgeContainer>
+                  <Badge
+                    isPresent={badgeImages.burpee.beginner[1]}
+                    src={badgeImages.burpee.beginner[0]}
+                    alt="badge"
+                  />
+                  <Badge
+                    isPresent={badgeImages.burpee.intermediate[1]}
+                    src={badgeImages.burpee.intermediate[0]}
+                    alt="badge"
+                  />
+                  <Badge
+                    isPresent={badgeImages.burpee.advanced[1]}
+                    src={badgeImages.burpee.advanced[0]}
+                    alt="badge"
+                  />
+                </BadgeContainer>
+              </ExerciseKind>
+              <ExerciseKind>
+                <ExerciseImage src={pushUp} alt="badge" />
+                <BadgeContainer>
+                  <Badge
+                    isPresent={badgeImages.pushUp.beginner[1]}
+                    src={badgeImages.pushUp.beginner[0]}
+                    alt="badge"
+                  />
+                  <Badge
+                    isPresent={badgeImages.pushUp.intermediate[1]}
+                    src={badgeImages.pushUp.intermediate[0]}
+                    alt="badge"
+                  />
+                  <Badge
+                    isPresent={badgeImages.pushUp.advanced[1]}
+                    src={badgeImages.pushUp.advanced[0]}
+                    alt="badge"
+                  />
+                </BadgeContainer>
+              </ExerciseKind>
+            </Badges>
+          )}
+
           {workToday ? (
             <Message>
               현재, {duration}일동안 운동하셨어요!! 오늘도 하셨네요😀

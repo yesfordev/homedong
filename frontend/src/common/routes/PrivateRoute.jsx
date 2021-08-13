@@ -13,8 +13,8 @@ export default function PrivateRoute({ component: Component, ...rest }) {
       .unwrap()
       .catch((err) => {
         if (err.status === 401) {
-          toast.error('😥 로그인 해주세요');
           history.push('/login');
+          toast.error('😥 로그인 해주세요');
         } else if (err.status === 500) {
           history.push('/error');
         }

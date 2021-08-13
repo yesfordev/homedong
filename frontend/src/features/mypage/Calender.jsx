@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Calendar as Main } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
-import Badge1 from '../../assets/badge1.png';
+import Badge1 from '../../assets/badge.png';
 import { loadDailyRecord, loadConsecutiveRecord } from './mypageSlice';
 
 function Calender() {

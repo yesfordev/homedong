@@ -72,7 +72,7 @@ const mypageSlice = createSlice({
       const { badgeInfo } = state;
       Object.entries(badgeInfo).forEach(([exercise, detailInfo]) => {
         // 홈동킹
-        if (detailInfo === false) {
+        if (detailInfo === true) {
           state.badgesOwned.push([exercise, 'best']);
         }
         // 각 운동 뱃지 탐색
@@ -81,7 +81,7 @@ const mypageSlice = createSlice({
             if (key === 'gameType') {
               gameType = gameTypes[value - 1];
             }
-            if (value === false) {
+            if (value === true) {
               state.badgesOwned.push([gameType, key]);
             }
           });
