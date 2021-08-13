@@ -27,8 +27,9 @@ const ImageField = styled.img`
 const useStyles = makeStyles({
   back: {
     opacity: 0.97,
-    borderRadius: 50,
-    padding: '0 50px 0 100px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   dialog: {
     background: '#f6f5fd',
@@ -78,10 +79,10 @@ export default function MakeRoomModal({ isOpen, handleModalClose }) {
           <TextField autoFocus margin="dense" id="password" label="비밀번호" />
         </DialogContent>
         <DialogActions className={classes.dialogAction}>
-          <CommonButton mauve onClick={handleModalClose} color="primary">
+          <CommonButton mauve onClick={handleModalClose}>
             방만들기
           </CommonButton>
-          <CommonButton yellow onClick={handleModalClose} color="secondary">
+          <CommonButton yellow onClick={handleModalClose}>
             취소
           </CommonButton>
         </DialogActions>
