@@ -45,7 +45,7 @@ import Messages from './components/Messages';
 
 import UserVideoComponent from './UserVideoComponent';
 
-const OPENVIDU_SERVER_URL = 'https://i5a608.p.ssafy.io:443';
+const OPENVIDU_SERVER_URL = 'https://i5a608.p.ssafy.io:8443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
 
 // 전체 컨테이너
