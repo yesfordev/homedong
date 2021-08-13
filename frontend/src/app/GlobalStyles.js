@@ -10,6 +10,9 @@ const globalStyles = createGlobalStyle`
       list-style: none;
       text-decoration: none;
       box-sizing: border-box;
+      & div, a, span, p, th, td, .button, abbr, .MuiTableCell-root, .MuiTableCell-Body, caption, .MuiTable-stickyHeader, li, ul, .MuiButtonBase-root, .MuiTypography-root, .MuiInput-inputMarginDense, .MuiTextField-root, .MuiFormControl-root  {
+        font-family: 'Cafe24SquareAir';
+      }
     }
 
     body, html {
@@ -34,10 +37,11 @@ const globalStyles = createGlobalStyle`
     li {
       list-style: none;
     }
-    
+
     input:focus {
       outline: none;
     }
+
 `;
 
 export default globalStyles;
