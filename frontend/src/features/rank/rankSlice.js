@@ -31,8 +31,8 @@ const rankSlice = createSlice({
       // 각 운동에 대한 정보를 담아준다.
       Object.entries(rankInfo).forEach((item) => {
         const value = item[1];
-        const { ranking, nickname, count, changeStatus } = value;
-        tempRank.push([ranking, nickname, count, changeStatus]);
+        const { ranking, nickname, count, changeStatus, changeRanking } = value;
+        tempRank.push([ranking, nickname, count, changeStatus, changeRanking]);
       });
       // currentRankInfo를 업데이트한다.
       state.currentRankInfo = tempRank;

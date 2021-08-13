@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { ToastContainer } from 'react-toastify';
 import GlobalStyles from './GlobalStyles';
 import 'react-toastify/dist/ReactToastify.css';
+import './App.css';
 
 // features
 import Login from '../features/auth/login/Login';
