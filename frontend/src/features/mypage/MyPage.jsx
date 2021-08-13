@@ -18,7 +18,7 @@ import squat from '../../assets/squat.svg';
 // component
 import Navbar from '../../common/navbar/Navbar';
 import MyTable from './MyTable';
-import Calender from './Calender';
+import Calendar from './Calendar';
 import DeleteModal from './DeleteModal';
 
 // action
@@ -27,10 +27,9 @@ import { loadBadge, loadBestRecord, loadBadgesOwned } from './mypageSlice';
 // 전체 컨테이너
 const Wrapper = styled.div`
   display: flex;
-  padding: 65px 0px 0px 0px;
-  height: 200vh;
+  padding: 100px 0px 0px 0px;
+  height: 230vh;
   width: 100%;
-
   @media (max-width: 767px) {
     height: auto;
   }
@@ -38,12 +37,15 @@ const Wrapper = styled.div`
 
 // 사이드바
 const Sidebar = styled.aside`
+  display: flex;
+  justify-content: center;
   max-width: 20%;
 `;
 
 const ProfileImage = styled.img`
-  left: 0px;
-  width: 100%;
+  width: 70%;
+  height: 15%;
+  border-radius: 50%;
 `;
 
 // 메인
@@ -51,10 +53,22 @@ const Main = styled.main`
   width: 70%;
 `;
 
+// 닉네임 이메일
+const BasicInfo = styled.section``;
+
 // 제목
 const Title = styled.div`
+  display: inline-box;
+  margin-bottom: ${(props) => (props.getMoreMB ? '40px' : '20px')};
+  margin-top: ${(props) => (props.getMoreMT ? '40px' : '0px')};
   font-weight: bold;
   font-size: 3rem;
+  border-bottom: 5px solid rgba(251, 209, 75, 0.5);
+`;
+
+const CustomMain = styled(Main)`
+  display: flex;
+  flex-direction: column;
 `;
 
 // 내용
@@ -62,15 +76,17 @@ const Content = styled.p`
   font-size: 2rem;
   display: block;
   word-break: break-all;
+  margin: 0 15px 60px 40px;
 `;
-
-// 닉네임 이메일
-const BasicInfo = styled.section``;
 
 const Nickname = styled.div`
   > button {
     margin-left: 30px;
   }
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
 `;
 
 const Email = styled.div`
@@ -85,6 +101,7 @@ const Badges = styled.section`
   display: flex;
   justify-content: ${(props) => (props.isHomeDongKing ? 'center' : '')};
   flex-direction: row;
+  margin-bottom: 40px;
   
 
   @media (max-width: 767px) {
@@ -116,16 +133,29 @@ const BadgeContainer = styled.div`
 
 // 뱃지
 const Badge = styled.img`
-  width: calc(100% / 3);
+  width: calc(100% / 3 - 14px);
+  margin: 0 7px;
   filter: ${(props) => (props.isPresent ? 'grayscale(0%)' : 'grayscale(100%)')};
   opacity: ${(props) => (props.isPresent ? '1' : '0.3')};
 `;
 
 // 메세지
-const Message = styled.p``;
+const Message = styled.p`
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2rem;
+`;
 
+const CustomCalendar = styled(Calendar)`
+  .react-calendar {
+    width: 100%;
+  }
+`;
 // footer
-const Footer = styled.footer``;
+const Footer = styled.footer`
+  align-self: flex-end;
+  margin-top: 50px;
+`;
 
 export default function MyPage() {
   const { nickname, email } = useSelector((state) => state.auth.user);
@@ -139,12 +169,11 @@ export default function MyPage() {
 
   // badge 가지고 있는 것 추출하는 함수
   // 각 경기에 대한 뱃지 이미지의 색을 살려준다.
-
   function drawBadge() {
     badgesOwned.forEach((badgeOwned) => {
       const [kind, level] = badgeOwned;
+      // 임시로 뱃지 다보일 수 있게 해줌
       if (kind !== 'sitUp' && kind !== 'homedongKing') {
-        console.log(kind, level, badgesOwned);
         badgeImages[kind][level][1] = true;
       }
     });
@@ -154,7 +183,6 @@ export default function MyPage() {
     dispatch(loadBadge())
       .unwrap()
       .then(() => {
-        console.log('drawBadge');
         dispatch(loadBadgesOwned());
       })
       .catch((err) => {
@@ -179,7 +207,7 @@ export default function MyPage() {
 
   useEffect(() => {
     drawBadge();
-  }, [badgesOwned]);
+  }, [dispatch, badgesOwned]);
 
   return (
     <>
@@ -188,21 +216,23 @@ export default function MyPage() {
         <Sidebar>
           <ProfileImage src={defaultImage} alt="profile" />
         </Sidebar>
-        <Main>
+        <CustomMain>
           <BasicInfo>
             <Nickname>
               <Title>닉네임</Title>
-              <Content>{nickname}</Content>
-              <Link to="/checkpassword">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  startIcon={<EditIcon />}
-                >
-                  회원정보수정
-                </Button>
-              </Link>
+              <ContentContainer>
+                <Content>{nickname}</Content>
+                <Link to="/checkpassword">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    startIcon={<EditIcon />}
+                  >
+                    회원정보수정
+                  </Button>
+                </Link>
+              </ContentContainer>
             </Nickname>
             <Email>
               <Title>이메일</Title>
@@ -210,9 +240,10 @@ export default function MyPage() {
             </Email>
           </BasicInfo>
           <Record>
-            <Title>내 기록</Title>
+            <Title getMoreMB>내 기록</Title>
             <MyTable />
           </Record>
+          <Title getMoreMT>내 뱃지</Title>
           {badgeImages.homedongKing.best[1] === true ? (
             <Badges isHomeDongKing>
               <Badge isPresent src={badgeImages.homedongKing.best[0]} />
@@ -281,7 +312,9 @@ export default function MyPage() {
               </ExerciseKind>
             </Badges>
           )}
-
+          <Title getMoreMB getMoreMT>
+            1일 1동
+          </Title>
           {workToday ? (
             <Message>
               현재, {duration}일동안 운동하셨어요!! 오늘도 하셨네요😀
@@ -289,11 +322,11 @@ export default function MyPage() {
           ) : (
             <Message>{duration}일동안 운동하셨는데..오늘도 하셔야죠!😥</Message>
           )}
-          <Calender />
+          <CustomCalendar className="react-calendar" />
           <Footer>
             <DeleteModal />
           </Footer>
-        </Main>
+        </CustomMain>
       </Wrapper>
     </>
   );

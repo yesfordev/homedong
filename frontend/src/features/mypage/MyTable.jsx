@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -18,6 +19,18 @@ const useStyles = makeStyles({
     width: '100%',
   },
 });
+
+const CustomTableContainer = styled(TableContainer)`
+  border-radius: 10px;
+  & th {
+    background-color: rgba(159, 169, 216, 0.2);
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  & td {
+    font-size: 1.3rem;
+  }
+`;
 
 function createData(name, squat, pushUp, burpee) {
   const newBurpee = burpee === -1 ? '기록없음' : burpee;
@@ -52,8 +65,8 @@ export default function MyTable() {
   }
 
   return (
-    <TableContainer component={Paper} className={classes.container}>
-      <Table className={classes.table} size="small" aria-label="simple table">
+    <CustomTableContainer component={Paper}>
+      <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow selected>
             <TableCell />
@@ -75,6 +88,6 @@ export default function MyTable() {
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
+    </CustomTableContainer>
   );
 }

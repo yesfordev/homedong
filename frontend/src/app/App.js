@@ -61,14 +61,14 @@ function App() {
         </BrowserRouter>
         <StyledToastContainer
           position="bottom-right"
-          autoClose={5000}
+          autoClose={4000}
           hideProgressBar={false}
-          newestOnTop={false}
+          newestOnTop
           closeOnClick
           rtl={false}
           pauseOnFocusLoss
           draggable
-          pauseOnHover
+          pauseOnHover={false}
         />
       </Wrapper>
     </StylesProvider>

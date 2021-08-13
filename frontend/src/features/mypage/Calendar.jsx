@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Calendar as Main } from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+import './Calendar.css';
 
 import Badge1 from '../../assets/badge.png';
 import { loadDailyRecord, loadConsecutiveRecord } from './mypageSlice';
@@ -22,7 +22,7 @@ function Calender() {
         date.getFullYear() === Number(y) &&
         date.getMonth() === Number(m) - 1 &&
         date.getDate() === Number(d) ? (
-        <img alt="prize" key={[m, d]} src={Badge1} style={{ width: '70%' }} />
+        <img alt="prize" key={[m, d]} src={Badge1} style={{ width: '40%' }} />
       ) : null;
     });
   }
@@ -32,16 +32,14 @@ function Calender() {
   }, []);
 
   return (
-    <div>
-      <Main
-        onChange={() => console.log(value)}
-        onActiveStartDateChange={({ activeStartDate }) =>
-          loadRecord(activeStartDate)
-        }
-        value={value}
-        tileContent={content}
-      />
-    </div>
+    <Main
+      className="react-calendar"
+      onActiveStartDateChange={({ activeStartDate }) =>
+        loadRecord(activeStartDate)
+      }
+      value={value}
+      tileContent={content}
+    />
   );
 }
 

@@ -4,6 +4,7 @@ import { Route, Redirect, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import isAuthenticated from '../api/isAuthenticated';
 import { loadUser } from '../../features/auth/authSlice';
+import { deleteToken } from '../api/JWT-common';
 
 export default function PrivateRoute({ component: Component, ...rest }) {
   const dispatch = useDispatch();
@@ -13,8 +14,11 @@ export default function PrivateRoute({ component: Component, ...rest }) {
       .unwrap()
       .catch((err) => {
         if (err.status === 401) {
+          deleteToken();
           history.push('/login');
-          toast.error('😥 로그인 해주세요');
+          setTimeout(() => {
+            toast.error('😥 로그인 해주세요');
+          }, 1000);
         } else if (err.status === 500) {
           history.push('/error');
         }
