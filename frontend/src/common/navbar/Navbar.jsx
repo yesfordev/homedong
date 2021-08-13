@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
+
 import MakeRoomModal from './MakeRoomModal';
 import FindRoomModal from './FindRoomModal';
 import DropDownMenu from './NavbarDropdown';
@@ -21,7 +22,7 @@ const Wrapper = styled.div`
 `;
 
 const HeaderWrapper = styled.div`
-  margin: 0 2em 0 2em;
+  margin: 0 0.5em 0 2em;
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -56,6 +57,8 @@ export default function Navbar() {
   const [isFindOpen, setIsFindOpen] = useState(false);
   const handleMakeModal = () => setIsMakeOpen(false);
   const handleFindModal = () => setIsFindOpen(false);
+  const location = useLocation();
+  console.log(location.pathname);
   return (
     <Wrapper>
       <HeaderWrapper>

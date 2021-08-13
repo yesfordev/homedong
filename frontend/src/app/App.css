@@ -1,0 +1,20 @@
+@font-face {
+  font-family: 'BitroPride';
+  src: url(../assets/fonts/BitroPrideTTF.ttf) format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cafe24SquareAir';
+  src: url(../assets/fonts/Cafe24Ohsquareair.ttf) format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'DungGeunMo';
+  src: url(../assets/fonts/DungGeunMo.ttf) format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
