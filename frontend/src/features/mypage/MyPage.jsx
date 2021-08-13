@@ -51,9 +51,10 @@ const Title = styled.div`
 `;
 
 // 내용
-const Content = styled.div`
+const Content = styled.p`
   font-size: 2rem;
-  display: inline-block;
+  display: block;
+  word-break: break-all;
 `;
 
 // 닉네임 이메일
@@ -65,7 +66,9 @@ const Nickname = styled.div`
   }
 `;
 
-const Email = styled.div``;
+const Email = styled.div`
+  width: 100%;
+`;
 
 // 기록
 const Record = styled.section``;

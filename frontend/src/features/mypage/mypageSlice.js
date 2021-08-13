@@ -98,7 +98,11 @@ const mypageSlice = createSlice({
       state.bestRecordInfo = action.payload;
     },
     [loadDailyRecord.fulfilled]: (state, action) => {
-      state.dailyRecordInfo = action.payload;
+      const rawData = action.payload;
+      state.dailyRecordInfo = rawData.map((record) => {
+        const { date } = record;
+        return date.split('-');
+      });
     },
     [loadConsecutiveRecord.fulfilled]: (state, action) => {
       state.consecutiveRecordInfo = action.payload;
