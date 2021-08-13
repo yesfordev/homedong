@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
+
 import MakeRoomModal from './MakeRoomModal';
 import FindRoomModal from './FindRoomModal';
 import DropDownMenu from './NavbarDropdown';
@@ -56,6 +57,8 @@ export default function Navbar() {
   const [isFindOpen, setIsFindOpen] = useState(false);
   const handleMakeModal = () => setIsMakeOpen(false);
   const handleFindModal = () => setIsFindOpen(false);
+  const location = useLocation();
+  console.log(location.pathname);
   return (
     <Wrapper>
       <HeaderWrapper>

@@ -19,7 +19,6 @@ const useStyles = makeStyles({
 const CustomTableContainer = styled(TableContainer)`
   width: 50%;
   border-radius: 10px;
-  opacity: 0.8;
   & th {
     font-size: 1.7rem;
     padding: 20px 0;
@@ -38,7 +37,7 @@ function createData(ranking, nickname, count, changeStatus, changeRanking) {
   let finalChangeStatus;
   let finalRanking;
   if (changeStatus === 'noChange') {
-    finalChangeStatus = `-`;
+    finalChangeStatus = '🔺';
   } else if (changeStatus === `up`) {
     finalChangeStatus = `🔺${changeRanking}`;
   } else if (changeStatus === 'down') {
@@ -95,7 +94,9 @@ export default function RankTable() {
               </TableCellRank>
               <TableCell align="center">{row.nickname}</TableCell>
               <TableCell align="center">{row.count}</TableCell>
-              <TableCell align="center">{row.finalChangeStatus}</TableCell>
+              <TableCell style={{ fontSize: '0.6rem' }} align="center">
+                {row.finalChangeStatus}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
