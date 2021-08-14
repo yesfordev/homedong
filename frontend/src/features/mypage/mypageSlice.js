@@ -72,7 +72,7 @@ const mypageSlice = createSlice({
       const { badgeInfo } = state;
       Object.entries(badgeInfo).forEach(([exercise, detailInfo]) => {
         // 홈동킹
-        if (detailInfo === false) {
+        if (detailInfo === true) {
           state.badgesOwned.push([exercise, 'best']);
         }
         // 각 운동 뱃지 탐색
@@ -81,7 +81,7 @@ const mypageSlice = createSlice({
             if (key === 'gameType') {
               gameType = gameTypes[value - 1];
             }
-            if (value === false) {
+            if (value === true) {
               state.badgesOwned.push([gameType, key]);
             }
           });
@@ -98,7 +98,11 @@ const mypageSlice = createSlice({
       state.bestRecordInfo = action.payload;
     },
     [loadDailyRecord.fulfilled]: (state, action) => {
-      state.dailyRecordInfo = action.payload;
+      const rawData = action.payload;
+      state.dailyRecordInfo = rawData.map((record) => {
+        const { date } = record;
+        return date.split('-');
+      });
     },
     [loadConsecutiveRecord.fulfilled]: (state, action) => {
       state.consecutiveRecordInfo = action.payload;
