@@ -39,7 +39,7 @@ const kindLists = [
   {
     source: pushup,
     title: '팔굽혀펴기',
-    link: '/pushup',
+    link: '/game',
   },
   {
     source: burpee,

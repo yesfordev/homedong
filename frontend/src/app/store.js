@@ -3,12 +3,14 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import AuthReducer from '../features/auth/authSlice';
 import MyPageReducer from '../features/mypage/mypageSlice';
 import RankReducer from '../features/rank/rankSlice';
+import HomeReducer from '../features/home/homeSlice';
 
 const rootreducer = combineReducers({
   // 각 리듀서를 합침
   auth: AuthReducer,
   mypage: MyPageReducer,
   rank: RankReducer,
+  home: HomeReducer,
 });
 
 const store = configureStore({
