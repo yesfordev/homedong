@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { ToastContainer } from 'react-toastify';
 import GlobalStyles from './GlobalStyles';
 import 'react-toastify/dist/ReactToastify.css';
+import './App.css';
 
 // features
 import Login from '../features/auth/login/Login';
@@ -62,14 +63,14 @@ function App() {
         </BrowserRouter>
         <StyledToastContainer
           position="bottom-right"
-          autoClose={5000}
+          autoClose={4000}
           hideProgressBar={false}
-          newestOnTop={false}
+          newestOnTop
           closeOnClick
           rtl={false}
           pauseOnFocusLoss
           draggable
-          pauseOnHover
+          pauseOnHover={false}
         />
       </Wrapper>
     </StylesProvider>

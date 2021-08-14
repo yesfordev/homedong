@@ -72,7 +72,6 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("[HOMEDONG] REST API")
                 .description("[HOMEDONG] BackEnd REST API Details")
-//                .contact(new Contact("[DDaja Swagger]", "https://github.com/swgil007/DDaJa", "BNG"))
                 .version("1.0")
                 .build();
     }

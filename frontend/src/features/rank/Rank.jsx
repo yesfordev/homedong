@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 
 // style
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 // import { Container } from '@material-ui/core';
 
 // feature
@@ -26,16 +27,17 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 
-const Title = styled.p`
+const Title = styled(motion.p)`
+  font-size: 2rem;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin: 20px 0;
 `;
 const ImagesContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
-const ImageContainer = styled.div`
+const ImageContainer = styled(motion.div)`
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -45,7 +47,7 @@ const ImageContainer = styled.div`
 
 function Rank() {
   const [exercise, setExercise] = useState(1);
-  const title = ['스쿼트', '푸쉬업', '버피'];
+  const title = ['스쿼트', '팔굽혀펴기', '버피'];
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -57,17 +59,29 @@ function Rank() {
       <Navbar />
       <Wrapper>
         <ImagesContainer>
-          <ImageContainer onClick={() => setExercise(1)}>
+          <ImageContainer
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setExercise(1)}
+          >
             <Squat width="150px" height="200px" alt="squat" />
           </ImageContainer>
-          <ImageContainer onClick={() => setExercise(2)}>
+          <ImageContainer
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setExercise(2)}
+          >
             <Pushup width="150px" height="200px" alt="pushup" />
           </ImageContainer>
-          <ImageContainer onClick={() => setExercise(3)}>
+          <ImageContainer
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setExercise(3)}
+          >
             <Burpee width="150px" height="200px" alt="burpee" />
           </ImageContainer>
         </ImagesContainer>
-        <Title>{title[exercise - 1]}</Title>
+        <Title layout>{title[exercise - 1]}</Title>
         <RankTable />
       </Wrapper>
     </>
