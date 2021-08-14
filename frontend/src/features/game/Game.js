@@ -380,7 +380,7 @@ class Game extends Component {
     return new Promise((resolve, reject) => {
       $.ajax({
         type: 'GET',
-        url: `${'https://i5a608.p.ssafy.io:443/api/sessions/'}${
+        url: `${'https://i5a608.p.ssafy.io:8443/api/sessions/'}${
           this.state.mySessionId
         }/connection`,
         headers: {
