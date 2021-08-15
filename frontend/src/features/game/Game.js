@@ -110,21 +110,16 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    const { doQuickStart } = this.props;
-    const data = { gameType: 1 };
-    doQuickStart(data)
-      .unwrap()
-      .then(() => {
-        const { home } = this.props;
-        // 각 slice의 state에서 원하는 변수들을 가져온다.
-        const { roomId, nickname, gameType } = home;
-        this.setState({
-          mySessionId: roomId,
-          myUserName: nickname,
-          gametype: gameType,
-        });
-        this.joinSession();
+    setTimeout(() => {
+      const { home } = this.props;
+      const { roomId, nickname, gameType } = home;
+      this.setState({
+        mySessionId: roomId,
+        myUserName: nickname,
+        gametype: gameType,
       });
+      this.joinSession();
+    }, 400);
     window.addEventListener('beforeunload', this.onbeforeunload);
   }
 
@@ -380,7 +375,7 @@ class Game extends Component {
     return new Promise((resolve, reject) => {
       $.ajax({
         type: 'GET',
-        url: `${'https://i5a608.p.ssafy.io:443/api/sessions/'}${
+        url: `${'https://i5a608.p.ssafy.io:8443/api/sessions/'}${
           this.state.mySessionId
         }/connection`,
         headers: {
@@ -449,6 +444,7 @@ class Game extends Component {
       mainStreamManager: undefined,
       publisher: undefined,
     });
+    this.props.history.push('/');
   }
 
   // 티처블 머신
@@ -786,7 +782,14 @@ class Game extends Component {
                 isPlaying
                 duration={10}
                 colors={[['#004777', 0.33], ['#F7B801', 0.33], ['#A30000']]}
-                onComplete={() => [this.setState({ timer: false }), 2000]}
+                onComplete={() => {
+                  setTimeout(() => {
+                    this.setState({
+                      timer: false,
+                    });
+                    alert('게임이 종료되었습니다.');
+                  }, 300);
+                }}
               >
                 {renderTime}
               </CountdownCircleTimer>
