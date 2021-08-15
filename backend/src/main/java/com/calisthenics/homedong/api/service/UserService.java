@@ -12,6 +12,7 @@ import com.calisthenics.homedong.error.exception.custom.NicknameDuplicateExcepti
 import com.calisthenics.homedong.error.exception.custom.UserNotFoundException;
 import com.calisthenics.homedong.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
 
+    @Value("${custom.imgcnt}")
+    private Integer imgCnt;
+
     @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, MailService mailService) {
         this.userRepository = userRepository;
@@ -53,6 +57,7 @@ public class UserService {
                 .build();
 
         String authKey = mailService.sendAuthMail(signUpReq.getEmail(), signUpReq.getNickname());
+        int imgNum = (int) (Math.random()*25 + 1);
 
         User user = User.builder()
                 .email(signUpReq.getEmail())
@@ -60,6 +65,7 @@ public class UserService {
                 .nickname(signUpReq.getNickname())
                 .roles(Collections.singleton(role))
                 .isTutorialFinished(false)
+                .img(Integer.toString(imgNum))
                 .authKey(authKey)
                 .authStatus(false)
                 .build();
@@ -144,6 +150,19 @@ public class UserService {
         }
 
         updateUser.setNickname(changeNicknameReq.getChangeNickname());
+
+        userRepository.save(updateUser);
+    }
+
+    @Transactional
+    public void updateProfileImage(String imgNum) {
+        User updateUser = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse(null)).orElse(null);
+
+        if(updateUser == null) {
+            throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(null));
+        }
+
+        updateUser.setImg(imgNum);
 
         userRepository.save(updateUser);
     }

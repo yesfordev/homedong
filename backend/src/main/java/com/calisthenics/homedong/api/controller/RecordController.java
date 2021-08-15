@@ -38,7 +38,7 @@ public class RecordController {
             @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<List<BestRecordRes>> getBestRecord() {
         return ResponseEntity.ok(recordService.getBestRecord());
     }
@@ -51,7 +51,7 @@ public class RecordController {
             @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<BadgeRes> getBadgeRecord() {
         return ResponseEntity.ok(recordService.getBadgeRecord());
     }

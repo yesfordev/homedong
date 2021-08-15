@@ -69,7 +69,7 @@ public class RoomController {
             @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<RoomRes> makeRoom(@RequestBody MakeRoomReq makeRoomReq) throws OpenViduJavaClientException, OpenViduHttpException {
         // 세션 연결을 하기 위해 전달해야 될 정보 설정(사용자 정보 닉네임 넘겨줄 건지?)
         ConnectionProperties connectionProperties = new ConnectionProperties.Builder().
@@ -107,7 +107,7 @@ public class RoomController {
             @ApiResponse(code = 409, message = "방 인원초과.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<RoomRes> findRoom(@RequestBody FindRoomReq findRoomReq) throws OpenViduJavaClientException, OpenViduHttpException {
         // 검색할 방이 존재하는지 확인
         Room room = roomService.findRoom(findRoomReq);
@@ -147,7 +147,7 @@ public class RoomController {
             @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<RoomRes> quickRoom(@RequestBody QuickRoomReq quickRoomReq) throws OpenViduJavaClientException, OpenViduHttpException {
         // 세션 연결을 하기 위해 전달해야 될 정보 설정(사용자 정보 어떤 거 넘겨줄 건지?)
         ConnectionProperties connectionProperties = new ConnectionProperties.Builder().
@@ -213,7 +213,7 @@ public class RoomController {
             @ApiResponse(code = 404, message = "방 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity leaveRoom(@RequestBody LeaveRoomReq leaveRoomReq) {
         String token = leaveRoomReq.getToken();
         String roomId = leaveRoomReq.getRoomId();

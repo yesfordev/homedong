@@ -43,7 +43,7 @@ public class CalendarController {
             @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<List<DailyCalendarRes>> getDailyCalendar(@RequestParam(required = true) int year, @RequestParam(required = true) int month) {
         return ResponseEntity.ok(calenderService.getDailyCalendar(year, month));
     }
@@ -56,7 +56,7 @@ public class CalendarController {
             @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<ContinuousDayCountRes> getContinuousDayCount() {
         return ResponseEntity.ok(calenderService.getContinuousDayCount());
     }

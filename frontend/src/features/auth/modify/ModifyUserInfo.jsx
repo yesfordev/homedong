@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
-import { Button } from '@material-ui/core';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import { ValidatorForm } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core/styles';
 import { deleteToken } from '../../../common/api/JWT-common';
+import { CommonButton, CommonTextValidator } from '../login/Login';
+import logo from '../../../assets/logo.svg';
 
 import {
   checkNickname,
@@ -18,26 +19,42 @@ import {
 // style
 const Wrapper = styled.div`
   height: 100vh;
+  width: 100%;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const LogoWrapper = styled.div`
+  flex: 0.4;
   justify-content: center;
   align-items: center;
 `;
 
+const Logo = styled.img`
+  width: 400px;
+  height: 100px;
+`;
+
 const ModifyContainer = styled.div`
   height: 80%;
-  width: 80%;
+  width: 100%;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
 `;
+
 const Title = styled.span`
-  font-size: 2.5rem;
+  font-size: 2rem;
+  margin-top: -20px;
+  margin-bottom: 25px;
 `;
 
 const useStyles = makeStyles({
   validatorForm: {
-    width: '35%',
+    width: '40%',
   },
 });
 
@@ -153,6 +170,10 @@ export default function ModifyUserInfo() {
 
   return (
     <Wrapper>
+      <LogoWrapper>
+        <Logo src={logo} />
+      </LogoWrapper>
+
       <ModifyContainer>
         <Title>회원정보수정</Title>
         <ValidatorForm
@@ -160,7 +181,7 @@ export default function ModifyUserInfo() {
           className={classes.validatorForm}
           name="nickname"
         >
-          <TextValidator
+          <CommonTextValidator
             label="닉네임"
             onChange={handleNickname}
             color="secondary"
@@ -177,19 +198,23 @@ export default function ModifyUserInfo() {
             size="small"
             fullWidth
           />
-          <Button onClick={doCheckNickname} disabled={isNicknameChecked}>
+          <CommonButton
+            mauve="true"
+            onClick={doCheckNickname}
+            disabled={isNicknameChecked}
+          >
             중복확인
-          </Button>
-          <Button type="submit" disabled={!isNicknameChecked}>
+          </CommonButton>
+          <CommonButton type="submit" disabled={!isNicknameChecked}>
             변경하기
-          </Button>
+          </CommonButton>
         </ValidatorForm>
         <ValidatorForm
           onSubmit={handleSubmit}
           className={classes.validatorForm}
           name="password"
         >
-          <TextValidator
+          <CommonTextValidator
             label="비밀번호"
             onChange={(e) => setPassword(e.target.value)}
             name="password"
@@ -204,7 +229,7 @@ export default function ModifyUserInfo() {
             size="small"
             fullWidth
           />
-          <TextValidator
+          <CommonTextValidator
             label="비밀번호 확인"
             onChange={(e) => setRepeatPassword(e.target.value)}
             type="password"
@@ -223,7 +248,9 @@ export default function ModifyUserInfo() {
             size="small"
             fullWidth
           />
-          <Button type="submit">Submit</Button>
+          <CommonButton mauve="true" type="submit">
+            Submit
+          </CommonButton>
         </ValidatorForm>
       </ModifyContainer>
     </Wrapper>
