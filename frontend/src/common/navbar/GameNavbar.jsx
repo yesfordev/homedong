@@ -1,6 +1,6 @@
 import React from 'react';
 import { AwesomeButton } from 'react-awesome-button';
-import 'react-awesome-button/src/styles/styles.scss';
+import 'react-awesome-button/dist/styles.css';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/logo(basic).svg';
