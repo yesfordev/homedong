@@ -138,7 +138,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<Map<String, Boolean>> checkPassword(@RequestBody PasswordReq passwordReq) {
         return ResponseEntity.ok(userService.checkPassword(passwordReq));
     }
@@ -152,7 +152,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "회원 탈퇴할 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity changeUserPassword(@RequestBody ChangePasswordReq changePasswordReq) {
         userService.updatePassword(changePasswordReq);
 
@@ -168,10 +168,27 @@ public class UserController {
             @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity changeUserNickname(@RequestBody ChangeNicknameReq changeNicknameReq) {
         userService.updateNickname(changeNicknameReq);
 
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @PutMapping("/user/image")
+    @ApiOperation(value = "유저 프로필 이미지 변경", notes = "<strong>token과 선택된 imgNum</strong>를 이용해 해당 유저의 프로필 이미지를 변경한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "프로필 이미지 변경 성공"),
+            @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
+    })
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity changeProfileImage(@RequestParam String imgNum) {
+        userService.updateProfileImage(imgNum);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }
