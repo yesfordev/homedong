@@ -119,7 +119,9 @@ export default function ModifyUserInfo() {
             if (err.status === 400) {
               toast.error('😀 입력한 정보를 다시 확인해주세요');
             } else if (err.status === 401) {
-              toast.error('😀 로그인이 필요합니다');
+              toast.error('😥 로그인을 다시 해주세요!');
+              deleteToken();
+              history.push('/login');
             } else if (err.status === 409) {
               toast.error('😀 이미 존재하는 닉네임입니다');
             } else if (err.status === 404) {
@@ -143,7 +145,9 @@ export default function ModifyUserInfo() {
             if (err.status === 400) {
               toast.error('😀 입력한 정보를 다시 확인해주세요');
             } else if (err.status === 401) {
-              toast.error('😀 다시 로그인해주세요');
+              toast.error('😥 로그인을 다시 해주세요!');
+              deleteToken();
+              history.push('/login');
             } else if (err.status === 404) {
               toast.error('😥 로그인을 다시 해주세요');
               deleteToken();
