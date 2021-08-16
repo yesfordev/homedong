@@ -7,8 +7,7 @@ import { useHistory, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { login } from '../authSlice';
 import logo from '../../../assets/logo(angled).svg';
-
-// style
+import { deleteToken } from '../../../common/api/JWT-common';
 
 const Wrapper = styled(Container)`
   display: flex;
@@ -89,15 +88,13 @@ export const CommonButton = styled(Button)`
   }
 `;
 
-// component
 export default function Login() {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
-  // state
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // function
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -111,16 +108,12 @@ export default function Login() {
         history.push('/');
       })
       .catch((err) => {
-        if (err.status === 401 || err.status === 400) {
-          toast.error('😥 아이디와 비밀번호를 다시 한 번 확인 해주세요!', {
-            position: 'bottom-right',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+        if (err.status === 400) {
+          toast.error('😥 입력된 정보를 다시 확인해주세요');
+        } else if (err.status === 401) {
+          toast.error('😥 아이디와 비밀번호를 다시 확인해주세요');
+          deleteToken();
+          history.push('/login');
         } else if (err.status === 500) {
           history.push('/error');
         }
