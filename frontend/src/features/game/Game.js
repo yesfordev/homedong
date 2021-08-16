@@ -1,3 +1,5 @@
+/* eslint-disable react/no-string-refs */
+/* eslint-disable react/no-find-dom-node */
 /* eslint-disable import/extensions */
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
@@ -26,6 +28,7 @@
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import React, { Component, createRef } from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
@@ -103,7 +106,7 @@ class Game extends Component {
     this.renderTableData = this.renderTableData.bind(this);
     this.chattoggle = this.chattoggle.bind(this);
     // ref
-    this.chatboxmessage = createRef(null);
+    this.messageContainer = createRef(null);
     this.sendmessageByClick = this.sendmessageByClick.bind(this);
     this.sendmessageByEnter = this.sendmessageByEnter.bind(this);
     this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
@@ -118,8 +121,9 @@ class Game extends Component {
         myUserName: nickname,
         gametype: gameType,
       });
+      console.log(`asdfasdfadsfadsf${this.state.mySessionId}`);
       this.joinSession();
-    }, 400);
+    }, 500);
     window.addEventListener('beforeunload', this.onbeforeunload);
   }
 
@@ -129,6 +133,12 @@ class Game extends Component {
 
   onbeforeunload(event) {
     this.leaveSession();
+  }
+
+  componentDidUpdate(previousProps, previousState) {
+    if (this.refs.chatoutput != null) {
+      this.refs.chatoutput.scrollTop = this.refs.chatoutput.scrollHeight;
+    }
   }
 
   handleChangeSessionId(e) {
@@ -911,10 +921,7 @@ class Game extends Component {
                 {this.state.chaton ? (
                   <div className="chat chatbox__support chatbox--active">
                     <div className="chat chatbox__header" />
-                    <div
-                      className="chatbox__messages"
-                      ref={this.chatboxmessage}
-                    >
+                    <div className="chatbox__messages" ref="chatoutput">
                       {/* {this.displayElements} */}
                       <Messages messages={messages} />
                       <div />
