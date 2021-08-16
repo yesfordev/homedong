@@ -1,15 +1,15 @@
 package com.calisthenics.homedong.api.controller;
 
-import com.calisthenics.homedong.api.request.ChangeNicknameReq;
-import com.calisthenics.homedong.api.request.ChangePasswordReq;
-import com.calisthenics.homedong.api.request.PasswordReq;
-import com.calisthenics.homedong.api.request.SignUpReq;
+import com.calisthenics.homedong.api.request.*;
 import com.calisthenics.homedong.db.entity.User;
 import com.calisthenics.homedong.api.service.UserService;
 import com.calisthenics.homedong.error.ErrorResponse;
+import com.calisthenics.homedong.jwt.TokenProvider;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,10 +34,14 @@ import java.util.Map;
 @RequestMapping("/api")
 public class UserController {
     private final UserService userService;
+    private final StringRedisTemplate redisTemplate;
+    private final TokenProvider tokenProvider;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, StringRedisTemplate redisTemplate, TokenProvider tokenProvider) {
         this.userService = userService;
+        this.redisTemplate = redisTemplate;
+        this.tokenProvider = tokenProvider;
     }
 
     @PostMapping("/signup")
@@ -109,7 +113,11 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity deleteUser() {
+    public ResponseEntity deleteUser(@RequestBody @Valid LogoutReq logoutReq) {
+        ValueOperations<String, String> logoutValueOperations = redisTemplate.opsForValue();
+        logoutValueOperations.set(logoutReq.getToken(), logoutReq.getToken()); // redis set 명령어
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) tokenProvider.getAuthentication(logoutReq.getToken()).getPrincipal();
+        log.info("회원탈퇴 유저 이메일 : '{}' , 유저 권한 : '{}'", user.getUsername(), user.getAuthorities());
         userService.deleteUser();
 
         return new ResponseEntity(HttpStatus.OK);
