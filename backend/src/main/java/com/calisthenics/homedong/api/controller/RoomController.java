@@ -44,8 +44,7 @@ public class RoomController {
     private OpenVidu openVidu;
 
     // 방 관리
-    private Map<String, Session> mapSessions = new ConcurrentHashMap<>();
-    private Map<String, Map<String, OpenViduRole>> mapSessionNamesTokens = new ConcurrentHashMap<>();
+    private Map<String, Integer> mapSessions = new ConcurrentHashMap<>();
 
     // 오픈비두 서버 관련 변수
     private String OPENVIDU_URL;
@@ -71,30 +70,16 @@ public class RoomController {
     })
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<RoomRes> makeRoom(@RequestBody MakeRoomReq makeRoomReq) throws OpenViduJavaClientException, OpenViduHttpException {
-        // 세션 연결을 하기 위해 전달해야 될 정보 설정(사용자 정보 닉네임 넘겨줄 건지?)
-        ConnectionProperties connectionProperties = new ConnectionProperties.Builder().
-                type(ConnectionType.WEBRTC).
-                data("nickname").
-                role(OpenViduRole.PUBLISHER).
-                build();
-
-        // 오픈비두 세션 생성
-        Session session = this.openVidu.createSession();
-        // 세션에 연결 후 프론트에서 연결을 위한 토큰 반환
-        String token = session.createConnection(connectionProperties).getToken();
-
         // 방 번호 난수 생성
         String roomId = RandomNumberUtil.getRandomNumber();
 
         // 방 관리 map에 저장
-        this.mapSessions.put(roomId, session);
-        this.mapSessionNamesTokens.put(roomId, new ConcurrentHashMap<>());
-        this.mapSessionNamesTokens.get(roomId).put(token, OpenViduRole.PUBLISHER);
+        this.mapSessions.put(roomId, 1);
 
         // DB 저장
         roomService.makeRoom(roomId, makeRoomReq);
 
-        return ResponseEntity.ok(roomService.getRoomRes(token, roomId, makeRoomReq.getGameType()));
+        return ResponseEntity.ok(roomService.getRoomRes(roomId, makeRoomReq.getGameType()));
     }
 
     @PostMapping("/search")
@@ -114,29 +99,19 @@ public class RoomController {
         String roomId = room.getRoomId();
         Integer gameType = room.getGameType();
 
-        // 세션 연결을 하기 위해 전달해야 될 정보 설정(사용자 정보 닉네임 넘겨줄 건지?)
-        ConnectionProperties connectionProperties = new ConnectionProperties.Builder().
-                type(ConnectionType.WEBRTC).
-                data("nickname").
-                role(OpenViduRole.PUBLISHER).
-                build();
-
         // 검색하는 방이 존재하지 않을 경우
         if (this.mapSessions.get(roomId) == null) {
             throw new RoomNotFoundException(roomId);
         }
         // 인원초과일 경우
-        if (this.mapSessionNamesTokens.get(roomId).size() > LIMIT) {
+        if (this.mapSessions.get(roomId) >= LIMIT) {
             throw new RoomStatusIsNotAvailableException(room.getStatus());
         }
 
-        // 세션에 연결 후 프론트에서 연결을 위한 토큰 반환
-        String token = this.mapSessions.get(roomId).createConnection(connectionProperties).getToken();
-
         // 방 관리 map에 저장
-        this.mapSessionNamesTokens.get(roomId).put(token, OpenViduRole.PUBLISHER);
+        this.mapSessions.put(roomId, this.mapSessions.get(roomId) + 1);
 
-        return ResponseEntity.ok(roomService.getRoomRes(token, roomId, gameType));
+        return ResponseEntity.ok(roomService.getRoomRes(roomId, gameType));
     }
 
     @PostMapping("/quick")
@@ -149,14 +124,8 @@ public class RoomController {
     })
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<RoomRes> quickRoom(@RequestBody QuickRoomReq quickRoomReq) throws OpenViduJavaClientException, OpenViduHttpException {
-        // 세션 연결을 하기 위해 전달해야 될 정보 설정(사용자 정보 어떤 거 넘겨줄 건지?)
-        ConnectionProperties connectionProperties = new ConnectionProperties.Builder().
-                type(ConnectionType.WEBRTC).
-                data("nickname").
-                role(OpenViduRole.PUBLISHER).
-                build();
-
         List<String> roomIds = roomService.quickRoom(quickRoomReq);
+
         /************ 참가할 방이 존재한다면 ************/
         if (!roomIds.isEmpty()) {
             int min = LIMIT;
@@ -165,43 +134,33 @@ public class RoomController {
             // 해당 종목의 방마다 참가할 수 있는지 확인
             for (String roomId : roomIds) {
                 // 검색하는 방이 존재하지 않거나 인원초과일 경우
-                if (this.mapSessions.get(roomId) == null || mapSessionNamesTokens.get(roomId).size() > LIMIT) continue;
+                if (this.mapSessions.get(roomId) == null || this.mapSessions.get(roomId) >= LIMIT) continue;
 
-                if (min > mapSessionNamesTokens.get(roomId).size()) {
-                    min = mapSessionNamesTokens.get(roomId).size();
+                if (min > mapSessions.get(roomId)) {
+                    min = mapSessions.get(roomId);
                     minConnRoomId = roomId;
                 }
             }
 
             // 참가할 수 있다면
             if (minConnRoomId != null) {
-                // 세션에 연결 후 프론트에서 연결을 위한 토큰 반환
-                String token = this.mapSessions.get(minConnRoomId).createConnection(connectionProperties).getToken();
-
                 // 방 관리 map에 저장
-                this.mapSessionNamesTokens.get(minConnRoomId).put(token, OpenViduRole.PUBLISHER);
+                this.mapSessions.put(minConnRoomId, this.mapSessions.get(minConnRoomId) + 1);
 
-                return ResponseEntity.ok(roomService.getRoomRes(token, minConnRoomId, quickRoomReq.getGameType()));
+                return ResponseEntity.ok(roomService.getRoomRes(minConnRoomId, quickRoomReq.getGameType()));
             }
         }
         /************ 참가할 방이 존재하지 않다면 ************/
-        // 오픈비두 세션 생성
-        Session session = this.openVidu.createSession();
-        // 세션에 연결 후 프론트에서 연결을 위한 토큰 반환
-        String token = session.createConnection(connectionProperties).getToken();
-
         // 방 번호 난수 생성
         String roomId = RandomNumberUtil.getRandomNumber();
 
         // 방 관리 map에 저장
-        this.mapSessions.put(roomId, session);
-        this.mapSessionNamesTokens.put(roomId, new ConcurrentHashMap<>());
-        this.mapSessionNamesTokens.get(roomId).put(token, OpenViduRole.PUBLISHER);
+        this.mapSessions.put(roomId, this.mapSessions.get(roomId) + 1);
 
         // DB 저장
         roomService.makeRoom(roomId, quickRoomReq);
 
-        return ResponseEntity.ok(roomService.getRoomRes(token, roomId, quickRoomReq.getGameType()));
+        return ResponseEntity.ok(roomService.getRoomRes(roomId, quickRoomReq.getGameType()));
     }
 
     @PutMapping("")
@@ -215,24 +174,18 @@ public class RoomController {
     })
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity leaveRoom(@RequestBody LeaveRoomReq leaveRoomReq) {
-        String token = leaveRoomReq.getToken();
         String roomId = leaveRoomReq.getRoomId();
 
         // 나가려는 방이 없다면
-        if (this.mapSessions.get(roomId) == null || this.mapSessionNamesTokens.get(roomId) == null) {
+        if (this.mapSessions.get(roomId) == null || this.mapSessions.get(roomId) == null) {
             throw new RoomNotFoundException(roomId);
         }
 
-        // 토큰이 유효하지 않다면
-        if (this.mapSessionNamesTokens.get(roomId).remove(token) == null) {
-            throw new InvalidValueException(token);
-        }
+        // 방 관리 map에서 삭제
+        this.mapSessions.remove(roomId);
 
         // 마지막 참가자가 나갔다면
-        if (this.mapSessionNamesTokens.get(roomId).isEmpty()) {
-            // 방 관리 map에서 삭제
-            this.mapSessions.remove(roomId);
-
+        if (this.mapSessions.get(roomId) == null) {
             // DB에서 OFF로 업데이트
             roomService.updateStatus(roomId);
         }
