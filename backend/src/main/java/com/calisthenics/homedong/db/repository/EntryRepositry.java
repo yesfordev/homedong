@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface EntryRepositry extends JpaRepository<Entry, Integer> {
+
+    Integer deleteByUserId(Integer userId);
 }
