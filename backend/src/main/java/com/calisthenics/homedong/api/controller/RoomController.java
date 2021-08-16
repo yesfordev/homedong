@@ -155,7 +155,7 @@ public class RoomController {
         String roomId = RandomNumberUtil.getRandomNumber();
 
         // 방 관리 map에 저장
-        this.mapSessions.put(roomId, this.mapSessions.get(roomId) + 1);
+        this.mapSessions.put(roomId, 1);
 
         // DB 저장
         roomService.makeRoom(roomId, quickRoomReq);
