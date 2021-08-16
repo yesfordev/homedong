@@ -1,7 +1,13 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import styles from 'styled-components';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 import Navbar from '../../common/navbar/Navbar';
 import Kind from './Kind';
 import quickstart from '../../assets/quickstart.svg';
@@ -75,15 +81,41 @@ class Home extends Component {
           <StartWrapper>
             {kindLists.map((kindList, index) => {
               return (
-                <Link
-                  to={kindList.link}
+                <div
                   onClick={() => {
                     const data = { gameType: index + 1 };
-                    doQuickStart(data).unwrap();
+                    navigator.mediaDevices
+                      .getUserMedia({
+                        video: true,
+                        audio: true,
+                      })
+                      .then(() => {
+                        doQuickStart(data)
+                          .unwrap()
+                          .then(() => {
+                            this.props.history.push(kindList.link);
+                          });
+                      })
+                      .catch(() => {
+                        toast.error(
+                          <div>
+                            👆게임을 위해 카메라와 마이크를 허용해주세요!
+                          </div>,
+                          {
+                            position: 'top-left',
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                          }
+                        );
+                      });
                   }}
                 >
                   <Kind imgSrc={kindList.source} title={kindList.title} />
-                </Link>
+                </div>
               );
             })}
           </StartWrapper>

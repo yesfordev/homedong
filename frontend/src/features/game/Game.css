@@ -444,3 +444,10 @@ h1 {
   font-size: 16px;
 }
 /*타이머*/
+.video {
+  margin-left: 3%;
+  margin-right: 3%;
+  margin-top: 1%;
+
+  width: 25%;
+}

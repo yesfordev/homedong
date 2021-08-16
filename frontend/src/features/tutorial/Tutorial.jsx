@@ -4,9 +4,12 @@ import { Link, animateScroll as scroll } from 'react-scroll';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { motion } from 'framer-motion';
+import SimpleImageSlider from 'react-simple-image-slider';
 import burpee from '../../assets/burpee.svg';
 import pushup from '../../assets/pushup.svg';
 import squat from '../../assets/squat.svg';
+import badge from './images/badge.png';
+
 // import LogoImage from '../../assets/logo.svg';
 
 const Wrapper = styled.div`
@@ -14,17 +17,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-const CommonButton = styled(Button)`
-  position: absolute;
-  right: 20%;
-  top: 45%;
-  width: 200px;
-  background: #fbd14b;
-  border-radius: 6px;
-  font-size: 30px;
-  margin: 1em 0 0.25em;
-  padding: 0.3em 1em;
-`;
+
 const Exercise = styled.section`
   display: flex;
   flex-direction: column;
@@ -56,16 +49,11 @@ const Icons = styled.div`
   display: flex;
   justify-content: center;
 `;
-
 class Tutorial extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      tutorial1: false,
-      tutorial2: false,
-      tutorial3: false,
-    };
+    this.state = {};
   }
 
   componentDidMount() {
@@ -73,6 +61,7 @@ class Tutorial extends Component {
   }
 
   render() {
+    const images = [{ url: badge }, { url: badge }, { url: badge }];
     return (
       <>
         {/* <Navbar /> */}
@@ -83,7 +72,6 @@ class Tutorial extends Component {
               <br />
               손바닥부터 얼굴까지 모두 화면에 들어와야합니다.
             </Text>
-            {!this.state.tutorial1 ? <CommonButton>start</CommonButton> : null}
             <Icons>
               <IconButton
                 whileHover={{ scale: 1.2 }}
@@ -102,6 +90,21 @@ class Tutorial extends Component {
               />
             </Icons>
             <Logo src={pushup} alt="logo" />
+            <div>
+              <SimpleImageSlider
+                width={500}
+                height={400}
+                images={images}
+                style={{
+                  position: 'absolute',
+                  marginTop: '10%',
+                  right: '15px',
+                }}
+                background="transparent"
+                showBullets
+                showNavs
+              />
+            </div>
             <Link to="element2" activeClass="active" spy smooth duration={1000}>
               <Button variant="contained" color="info">
                 스쿼트
@@ -119,7 +122,6 @@ class Tutorial extends Component {
               <br />
               손바닥부터 얼굴까지 모두 화면에 들어와야합니다.
             </Text>
-            {!this.state.tutorial2 ? <CommonButton>start</CommonButton> : null}
             <Icons>
               <IconButton src={squat} />
               <IconButton src={pushup} />
@@ -143,7 +145,6 @@ class Tutorial extends Component {
               <br />
               손바닥부터 얼굴까지 모두 화면에 들어와야합니다.
             </Text>
-            {!this.state.tutorial3 ? <CommonButton>start</CommonButton> : null}
             <Icons>
               <IconButton src={squat} />
               <IconButton src={pushup} />

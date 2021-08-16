@@ -61,7 +61,6 @@ export const findRoom = createAsyncThunk(
 const homeSlice = createSlice({
   name: 'test',
   initialState: {
-    token: '',
     roomId: '',
     gameType: '',
     nickname: '',
@@ -69,21 +68,18 @@ const homeSlice = createSlice({
   reducers: {},
   extraReducers: {
     [makeRoom.fulfilled]: (state, action) => {
-      const { token, roomId, gameType, nickname } = action.payload;
-      state.token = token;
+      const { roomId, gameType, nickname } = action.payload;
       state.roomId = roomId;
       state.gameType = gameType;
       state.nickname = nickname;
     },
     [leaveRoom.fulfilled]: (state) => {
-      state.token = '';
       state.roomId = '';
       state.gameType = '';
       state.nickname = '';
     },
     [quickStart.fulfilled]: (state, action) => {
-      const { token, roomId, gameType, nickname } = action.payload;
-      state.token = token;
+      const { roomId, gameType, nickname } = action.payload;
       state.roomId = roomId;
       state.gameType = gameType;
       state.nickname = nickname;
