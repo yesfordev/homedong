@@ -41,17 +41,39 @@ const ImageField = styled(motion.img)`
 `;
 
 const CustomTextValidator = styled(TextValidator)`
-  width: 95%;
+  opacity: 0.8;
+  width: 100%;
+  height: 70px;
+  font-size: 10px;
+  padding: 1em 0 1em 0;
+
+  & .MuiInput-inputMarginDense {
+    border-radius: 6px;
+    background-color: #ffffff;
+    padding: 0.6em;
+  }
+
+  & .MuiInput-underline:before {
+    opacity: 0;
+  }
+
+  .MuiInput-underline:after {
+    opacity: 0.3;
+    color: #9fa9d8;
+  }
 `;
 
 const useStyles = makeStyles({
   back: {
     opacity: 0.97,
-    borderRadius: 50,
     padding: '0 50px 0 100px',
+    '& .MuiPaper-rounded': {
+      borderRadius: '15px',
+    },
   },
   dialog: {
     background: '#f6f5fd',
+    paddingBottom: '0px',
   },
   dialogContent: {
     display: 'flex',
