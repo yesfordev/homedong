@@ -7,8 +7,8 @@ public interface IRanking {
 
     String getNickname();
 
-    int getCount();
+    Integer getCount();
 
-    int getRanking();
+    Integer getRanking();
 
 }
