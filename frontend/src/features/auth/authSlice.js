@@ -121,6 +121,7 @@ export const deleteUser = createAsyncThunk(
 
 const initialState = {
   user: {},
+  isAdmin: false,
   isNicknameChecked: false,
 };
 
