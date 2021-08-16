@@ -9,6 +9,7 @@ import com.calisthenics.homedong.db.entity.User;
 import com.calisthenics.homedong.db.repository.EntryRepositry;
 import com.calisthenics.homedong.db.repository.UserRepository;
 import com.calisthenics.homedong.error.exception.custom.EmailDuplicateException;
+import com.calisthenics.homedong.error.exception.custom.LoginDuplicateException;
 import com.calisthenics.homedong.error.exception.custom.NicknameDuplicateException;
 import com.calisthenics.homedong.error.exception.custom.UserNotFoundException;
 import com.calisthenics.homedong.util.SecurityUtil;
@@ -192,6 +193,10 @@ public class UserService {
 
         if(updateUser == null) {
             throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(null));
+        }
+
+        if(status && updateUser.isLogin()) {
+            throw new LoginDuplicateException(SecurityUtil.getCurrentEmail().orElse(null));
         }
 
         updateUser.setLogin(status);
