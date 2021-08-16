@@ -109,7 +109,7 @@ export default function Login() {
         if (err.status === 400) {
           toast.error('😥 입력된 정보를 다시 확인해주세요');
         } else if (err.status === 401) {
-          toast.error('😥 로그인을 다시 해주세요');
+          toast.error('😥 아이디와 비밀번호를 다시 확인해주세요');
           deleteToken();
           history.push('/login');
         } else if (err.status === 500) {
