@@ -2,6 +2,7 @@ package com.calisthenics.homedong.api.service;
 
 import com.calisthenics.homedong.api.response.BadgeRes;
 import com.calisthenics.homedong.api.response.BestRecordRes;
+import com.calisthenics.homedong.api.response.ICurrnetRanking;
 import com.calisthenics.homedong.db.entity.User;
 import com.calisthenics.homedong.db.repository.RoomRepository;
 import com.calisthenics.homedong.db.repository.UserRepository;
@@ -68,9 +69,17 @@ public class RecordService {
         }
 
         for (BestRecordRes bestRecordRes : bestRecordResList) {
-            Integer ranking = roomRepository.findRankingByUserId(bestRecordRes.getGameType(), userId).orElse(null);
+            List<ICurrnetRanking> rankingList = roomRepository.findRankingByUserId(bestRecordRes.getGameType());
 
-            if (ranking != null) {
+            Integer ranking = -1;
+            for(ICurrnetRanking currnetRanking : rankingList) {
+                if(currnetRanking.getUserId() == userId) {
+                    ranking = currnetRanking.getRanking();
+                    break;
+                }
+            }
+
+            if (ranking != -1) {
                 bestRecordRes.setRanking(ranking);
             }
         }

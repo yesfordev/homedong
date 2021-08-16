@@ -1,9 +1,6 @@
 package com.calisthenics.homedong.db.repository;
 
-import com.calisthenics.homedong.api.response.BestRecordRes;
-import com.calisthenics.homedong.api.response.DailyCalendarRes;
-import com.calisthenics.homedong.api.response.DailyRecord;
-import com.calisthenics.homedong.api.response.IRanking;
+import com.calisthenics.homedong.api.response.*;
 import com.calisthenics.homedong.db.entity.Room;
 import org.checkerframework.checker.nullness.Opt;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -80,7 +77,7 @@ public interface RoomRepository extends JpaRepository<Room, String> {
     List<IRanking> getRankingRes(@Param("gameType") Integer gameType, @Param("day") int day, @Param("limit") int limit);
 
     // user_id로 현재 랭킹 찾기
-    @Query(value = "SELECT user.nickname AS nickname, current.count AS count, \n" +
+    @Query(value = "SELECT user.user_id AS userId, \n" +
             "if(count < @prev_value, if(count = (@prev_value \\:= count), @vRank \\:= @vRank + 1, 0), @vRank) AS ranking \n" +
             "FROM (SELECT @vRank \\:= 0, @prev_value \\:= 9999) AS r,\n" +
             "(SELECT entry.user_id AS id, max(entry.count) as count\n" +
@@ -88,10 +85,9 @@ public interface RoomRepository extends JpaRepository<Room, String> {
             "ON room.room_id = game.room_id\n" +
             "JOIN entry\n" +
             "ON game.game_id = entry.game_id\n" +
-            "WHERE room.game_type = :gameType AND date_format(game.created_at, '%Y-%m-%d') < current_date - interval :day day\n" +
+            "WHERE room.game_type = :gameType AND date_format(game.created_at, '%Y-%m-%d') < current_date\n" +
             "GROUP BY entry.user_id ORDER BY MAX(entry.count) DESC) AS current, user\n" +
-            "WHERE user.user_id = current.id" +
-            "AND user.user_id = :userId", nativeQuery = true)
-    Optional<Integer> findRankingByUserId(@Param("gameType") Integer gameTpye, @Param("userId") Integer userId);
+            "WHERE user.user_id = current.id", nativeQuery = true)
+    List<ICurrnetRanking> findRankingByUserId(@Param("gameType") Integer gameTpye);
 
 }
