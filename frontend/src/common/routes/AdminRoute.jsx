@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Route, Redirect, useHistory, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import isAuthenticated from '../api/isAuthenticated';
@@ -10,8 +10,8 @@ export default function AdminRoute({ component: Component, ...rest }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  // 임시방편
-  const isAdmin = true;
+  const { isAdmin, user } = useSelector((state) => state.auth);
+  console.log(isAdmin, user, 'isAdmin');
   useEffect(() => {
     dispatch(loadUser())
       .unwrap()

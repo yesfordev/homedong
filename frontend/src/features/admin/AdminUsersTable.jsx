@@ -11,28 +11,18 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import styled from 'styled-components';
 import TablePagination from '@material-ui/core/TablePagination';
+import Divider from '@material-ui/core/Divider';
 
 const CustomTableContainer = styled(TableContainer)`
-  width: 55%;
-  border-radius: 10px;
-  margin-bottom: 60px;
+  width: 90%;
+  margin-top: 50px;
   & th {
-    font-size: 1.7rem;
-    padding: 20px 0;
+    font-size: 1.2rem;
     font-weight: 550;
-    background-color: rgba(159, 169, 216, 1);
     color: rgba(0, 0, 0, 0.6);
   }
   & td {
     font-size: 1.3rem;
-  }
-
-  @media (max-width: 414px) {
-    width: 90%;
-    & th {
-      font-size: 1.2rem;
-      padding: 10px 0;
-    }
   }
 `;
 
@@ -40,15 +30,13 @@ const TableCellRank = styled(TableCell)`
   font-size: 1.2rem;
 `;
 
-const CustomTableRow = styled(TableRow)`
-  border-radius: 10px;
-`;
+const CustomTableRow = styled(TableRow)``;
 
 // function createData(ranking, nickname, count, changeStatus, changeRanking) {
 //   return { finalRanking, nickname, count, finalChangeStatus };
 // }
 
-export default function AdminInfo() {
+export default function AdminUsersInfo() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
   const { currentRankInfo } = useSelector((state) => state.rank);
@@ -78,13 +66,12 @@ export default function AdminInfo() {
           stickyHeader
           aria-label="a dense table"
         >
-          <caption>매일 자정에 업데이트됩니다</caption>
+          <caption>회원</caption>
           <TableHead>
             <CustomTableRow hover>
-              <TableCell align="center">순위</TableCell>
+              <TableCell align="center" />
+              <TableCell align="center">아이디</TableCell>
               <TableCell align="center">닉네임</TableCell>
-              <TableCell align="center">갯수</TableCell>
-              <TableCell align="center">순위변동</TableCell>
             </CustomTableRow>
           </TableHead>
           <TableBody>
@@ -102,16 +89,17 @@ export default function AdminInfo() {
             ))}
           </TableBody>
         </Table>
+        <Divider />
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </CustomTableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
     </>
   );
 }

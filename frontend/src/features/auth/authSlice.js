@@ -134,18 +134,15 @@ const authSlice = createSlice({
       state.isNicknameChecked = false;
     },
     resetUser: (state) => {
-      console.log('resetUser');
       state.user = {};
     },
   },
   extraReducers: {
     [login.fulfilled]: (state) => {
       state.isAuthenticated = true;
-      console.log('reducer 로그인 성공');
     },
-    [login.rejected]: (state, action) => {
+    [login.rejected]: (state) => {
       state.isAuthenticated = false;
-      console.log('reducer 로그인 실패', action.payload.status);
     },
     [checkNickname.fulfilled]: (state) => {
       state.isNicknameChecked = true;
@@ -157,6 +154,11 @@ const authSlice = createSlice({
       state.isNicknameChecked = false;
     },
     [loadUser.fulfilled]: (state, action) => {
+      const { roles } = action.payload;
+      if (roles[0].roleName === 'ROLE_ADMIN') {
+        state.isAdmin = true;
+        console.log('reducer');
+      }
       state.user = action.payload;
     },
   },
