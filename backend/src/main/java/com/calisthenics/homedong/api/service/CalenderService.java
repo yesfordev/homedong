@@ -14,6 +14,7 @@ import com.calisthenics.homedong.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class CalenderService {
         this.userRepository = userRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<DailyCalendarRes> getDailyCalendar(int year, int month) {
         User user = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
 
@@ -70,6 +72,7 @@ public class CalenderService {
         return dailyCalendarResList;
     }
 
+    @Transactional(readOnly = true)
     public ContinuousDayCountRes getContinuousDayCount() {
         User user = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
 
