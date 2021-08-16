@@ -78,7 +78,7 @@ class Home extends Component {
                 <Link
                   to={kindList.link}
                   onClick={() => {
-                    const data = { gameType: index };
+                    const data = { gameType: index + 1 };
                     doQuickStart(data).unwrap();
                   }}
                 >

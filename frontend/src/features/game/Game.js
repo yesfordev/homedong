@@ -37,6 +37,7 @@ import { Button } from '@material-ui/core';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
+import axios1 from '../../common/api/http-common';
 import Navbar from '../../common/navbar/Navbar';
 import butimg from '../../assets/chatbox-icon.svg';
 import { quickStart } from '../home/homeSlice';
@@ -88,6 +89,8 @@ class Game extends Component {
       message: '',
       ishost: false,
       timer: false,
+      gameId: undefined,
+      token: undefined,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -115,8 +118,9 @@ class Game extends Component {
   componentDidMount() {
     setTimeout(() => {
       const { home } = this.props;
-      const { roomId, nickname, gameType } = home;
+      const { token, roomId, nickname, gameType } = home;
       this.setState({
+        token,
         mySessionId: roomId,
         myUserName: nickname,
         gametype: gameType,
@@ -128,6 +132,7 @@ class Game extends Component {
   }
 
   componentWillUnmount() {
+    this.leaveSession();
     window.removeEventListener('beforeunload', this.onbeforeunload);
   }
 
@@ -258,6 +263,7 @@ class Game extends Component {
           });
         });
         mySession.on('signal:start', (event) => {
+          this.setState({ gameId: event.data });
           this.start();
         });
         mySession.on('signal:count', (event) => {
@@ -428,10 +434,14 @@ class Game extends Component {
 
   startButton() {
     let mySession = this.state.session;
-    mySession.signal({
-      data: 'start',
-      type: 'start',
-    });
+    axios1
+      .put(`/api/game/start?roomId=${this.state.mySessionId}`)
+      .then((response) => {
+        mySession.signal({
+          data: response.data.gameId,
+          type: 'start',
+        });
+      });
   }
 
   // 시작버튼
@@ -760,9 +770,6 @@ class Game extends Component {
       );
     };
     const messages = this.state.messages;
-    const { home } = this.props;
-    // 각 slice의 state에서 원하는 변수들을 가져온다.
-    const { token, roomId, nickname, gameType } = home;
     const useStyles = makeStyles({
       root: {
         minWidth: 50,
@@ -798,6 +805,10 @@ class Game extends Component {
                       timer: false,
                     });
                     alert('게임이 종료되었습니다.');
+                    axios1.post('/api/game/end', {
+                      count: this.state.count,
+                      gameId: this.state.gameId,
+                    });
                   }, 300);
                 }}
               >
