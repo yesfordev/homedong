@@ -10,6 +10,8 @@ import squat from '../../assets/squat.svg';
 
 const Wrapper = styled.div`
   height: 100vh;
+  background-color: rgba(246, 245, 253, 1);
+  padding: 100px 0px 0px 0px;
   width: 100%;
   display: flex;
   justify-content: center;
