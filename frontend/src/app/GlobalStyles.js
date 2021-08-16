@@ -21,6 +21,8 @@ const globalStyles = createGlobalStyle`
       font-size: 16px;
     }
 
+
+
     button {
       background: none;
       color: inherit;
