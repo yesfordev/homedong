@@ -68,6 +68,7 @@ public class UserService {
                 .img(Integer.toString(imgNum))
                 .authKey(authKey)
                 .authStatus(false)
+                .isLogin(false)
                 .build();
 
         return userRepository.save(user);
@@ -181,6 +182,19 @@ public class UserService {
         }
 
         updateUser.setImg(imgNum);
+
+        userRepository.save(updateUser);
+    }
+
+    @Transactional
+    public void updateIsLogin(boolean status) {
+        User updateUser = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse(null)).orElse(null);
+
+        if(updateUser == null) {
+            throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(null));
+        }
+
+        updateUser.setLogin(status);
 
         userRepository.save(updateUser);
     }
