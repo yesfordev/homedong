@@ -14,9 +14,7 @@ export default function PrivateRoute({ component: Component, ...rest }) {
     dispatch(loadUser())
       .unwrap()
       .catch((err) => {
-        console.log('before', location.pathname);
         if (err.status === 401 && location.pathname !== '/') {
-          console.log('err', location.pathname);
           deleteToken();
           history.push('/login');
           setTimeout(() => {
