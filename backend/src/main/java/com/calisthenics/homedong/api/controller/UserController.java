@@ -8,6 +8,7 @@ import com.calisthenics.homedong.jwt.TokenProvider;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +38,9 @@ public class UserController {
     private final StringRedisTemplate redisTemplate;
     private final TokenProvider tokenProvider;
 
+    @Value("${custom.host}")
+    private String serverAddress;
+
     @Autowired
     public UserController(UserService userService, StringRedisTemplate redisTemplate, TokenProvider tokenProvider) {
         this.userService = userService;
@@ -52,9 +56,14 @@ public class UserController {
             @ApiResponse(code = 409, message = "이메일 중복 에러(회원가입 불가)", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러 or 이메일 전송 에러", response = ErrorResponse.class)
     })
-    public ResponseEntity signup(@Valid @RequestBody SignUpReq signUpReq) throws UnknownHostException, MessagingException {
+    public ResponseEntity signup(@Valid @RequestBody SignUpReq signUpReq) throws UnknownHostException, MessagingException, URISyntaxException {
         userService.signup(signUpReq);
-        return new ResponseEntity(HttpStatus.OK);
+
+        URI redirectUri = new URI(serverAddress + "/emailcheckedplease");
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(redirectUri);
+
+        return new ResponseEntity(httpHeaders, HttpStatus.OK);
     }
 
     @GetMapping("/signup/confirm")
@@ -69,7 +78,7 @@ public class UserController {
         //email, authKey가 일치할 경우 authStatus 업데이트
         userService.updateAuthStatus(map);
 
-        URI redirectUri = new URI("https://www.naver.com/");
+        URI redirectUri = new URI(serverAddress + "/emailchecked");
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(redirectUri);
 
