@@ -138,7 +138,7 @@ export default function SignUp() {
       .unwrap()
       .then(() => {
         toast.success('😀 회원가입에 성공했습니다');
-        history.push('/login');
+        history.push('/emailcheckedplease');
       })
       .catch((err) => {
         if (err.status === 400) {
@@ -258,7 +258,7 @@ export default function SignUp() {
             회원가입
           </CommonButton>
           <Link to="/login">
-            <CommonButton yellow="true">로그인</CommonButton>
+            <CommonButton yellow="true">로그인 하러 가기</CommonButton>
           </Link>
         </ValidatorForm>
       </SignUpContainer>
