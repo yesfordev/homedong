@@ -64,7 +64,7 @@ function Home() {
         <StartWrapper>
           {kindLists.map((kindList) => {
             return (
-              <Link to={kindList.link}>
+              <Link to={kindList.link} key={kindList.title}>
                 <Kind imgSrc={kindList.source} title={kindList.title} />
               </Link>
             );

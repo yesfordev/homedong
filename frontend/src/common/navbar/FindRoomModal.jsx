@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 // style
 import styled from 'styled-components';
 import Dialog from '@material-ui/core/Dialog';
@@ -15,6 +16,7 @@ import logo from '../../assets/logo(basic).svg';
 // feature
 import { CommonButton } from '../../features/auth/login/Login';
 import RadioButton from './RadioButton';
+import { deleteToken } from '../api/JWT-common';
 
 // action
 import { searchRoom } from '../../features/home/homeSlice';
@@ -49,6 +51,7 @@ const Logo = styled.img`
 `;
 
 export default function FindRoomModal({ isOpen, handleModalClose }) {
+  const history = useHistory();
   const classes = useStyles();
   const dispatch = useDispatch();
   const { isPrivate } = useSelector((state) => state.common);
@@ -65,11 +68,20 @@ export default function FindRoomModal({ isOpen, handleModalClose }) {
     };
     dispatch(searchRoom(data))
       .unwrap()
-      .then((res) => {
-        console.log(res);
-      })
       .catch((err) => {
-        console.log(err);
+        if (err.status === 400) {
+          toast.error('😥 입력된 정보를 다시 확인해주세요');
+        } else if (err.status === 401) {
+          toast.error('😥 로그인을 다시 해주세요');
+          deleteToken();
+          history.push('/login');
+        } else if (err.status === 409) {
+          toast.error('😥 방 인원이 초과 되었습니다');
+        } else if (err.status === 404) {
+          toast.error('😥 방 정보가 없습니다.');
+        } else if (err.status === 500) {
+          history.push('/error');
+        }
       });
     setRoomId('');
     setPassword('');

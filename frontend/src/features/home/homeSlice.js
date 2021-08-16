@@ -10,8 +10,7 @@ export const makeRoom = createAsyncThunk(
       const response = await axios.post('/api/rooms', data);
       return response.data;
     } catch (err) {
-      console.log(err);
-      return rejectWithValue(err);
+      return rejectWithValue(err.response);
     }
   }
 );
@@ -39,7 +38,7 @@ export const quickStart = createAsyncThunk(
       const response = await axios.post('/api/rooms/quick', data);
       return response.data;
     } catch (err) {
-      return rejectWithValue(err);
+      return rejectWithValue(err.response);
     }
   }
 );
@@ -53,7 +52,7 @@ export const searchRoom = createAsyncThunk(
       return response;
     } catch (err) {
       console.log(err);
-      return rejectWithValue(err);
+      return rejectWithValue(err.response);
     }
   }
 );

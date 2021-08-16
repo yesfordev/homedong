@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 // style
 import styled from 'styled-components';
@@ -11,6 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { motion } from 'framer-motion';
+import { toast } from 'react-toastify';
 import logo from '../../assets/logo(basic).svg';
 
 // image
@@ -24,6 +26,7 @@ import RadioButton from './RadioButton';
 
 // action
 import { makeRoom } from '../../features/home/homeSlice';
+import { deleteToken } from '../api/JWT-common';
 
 const ImageContainer = styled.div`
   display: flex;
@@ -67,6 +70,7 @@ const Logo = styled.img`
 `;
 
 export default function MakeRoomModal({ isOpen, handleModalClose }) {
+  const history = useHistory();
   const classes = useStyles();
   const dispatch = useDispatch();
   const { isPrivate } = useSelector((state) => state.common);
@@ -79,7 +83,20 @@ export default function MakeRoomModal({ isOpen, handleModalClose }) {
       gameType: selectedGameType,
       password,
     };
-    dispatch(makeRoom(data));
+    dispatch(makeRoom(data))
+      .unwrap()
+      .then(() => {})
+      .catch((err) => {
+        if (err.status === 400) {
+          toast.error('😥 입력된 정보를 다시 확인해주세요');
+        } else if (err.status === 401) {
+          toast.error('😥 로그인을 다시 해주세요');
+          deleteToken();
+          history.push('/login');
+        } else if (err.status === 500) {
+          history.push('/error');
+        }
+      });
     handleModalClose();
     setPassword('');
     setSelectedGameType(1);
