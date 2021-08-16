@@ -12,6 +12,7 @@ import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -40,6 +41,7 @@ public class RecordService {
         gameMap.put(3, "BURPEE");
     }
 
+    @Transactional(readOnly = true)
     public List<BestRecordRes> getBestRecord() {
         User user = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
 
@@ -83,6 +85,7 @@ public class RecordService {
         return bestRecordResList;
     }
 
+    @Transactional(readOnly = true)
     public BadgeRes getBadgeRecord() {
         List<BestRecordRes> bestRecordResList = getBestRecord();
         BadgeRes badgeRes = new BadgeRes(gameTypeCount);
@@ -99,7 +102,6 @@ public class RecordService {
 
         return badgeRes;
     }
-
 
     private void updateBadgeRes(BestRecordRes bestRecordRes, BadgeRes badgeRes) {
         int gameType = bestRecordRes.getGameType();

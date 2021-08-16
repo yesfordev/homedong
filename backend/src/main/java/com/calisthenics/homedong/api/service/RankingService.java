@@ -2,7 +2,11 @@ package com.calisthenics.homedong.api.service;
 
 import com.calisthenics.homedong.api.response.IRanking;
 import com.calisthenics.homedong.api.response.RankingRes;
+import com.calisthenics.homedong.db.entity.User;
 import com.calisthenics.homedong.db.repository.RoomRepository;
+import com.calisthenics.homedong.db.repository.UserRepository;
+import com.calisthenics.homedong.error.exception.custom.UserNotFoundException;
+import com.calisthenics.homedong.util.SecurityUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -10,6 +14,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,14 +29,23 @@ import java.util.List;
 public class RankingService {
 
     private final RoomRepository roomRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public RankingService(RoomRepository roomRepository) {
+    public RankingService(RoomRepository roomRepository, UserRepository userRepository) {
         this.roomRepository = roomRepository;
+        this.userRepository = userRepository;
     }
 
+    @Transactional(readOnly = true)
     @Cacheable(value = "ranking", cacheManager = "rankCacheManager")
     public List<RankingRes> getRanking(Integer gameType, Integer limit) {
+
+        User updateUser = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
+
+        if(updateUser == null) {
+            throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(null));
+        }
 
         List<IRanking> nowRankingList = roomRepository.getRankingRes(gameType, 0, limit);
         List<IRanking> previousRankinList = roomRepository.getRankingRes(gameType, 1, limit);
@@ -45,7 +59,7 @@ public class RankingService {
         for (RankingRes rankingRes : rankingResList) {
             for (IRanking previousRanking : previousRankinList) {
                 if (rankingRes.getNickname().equals(previousRanking.getNickname())) {
-                    int difference = previousRanking.getRanking() - rankingRes.getRanking();
+                    int difference = (int)previousRanking.getRanking() - (int)rankingRes.getRanking();
 
                     if (difference < 0) {
                         rankingRes.setChangeStatus("down");
@@ -65,7 +79,7 @@ public class RankingService {
         Collections.sort(rankingResList, new Comparator<RankingRes>() {
             @Override
             public int compare(RankingRes o1, RankingRes o2) {
-                return o1.getRanking() - o2.getRanking();
+                return (int)o1.getRanking() - (int)o2.getRanking();
             }
         });
 
