@@ -18,7 +18,7 @@ import lombok.Setter;
 public class RankingRes {
 
     @ApiModelProperty(name = "랭킹", example = "1")
-    private int ranking;
+    private Integer ranking;
 
     @ApiModelProperty(name = "사용자 닉네임", example = "yes")
     private String nickname;

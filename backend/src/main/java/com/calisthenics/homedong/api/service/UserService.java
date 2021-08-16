@@ -102,6 +102,7 @@ public class UserService {
         return userRepository.save(updateUser);
     }
 
+    @Transactional(readOnly = true)
     public void checkDuplicateNickname(String nickname) {
         if(userRepository.findAllByNickname(nickname).size() > 0) {
             throw new NicknameDuplicateException(nickname);
@@ -126,6 +127,7 @@ public class UserService {
         }
     }
 
+    @Transactional(readOnly = true)
     public Map<String, Boolean> checkPassword(PasswordReq passwordReq) {
         User user = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
 

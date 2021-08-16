@@ -59,6 +59,7 @@ public class GameService {
         return new GameStartRes(game.getGameId());
     }
 
+    @Transactional
     public BadgeRes endGame(GameEndReq gameEndReq) {
         User user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithRolesByEmail).orElse(null);
 
