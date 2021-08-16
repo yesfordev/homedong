@@ -6,8 +6,8 @@ export const makeRoom = createAsyncThunk(
   'MAKE_ROOM',
   async (data, { rejectWithValue }) => {
     try {
+      console.log('make room', data);
       const response = await axios.post('/api/rooms', data);
-      console.log(response);
       return response.data;
     } catch (err) {
       console.log(err);
@@ -44,8 +44,8 @@ export const quickStart = createAsyncThunk(
   }
 );
 
-export const findRoom = createAsyncThunk(
-  'FIND_ROOM',
+export const searchRoom = createAsyncThunk(
+  'SEARCH_ROOM',
   async (data, { rejectWithValue }) => {
     try {
       console.log('search action', data);

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from 'styled-components';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Navbar from '../../common/navbar/Navbar';
 import Kind from './Kind';
@@ -8,7 +8,7 @@ import burpee from '../../assets/burpee.svg';
 import pushup from '../../assets/pushup.svg';
 import squat from '../../assets/squat.svg';
 
-const Wrapper = styles.div`
+const Wrapper = styled.div`
   height: 100vh;
   width: 100%;
   display: flex;
@@ -17,18 +17,18 @@ const Wrapper = styles.div`
   flex-direction: column;
 `;
 
-const TextWrapper = styles.div`
+const TextWrapper = styled.div`
   height: 20vh;
   display: flex;
   justify-content: center;
 `;
 
-const QuickImage = styles.img`
+const QuickImage = styled.img`
   width: 500px;
   height: 200px;
 `;
 
-const StartWrapper = styles.div`
+const StartWrapper = styled.div`
   height: 60vh;
   display: flex;
   justify-content: center;
@@ -37,9 +37,9 @@ const StartWrapper = styles.div`
 
 const kindLists = [
   {
-    source: pushup,
-    title: '팔굽혀펴기',
-    link: '/game',
+    source: squat,
+    title: '스쿼트',
+    link: '/squat',
   },
   {
     source: burpee,
@@ -47,9 +47,9 @@ const kindLists = [
     link: '/burpee',
   },
   {
-    source: squat,
-    title: '스쿼트',
-    link: '/squat',
+    source: pushup,
+    title: '팔굽혀펴기',
+    link: '/game',
   },
 ];
 

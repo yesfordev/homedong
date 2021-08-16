@@ -1,18 +1,29 @@
-import React from 'react';
-import TextField from '@material-ui/core/TextField';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+// style
+import styled from 'styled-components';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
-import { CommonButton } from '../../features/auth/login/Login';
+import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
+import { motion } from 'framer-motion';
 import logo from '../../assets/logo(basic).svg';
-import burpee from '../../assets/burpee.svg';
+
+// image
 import pushup from '../../assets/pushup.svg';
+import burpee from '../../assets/burpee.svg';
 import squat from '../../assets/squat.svg';
+
+// feautre
+import { CommonButton } from '../../features/auth/login/Login';
+import RadioButton from './RadioButton';
+
+// action
+import { makeRoom } from '../../features/home/homeSlice';
 
 const ImageContainer = styled.div`
   display: flex;
@@ -20,16 +31,21 @@ const ImageContainer = styled.div`
   margin-top: 10px;
 `;
 
-const ImageField = styled.img`
-  width: 25%;
+const ImageField = styled(motion.img)`
+  width: 150px;
+  filter: ${(props) => (props.isClicked ? 'grayscale(0%)' : 'grayscale(100%)')};
+  opacity: ${(props) => (props.isClicked ? '1' : '0.6')};
+`;
+
+const CustomTextValidator = styled(TextValidator)`
+  width: 95%;
 `;
 
 const useStyles = makeStyles({
   back: {
     opacity: 0.97,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderRadius: 50,
+    padding: '0 50px 0 100px',
   },
   dialog: {
     background: '#f6f5fd',
@@ -52,6 +68,22 @@ const Logo = styled.img`
 
 export default function MakeRoomModal({ isOpen, handleModalClose }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { isPrivate } = useSelector((state) => state.common);
+  const [selectedGameType, setSelectedGameType] = useState(1);
+  const [password, setPassword] = useState('');
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const data = {
+      gameType: selectedGameType,
+      password,
+    };
+    dispatch(makeRoom(data));
+    handleModalClose();
+    setPassword('');
+    setSelectedGameType(1);
+  }
   return (
     <div>
       <Dialog
@@ -67,31 +99,69 @@ export default function MakeRoomModal({ isOpen, handleModalClose }) {
         >
           <Logo src={logo} />
         </DialogTitle>
+        <RadioButton />
         <DialogContent className={classes.dialogContent}>
-          <DialogContentText>
-            Private으로 만들 경우, 비밀번호를 설정해주시면 됩니다!
-          </DialogContentText>
-          <ImageContainer>
-            <ImageField src={pushup} />
-            <ImageField src={burpee} />
-            <ImageField src={squat} />
-          </ImageContainer>
-          <TextField autoFocus margin="dense" id="password" label="비밀번호" />
+          {isPrivate && (
+            <DialogContentText style={{ textAlign: 'center' }}>
+              Private으로 만들 경우, 비밀번호를 설정해주세요!
+            </DialogContentText>
+          )}
+          <ValidatorForm onSubmit={handleSubmit}>
+            <ImageContainer>
+              <ImageField
+                src={squat}
+                isClicked={selectedGameType === 1}
+                onClick={() => {
+                  setSelectedGameType(1);
+                }}
+                whileTap={{ scale: 0.8 }}
+              />
+              <ImageField
+                src={burpee}
+                isClicked={selectedGameType === 3}
+                onClick={() => {
+                  setSelectedGameType(3);
+                }}
+                whileTap={{ scale: 0.8 }}
+              />
+              <ImageField
+                src={pushup}
+                isClicked={selectedGameType === 2}
+                onClick={() => {
+                  setSelectedGameType(2);
+                }}
+                whileTap={{ scale: 0.8 }}
+              />
+            </ImageContainer>
+            {isPrivate && (
+              <CustomTextValidator
+                autoComplete="off"
+                autoFocus
+                margin="dense"
+                id="password"
+                label="비밀번호"
+                value={password}
+                onChange={(e) => setPassword(e.target.value.replace(/\s/g, ''))}
+                validators={['required']}
+                errorMessages={['비밀번호를 입력해주세요']}
+              />
+            )}
+
+            <DialogActions className={classes.dialogAction}>
+              <CommonButton type="submit" mauve="true" color="primary">
+                방만들기
+              </CommonButton>
+              <CommonButton
+                yellow="true"
+                onClick={handleModalClose}
+                color="secondary"
+              >
+                취소
+              </CommonButton>
+            </DialogActions>
+          </ValidatorForm>
         </DialogContent>
-        <DialogActions className={classes.dialogAction}>
-          <CommonButton mauve onClick={handleModalClose}>
-            방만들기
-          </CommonButton>
-          <CommonButton yellow onClick={handleModalClose}>
-            취소
-          </CommonButton>
-        </DialogActions>
       </Dialog>
     </div>
   );
 }
-
-MakeRoomModal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  handleModalClose: PropTypes.func.isRequired,
-};
