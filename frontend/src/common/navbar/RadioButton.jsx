@@ -14,6 +14,10 @@ const CustomForFormControl = styled(FormControl)`
 const CustomRadioGroup = styled(RadioGroup)`
   flex-direction: row;
   justify-content: center;
+
+  & .MuiRadio-colorSecondary.Mui-checked {
+    color: #9fa9d8;
+  }
 `;
 
 const CustomFormControlLabel = styled(FormControlLabel)`
