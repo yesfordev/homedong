@@ -29,12 +29,31 @@ const TitleWrapper = styled.div`
 `;
 
 const Title = styled.p`
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 600;
   margin-bottom: 50px;
 
   @media (max-width: 762px) {
     font-size: 1.5rem;
+  }
+`;
+
+export const CommonButton = styled(Button)`
+  width: 100%;
+  border-radius: 6px;
+  margin: 1em 0 0.25em;
+  padding: 0.4em 1em;
+  background: ${(props) => (props.yellow ? '#fbd14b' : '#9fa9d8')};
+  color: ${(props) => (props.mauve ? 'white' : '#7a7a7a')};
+
+  &:hover {
+    background: ${(props) => (props.yellow ? '#ffce00' : '#8090d8')};
+    color: ${(props) => (props.mauve ? 'white' : '#262626')};
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    color: ${(props) => (props.mauve ? 'white' : 'black')};
   }
 `;
 
@@ -45,11 +64,11 @@ export default function Error404() {
       <TitleWrapper>
         <Title>페이지를 이용할 수 없습니다</Title>
       </TitleWrapper>
-      <Link to="/">
-        <Button variant="contained" color="primary">
-          홈으로
-        </Button>
-      </Link>
+      <div>
+        <CommonButton mauve="true">
+          <Link to="/">홈으로</Link>
+        </CommonButton>
+      </div>
     </Wrapper>
   );
 }
