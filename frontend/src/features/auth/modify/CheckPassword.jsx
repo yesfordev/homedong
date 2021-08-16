@@ -8,6 +8,7 @@ import { ValidatorForm } from 'react-material-ui-form-validator';
 import { checkPassword } from '../authSlice';
 import { CommonButton, CommonTextValidator } from '../login/Login';
 import logo from '../../../assets/logo(angled).svg';
+import { deleteToken } from '../../../common/api/JWT-common';
 
 // style
 const Wrapper = styled.div`
@@ -77,10 +78,15 @@ function CheckPassword() {
           toast.error('😥 비밀번호를 다시 입력해주세요');
         } else if (err.status === 401) {
           toast.error('😥 로그인을 다시 해주세요!');
+          deleteToken();
+          history.push('/login');
+        } else if (err.status === 404) {
+          toast.error('😥 로그인을 다시 해주세요');
+          deleteToken();
           history.push('/login');
         } else if (err.status === 500) {
           history.push('/error');
-        } // 404페이지
+        }
       });
   }
 

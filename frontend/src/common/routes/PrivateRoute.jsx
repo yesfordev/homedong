@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Route, Redirect, useHistory } from 'react-router-dom';
+import { Route, Redirect, useHistory, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import isAuthenticated from '../api/isAuthenticated';
 import { loadUser } from '../../features/auth/authSlice';
@@ -9,11 +9,12 @@ import { deleteToken } from '../api/JWT-common';
 export default function PrivateRoute({ component: Component, ...rest }) {
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
   useEffect(() => {
     dispatch(loadUser())
       .unwrap()
       .catch((err) => {
-        if (err.status === 401) {
+        if (err.status === 401 && location.pathname !== '/') {
           deleteToken();
           history.push('/login');
           setTimeout(() => {
@@ -23,7 +24,7 @@ export default function PrivateRoute({ component: Component, ...rest }) {
           history.push('/error');
         }
       });
-  }, []);
+  }, [location]);
   return (
     <Route
       {...rest}

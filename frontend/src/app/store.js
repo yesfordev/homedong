@@ -4,6 +4,7 @@ import AuthReducer from '../features/auth/authSlice';
 import MyPageReducer from '../features/mypage/mypageSlice';
 import RankReducer from '../features/rank/rankSlice';
 import HomeReducer from '../features/home/homeSlice';
+import commonReducer from '../common/commonSlice';
 
 const rootreducer = combineReducers({
   // 각 리듀서를 합침
@@ -11,6 +12,7 @@ const rootreducer = combineReducers({
   mypage: MyPageReducer,
   rank: RankReducer,
   home: HomeReducer,
+  common: commonReducer,
 });
 
 const store = configureStore({

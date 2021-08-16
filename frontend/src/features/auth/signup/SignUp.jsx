@@ -115,8 +115,14 @@ export default function SignUp() {
       .then(() => {
         toast.success(`😀 사용할 수 있는 닉네임입니다`);
       })
-      .catch(() => {
-        toast.error(`😥 닉네임이 중복되었습니다`);
+      .catch((err) => {
+        if (err.status === 400) {
+          toast.error('😥 입력된 정보를 다시 확인해주세요');
+        } else if (err.status === 409) {
+          toast.error('😥 중복된 닉네임입니다.');
+        } else if (err.status === 500) {
+          history.push('/error');
+        }
       });
   }
 

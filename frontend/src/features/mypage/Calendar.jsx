@@ -10,6 +10,7 @@ function Calender() {
   const [value] = useState(new Date());
   const dispatch = useDispatch();
   const { dailyRecordInfo } = useSelector((state) => state.mypage);
+
   function loadRecord(currentDate) {
     const validDate = currentDate || value;
     const month = validDate.getMonth() + 1;

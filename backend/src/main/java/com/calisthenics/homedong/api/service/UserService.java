@@ -6,6 +6,7 @@ import com.calisthenics.homedong.api.request.PasswordReq;
 import com.calisthenics.homedong.api.request.SignUpReq;
 import com.calisthenics.homedong.db.entity.Role;
 import com.calisthenics.homedong.db.entity.User;
+import com.calisthenics.homedong.db.repository.EntryRepositry;
 import com.calisthenics.homedong.db.repository.UserRepository;
 import com.calisthenics.homedong.error.exception.custom.EmailDuplicateException;
 import com.calisthenics.homedong.error.exception.custom.NicknameDuplicateException;
@@ -19,10 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.net.UnknownHostException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by Seo Youngeun on 2021-07-26
@@ -32,6 +30,7 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final EntryRepositry entryRepositry;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
 
@@ -39,8 +38,9 @@ public class UserService {
     private Integer imgCnt;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, MailService mailService) {
+    public UserService(UserRepository userRepository, EntryRepositry entryRepositry, PasswordEncoder passwordEncoder, MailService mailService) {
         this.userRepository = userRepository;
+        this.entryRepositry = entryRepositry;
         this.passwordEncoder = passwordEncoder;
         this.mailService = mailService;
     }
@@ -83,6 +83,11 @@ public class UserService {
         return SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithRolesByEmail);
     }
 
+    @Transactional(readOnly = true)
+    public List<User> getAllUserWithRoles() {
+        return userRepository.findByRoles_RoleNameNot("ROLE_ADMIN");
+    }
+
     @Transactional
     public User updateAuthStatus(Map<String, String> map) {
         String email = map.get("email");
@@ -105,7 +110,18 @@ public class UserService {
 
     @Transactional
     public void deleteUser() {
+        entryRepositry.deleteByUserId(SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithRolesByEmail).orElse(null).getUserId());
+
         if(userRepository.deleteByEmail(SecurityUtil.getCurrentEmail().orElse("")) == 0) {
+            throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
+        }
+    }
+
+    @Transactional
+    public void deleteUser(final String email) {
+        entryRepositry.deleteByUserId(userRepository.findOneWithRolesByEmail(email).orElse(null).getUserId());
+
+        if(userRepository.deleteByEmail(email) == 0) {
             throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
         }
     }
@@ -166,5 +182,4 @@ public class UserService {
 
         userRepository.save(updateUser);
     }
-
 }

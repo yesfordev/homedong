@@ -95,11 +95,10 @@ public class RoomService {
         roomRepository.save(updateRoom);
     }
 
-    public RoomRes getRoomRes(String token, String roomId, Integer gameType) {
+    public RoomRes getRoomRes(String roomId, Integer gameType) {
         RoomRes roomRes = new RoomRes();
         User user = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
 
-        roomRes.setToken(token);
         roomRes.setRoomId(roomId);
         roomRes.setGameType(gameType);
         roomRes.setNickname(user.getNickname());
