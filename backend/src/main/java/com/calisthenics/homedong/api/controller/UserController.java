@@ -84,20 +84,6 @@ public class UserController {
         return ResponseEntity.ok(userService.getMyUserWithRoles().get());
     }
 
-    @GetMapping("/user/{email}")
-    @ApiOperation(value = "관리자가 유저 정보 보기", notes = "<strong>헤더에 관리자임을 나타내는 jwt 토큰과 pathVariable에 email로</strong> 유저 정보를 조회한다.")
-    @ApiImplicitParam(name = "email", value = "조회할 유저의 email", required = true, dataType = "String", paramType = "path")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "유저 정보 조회 성공", response = User.class),
-            @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
-            @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
-            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
-    })
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<User> getUserInfo(@PathVariable(required = true) String email) {
-        return ResponseEntity.ok(userService.getUserWithRoles(email).get());
-    }
-
     @GetMapping("/user/check_nickname")
     @ApiOperation(value = "닉네임 중복 확인", notes = "<strong>queryString에 nickname으로</strong> 닉네임 중복을 체크한다.")
     @ApiImplicitParam(name = "nickname", value = "중복 체크할 nickname", required = true, dataType = "String", paramType = "query")
