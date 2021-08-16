@@ -50,15 +50,17 @@ export const CommonTextValidator = styled(TextValidator)`
 
   & label {
     color: black;
+    font-weight: bold;
   }
 
-  & input {
+  & .MuiOutlinedInput-input {
+    border-radius: 6px;
     background-color: #ffffff;
     padding: 0.6em;
   }
 
-  &:focus {
-    outline: none;
+  & .MuiOutlinedInput-notchedOutline {
+    opacity: 0;
   }
 `;
 
