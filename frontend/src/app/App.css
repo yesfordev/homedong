@@ -18,3 +18,31 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: 'NEXONLv1GothicLight';
+  src: url(../assets/fonts/NEXONLv1GothicLight.ttf) format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NEXONLv1GothicRegular';
+  src: url(../assets/fonts/NEXONLv1GothicRegular.ttf) format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SCDream3';
+  src: url(../assets/fonts/SCDream3.otf) format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'YiSunShin';
+  src: url(../assets/fonts/YiSunShin.ttf) format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
