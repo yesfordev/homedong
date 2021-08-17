@@ -5,9 +5,10 @@ import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { useDispatch } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { login } from '../authSlice';
-import logo from '../../../assets/logo(angled).svg';
 import { deleteToken } from '../../../common/api/JWT-common';
+import { login } from '../authSlice';
+import logo from '../../../assets/logo(login).svg';
+import tutorial from '../../../assets/tutorial.svg';
 
 const Wrapper = styled(Container)`
   display: flex;
@@ -19,14 +20,16 @@ const Wrapper = styled(Container)`
 const LogoWrapper = styled(Container)`
   display: flex;
   flex: 1;
-  height: 100vh;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 `;
 
 const Logo = styled.img`
   width: 100%;
   height: 100%;
+  flex: 1;
+  margin-bottom: 10px;
 `;
 
 const LoginContainer = styled.div`
@@ -66,6 +69,20 @@ export const CommonTextValidator = styled(TextValidator)`
 const useStyles = makeStyles({
   validatorForm: {
     width: '90%',
+  },
+  button: {
+    background: 'linear-gradient(45deg, #ff859f 30%, #ffa87a 70%)',
+    borderRadius: 7,
+    border: 0,
+    fontWeight: 'bold',
+    color: 'white',
+    height: 40,
+    marginTop: '10px',
+    padding: '0 30px',
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    '&:hover': {
+      background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 70%)',
+    },
   },
 });
 
@@ -110,6 +127,8 @@ export default function Login() {
       .catch((err) => {
         if (err.status === 400) {
           toast.error('😥 입력된 정보를 다시 확인해주세요');
+        } else if (err.status === 409) {
+          toast.error('😥 이미 로그인된 사용자입니다');
         } else if (err.status === 401) {
           toast.error('😥 아이디와 비밀번호를 다시 확인해주세요');
           deleteToken();
@@ -125,6 +144,11 @@ export default function Login() {
     <Wrapper>
       <LogoWrapper>
         <Logo to="/" src={logo} />
+        <Link to="/tutorial">
+          <Button className={classes.button} src={tutorial}>
+            튜토리얼
+          </Button>
+        </Link>
       </LogoWrapper>
 
       <LoginContainer>
