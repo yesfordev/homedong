@@ -134,6 +134,7 @@ export const deleteUser = createAsyncThunk(
 
 const initialState = {
   user: {},
+  isAdmin: false,
   isNicknameChecked: false,
 };
 
@@ -169,6 +170,11 @@ const authSlice = createSlice({
       state.isNicknameChecked = false;
     },
     [loadUser.fulfilled]: (state, action) => {
+      const { roles } = action.payload;
+      if (roles[0].roleName === 'ROLE_ADMIN') {
+        state.isAdmin = true;
+        console.log('reducer');
+      }
       state.user = action.payload;
     },
   },
