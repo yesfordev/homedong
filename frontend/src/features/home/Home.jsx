@@ -48,7 +48,7 @@ const kindLists = [
   {
     source: squat,
     title: '스쿼트',
-    link: '/squat',
+    link: '/game',
   },
   {
     source: burpee,

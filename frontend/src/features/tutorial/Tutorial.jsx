@@ -132,6 +132,7 @@ class Tutorial extends Component {
                   marginTop: '5%',
                   right: '10%',
                 }}
+                navStyle="2"
                 showBullets
                 showNavs
               />
@@ -153,6 +154,7 @@ class Tutorial extends Component {
                   marginTop: '5%',
                   right: '10%',
                 }}
+                navStyle="2"
                 showBullets
                 showNavs
               />
@@ -174,6 +176,7 @@ class Tutorial extends Component {
                   marginTop: '5%',
                   right: '10%',
                 }}
+                navStyle="2"
                 showBullets
                 showNavs
               />

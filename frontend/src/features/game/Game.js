@@ -39,7 +39,7 @@ import Typography from '@material-ui/core/Typography';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import { Link } from 'react-router-dom';
 import axios1 from '../../common/api/http-common';
-import butimg from '../../assets/chatbox-icon.svg';
+import butimg from '../../assets/chatmsg.svg';
 import { quickStart } from '../home/homeSlice';
 import logo from '../../assets/logo(basic).svg';
 
