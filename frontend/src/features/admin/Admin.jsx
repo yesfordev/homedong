@@ -15,6 +15,7 @@ import { getUsersData } from './adminSlice';
 
 const Wrapper = styled.div`
   display: flex;
+  overflow-y: auto;
   justify-content: center;
   padding: 65px 0px 0px 0px;
   height: 100vh;

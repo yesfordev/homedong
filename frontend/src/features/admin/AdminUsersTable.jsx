@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 
 // style
@@ -10,12 +10,13 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import styled from 'styled-components';
-import TablePagination from '@material-ui/core/TablePagination';
+
 import Divider from '@material-ui/core/Divider';
 
 const CustomTableContainer = styled(TableContainer)`
   width: 90%;
-  margin-top: 50px;
+  height: 80%;
+  margin: 50px;
   & th {
     font-size: 1.2rem;
     font-weight: 550;
@@ -26,80 +27,48 @@ const CustomTableContainer = styled(TableContainer)`
   }
 `;
 
-const TableCellRank = styled(TableCell)`
-  font-size: 1.2rem;
-`;
-
-const CustomTableRow = styled(TableRow)``;
-
-// function createData(ranking, nickname, count, changeStatus, changeRanking) {
-//   return { finalRanking, nickname, count, finalChangeStatus };
-// }
+// const TableCellUserId = styled(TableCell)`
+//   font-size: 1.2rem;
+// `;
 
 export default function AdminUsersInfo() {
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [page, setPage] = useState(0);
-  const { currentRankInfo } = useSelector((state) => state.rank);
+  const { usersData } = useSelector((state) => state.admin);
+  console.log(usersData, 'userdata');
   // 현재 순위 정보
   const rows = [];
-  if (currentRankInfo) {
-    currentRankInfo.forEach((item) => {
-      console.log(item);
-      // rows.push(createData(...item));
-    });
-  }
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  usersData.forEach((user) => {
+    const { userId, email, nickname } = user;
+    rows.push({ userId, email, nickname });
+  });
 
+  console.log(rows);
   return (
-    <>
-      <CustomTableContainer component={Paper}>
-        <Table
-          padding="normal"
-          size="small"
-          stickyHeader
-          aria-label="a dense table"
-        >
-          <caption>회원</caption>
-          <TableHead>
-            <CustomTableRow hover>
-              <TableCell align="center" />
-              <TableCell align="center">아이디</TableCell>
-              <TableCell align="center">닉네임</TableCell>
-            </CustomTableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow key={[row.finalRanking, row.nickname]}>
-                <TableCellRank align="center" scope="row">
-                  {row.finalRanking}
-                </TableCellRank>
-                <TableCell align="center">{row.nickname}</TableCell>
-                <TableCell align="center">{row.count}</TableCell>
-                <TableCell style={{ fontSize: '0.6rem' }} align="center">
-                  {row.finalChangeStatus}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <Divider />
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </CustomTableContainer>
-    </>
+    <CustomTableContainer component={Paper}>
+      <Table
+        padding="normal"
+        size="small"
+        stickyHeader
+        aria-label="a dense table"
+      >
+        <TableHead>
+          <TableRow hover>
+            <TableCell align="center">회원번호</TableCell>
+            <TableCell align="center">아이디</TableCell>
+            <TableCell align="center">닉네임</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {Array.from(rows).map((row) => (
+            <TableRow key={row.userId}>
+              <TableCell align="center">{row.userId}</TableCell>
+              <TableCell align="center">{row.email}</TableCell>
+              <TableCell align="center">{row.nickname}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <Divider />
+    </CustomTableContainer>
   );
 }

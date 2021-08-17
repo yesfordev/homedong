@@ -6,7 +6,6 @@ export const getUsersData = createAsyncThunk(
   async (arg, { rejectWithValue }) => {
     try {
       const response = await axios.get('/api/admin');
-      console.log(response, 'res');
       return response;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -27,7 +26,7 @@ const adminSlice = createSlice({
   },
   extraReducers: {
     [getUsersData.fulfilled]: (state, action) => {
-      state.usersData = action.payload;
+      state.usersData = action.payload.data;
     },
   },
 });
