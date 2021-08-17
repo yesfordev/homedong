@@ -2,15 +2,26 @@
 import React, { Component } from 'react';
 import { Link, animateScroll as scroll } from 'react-scroll';
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
 import { motion } from 'framer-motion';
 import SimpleImageSlider from 'react-simple-image-slider';
 import burpee from '../../assets/burpee.svg';
 import pushup from '../../assets/pushup.svg';
 import squat from '../../assets/squat.svg';
-import badge from './images/badge.png';
-
-// import LogoImage from '../../assets/logo.svg';
+import squat1 from './images/001.png';
+import squat2 from './images/002.png';
+import squat3 from './images/003.png';
+import squat4 from './images/004.png';
+import squat5 from './images/005.png';
+import burpee1 from './images/006.png';
+import burpee2 from './images/007.png';
+import burpee3 from './images/008.png';
+import burpee4 from './images/009.png';
+import burpee5 from './images/010.png';
+import pushup1 from './images/011.png';
+import pushup2 from './images/012.png';
+import pushup3 from './images/013.png';
+import pushup4 from './images/014.png';
+import pushup5 from './images/015.png';
 
 const Wrapper = styled.div`
   display: flex;
@@ -25,21 +36,6 @@ const Exercise = styled.section`
   height: 100vh;
 `;
 
-const Logo = styled.img`
-  height: 50%;
-  position: absolute;
-  margin-top: 10%;
-  left: 10%;
-`;
-const Text = styled.div`
-  display: flex;
-  position: absolute;
-  margin-top: 37%;
-  left: 15px;
-  font-size: 30px;
-  text-align: center;
-`;
-
 const IconButton = styled(motion.img)`
   width: 5%;
 `;
@@ -48,6 +44,12 @@ const Icons = styled.div`
   margin-top: 50px;
   display: flex;
   justify-content: center;
+`;
+const SliderWrapper = styled.div`
+  display: flex;
+  position: absolute;
+  margin-top: 10%;
+  left: 85%;
 `;
 class Tutorial extends Component {
   constructor(props) {
@@ -61,106 +63,124 @@ class Tutorial extends Component {
   }
 
   render() {
-    const images = [{ url: badge }, { url: badge }, { url: badge }];
+    const squatimages = [
+      { url: squat1 },
+      { url: squat2 },
+      { url: squat3 },
+      { url: squat4 },
+      { url: squat5 },
+    ];
+    const pushupimages = [
+      { url: pushup1 },
+      { url: pushup2 },
+      { url: pushup3 },
+      { url: pushup4 },
+      { url: pushup5 },
+    ];
+    const burpeeimages = [
+      { url: burpee1 },
+      { url: burpee2 },
+      { url: burpee3 },
+      { url: burpee4 },
+      { url: burpee5 },
+    ];
     return (
       <>
         {/* <Navbar /> */}
         <Wrapper>
           <Exercise name="element1">
-            <Text>
-              준비 자세를 취해주세요
-              <br />
-              손바닥부터 얼굴까지 모두 화면에 들어와야합니다.
-            </Text>
             <Icons>
-              <IconButton
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.9 }}
-                src={squat}
-              />
+              <Link
+                to="element1"
+                activeClass="active"
+                spy
+                smooth
+                duration={1000}
+              >
+                <IconButton
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
+                  src={squat}
+                />
+              </Link>
+              <Link
+                to="element2"
+                activeClass="active"
+                spy
+                smooth
+                duration={1000}
+              >
+                <IconButton
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
+                  src={burpee}
+                />
+              </Link>
               <IconButton
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ scale: 0.9 }}
                 src={pushup}
               />
-              <IconButton
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.9 }}
-                src={burpee}
-              />
             </Icons>
-            <Logo src={pushup} alt="logo" />
-            <div>
+            <SliderWrapper>
               <SimpleImageSlider
-                width={600}
-                height={600}
-                images={images}
+                width={1280}
+                height={720}
+                images={squatimages}
                 style={{
                   position: 'absolute',
                   marginTop: '5%',
                   right: '10%',
                 }}
-                background="transparent"
+                navStyle="2"
                 showBullets
                 showNavs
               />
-            </div>
-            <Link to="element2" activeClass="active" spy smooth duration={1000}>
-              <Button variant="contained" color="info">
-                스쿼트
-              </Button>
-            </Link>
-            <Link to="element3" activeClass="active" spy smooth duration={1000}>
-              <Button variant="contained" color="secondary">
-                버피
-              </Button>
-            </Link>
+            </SliderWrapper>
           </Exercise>
           <Exercise name="element2">
-            <Text>
-              준비 자세를 취해주세요
-              <br />
-              손바닥부터 얼굴까지 모두 화면에 들어와야합니다.
-            </Text>
             <Icons>
               <IconButton src={squat} />
-              <IconButton src={pushup} />
               <IconButton src={burpee} />
+              <IconButton src={pushup} />
             </Icons>
-            <Logo src={squat} alt="logo" />
-            <Link to="element1" activeClass="active" spy smooth duration={1000}>
-              <Button variant="contained" color="primary">
-                팔굽혀펴기
-              </Button>
-            </Link>
-            <Link to="element3" activeClass="active" spy smooth duration={1000}>
-              <Button variant="contained" color="secondary">
-                버피
-              </Button>
-            </Link>
+            <SliderWrapper>
+              <SimpleImageSlider
+                width={1280}
+                height={720}
+                images={burpeeimages}
+                style={{
+                  position: 'absolute',
+                  marginTop: '5%',
+                  right: '10%',
+                }}
+                navStyle="2"
+                showBullets
+                showNavs
+              />
+            </SliderWrapper>
           </Exercise>
           <Exercise name="element3">
-            <Text>
-              준비 자세를 취해주세요
-              <br />
-              손바닥부터 얼굴까지 모두 화면에 들어와야합니다.
-            </Text>
             <Icons>
               <IconButton src={squat} />
-              <IconButton src={pushup} />
               <IconButton src={burpee} />
+              <IconButton src={pushup} />
             </Icons>
-            <Logo src={burpee} alt="logo" />
-            <Link to="element1" activeClass="active" spy smooth duration={1000}>
-              <Button variant="contained" color="primary">
-                팔굽혀펴기
-              </Button>
-            </Link>
-            <Link to="element2" activeClass="active" spy smooth duration={1000}>
-              <Button variant="contained" color="info">
-                스쿼트
-              </Button>
-            </Link>
+            <SliderWrapper>
+              <SimpleImageSlider
+                width={1280}
+                height={720}
+                images={pushupimages}
+                style={{
+                  position: 'absolute',
+                  marginTop: '5%',
+                  right: '10%',
+                }}
+                navStyle="2"
+                showBullets
+                showNavs
+              />
+            </SliderWrapper>
           </Exercise>
         </Wrapper>
       </>

@@ -49,7 +49,8 @@ export const searchRoom = createAsyncThunk(
     try {
       console.log('search action', data);
       const response = await axios.post('api/rooms/search', data);
-      return response;
+      console.log('response data', response.data);
+      return response.data;
     } catch (err) {
       console.log(err);
       return rejectWithValue(err.response);
@@ -67,6 +68,12 @@ const homeSlice = createSlice({
   reducers: {},
   extraReducers: {
     [makeRoom.fulfilled]: (state, action) => {
+      const { roomId, gameType, nickname } = action.payload;
+      state.roomId = roomId;
+      state.gameType = gameType;
+      state.nickname = nickname;
+    },
+    [searchRoom.fulfilled]: (state, action) => {
       const { roomId, gameType, nickname } = action.payload;
       state.roomId = roomId;
       state.gameType = gameType;
