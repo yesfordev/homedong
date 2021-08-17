@@ -1,9 +1,9 @@
 .chat {
-  --primaryGradient: linear-gradient(93.12deg, #581b98 0.52%, #9c1de7 100%);
+  --primaryGradient: linear-gradient(93.12deg, #7a68bd 0.52%, #9fa9d8 100%);
   --secondaryGradient: linear-gradient(
     268.91deg,
-    #581b98 -2.14%,
-    #9c1de7 99.69%
+    #7a68bd -2.14%,
+    #9fa9d8 99.69%
   );
   --primaryBoxShadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
   --secondaryBoxShadow: 0px -10px 15px rgba(0, 0, 0, 0.1);
@@ -12,7 +12,7 @@
   --semiBold: 600;
   --extraLight: 300;
   --italic: 300;
-  --primary: #581b98;
+  --primary: #9fa9d8;
 }
 ul li {
   list-style-type: none;
@@ -399,6 +399,7 @@ nav {
 /*랭킹테이블*/
 .rankingtable {
   margin-right: auto;
+  height: 150px;
   display: flex;
   justify-content: center;
 }
@@ -407,6 +408,8 @@ nav {
 }
 /*랭킹테이블*/
 #session {
+  justify-content: center;
+  margin-top: 200px;
   width: 100%;
 }
 /*타이머*/
@@ -444,3 +447,113 @@ h1 {
   font-size: 16px;
 }
 /*타이머*/
+.video {
+  margin-left: 3%;
+  margin-right: 3%;
+  margin-top: 1%;
+
+  width: 23%;
+}
+/*게임 지시*/
+
+.arrow-container {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  width: 40%;
+  height: 50%;
+  z-index: 123;
+  transform: translate(-50%, -50%);
+}
+.rotate {
+  /* -o-transform: scaleY(-1);
+  -webkit-transform: scaleY(-1);*/
+  transform: scaleY(-1) translate(-50%, 50%);
+  /* filter: FlipH;
+  -ms-filter: 'FlipH'; */
+}
+.chevron {
+  position: absolute;
+  width: 40%;
+  height: 12%;
+  opacity: 0;
+  transform: scale(0.3);
+  animation: move-chevron 3s ease-out infinite;
+}
+
+.chevron:first-child {
+  animation: move-chevron 3s ease-out 1s infinite;
+}
+
+.chevron:nth-child(2) {
+  animation: move-chevron 3s ease-out 2s infinite;
+}
+
+.chevron:before,
+.chevron:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  opacity: 0.5;
+  background: #d3d153;
+}
+
+.chevron:before {
+  left: 0;
+  transform: skewY(30deg);
+}
+
+.chevron:after {
+  right: 0;
+  width: 50%;
+  transform: skewY(-30deg);
+}
+
+@keyframes move-chevron {
+  25% {
+    opacity: 1;
+  }
+  33.3% {
+    opacity: 1;
+    transform: translateY(-250%);
+  }
+  66.6% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(250%) scale(0.5);
+  }
+}
+/*게임 지시*/
+/*랭킹 테이블*/
+.table {
+  display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: fixed;
+  top: 10%;
+  left: 50%;
+}
+
+tbody {
+  display: flex;
+}
+
+.tableitem {
+  display: block;
+  font-size: 30px;
+}
+.invisible {
+  visibility: hidden;
+}
+
+/*랭킹 테이블*/

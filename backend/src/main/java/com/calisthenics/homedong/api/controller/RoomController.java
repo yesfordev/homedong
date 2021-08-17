@@ -181,13 +181,18 @@ public class RoomController {
             throw new RoomNotFoundException(roomId);
         }
 
-        // 방 관리 map에서 삭제
-        this.mapSessions.remove(roomId);
-
-        // 마지막 참가자가 나갔다면
-        if (this.mapSessions.get(roomId) == null) {
+        int cnt = this.mapSessions.get(roomId);
+        
+        // 마지막 참가자라면
+        if (cnt == 1) {
+            // 방 관리 map에서 삭제
+            this.mapSessions.remove(roomId);
+            
             // DB에서 OFF로 업데이트
             roomService.updateStatus(roomId);
+        } else {
+            // 방 관리 map에서 인원수 갱신
+            this.mapSessions.put(roomId, cnt - 1);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);

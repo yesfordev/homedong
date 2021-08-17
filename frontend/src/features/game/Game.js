@@ -1,3 +1,7 @@
+/* eslint-disable no-var */
+/* eslint-disable prefer-template */
+/* eslint-disable react/no-string-refs */
+/* eslint-disable react/no-find-dom-node */
 /* eslint-disable import/extensions */
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
@@ -28,34 +32,101 @@ import { OpenVidu } from 'openvidu-browser';
 import React, { Component, createRef } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { makeStyles } from '@material-ui/core/styles';
+import { Button, makeStyles } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
-import { Button } from '@material-ui/core';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
-import Navbar from '../../common/navbar/Navbar';
-import butimg from '../../assets/chatbox-icon.svg';
+import { Link } from 'react-router-dom';
+import axios1 from '../../common/api/http-common';
+import butimg from '../../assets/chatmsg.svg';
 import { quickStart } from '../home/homeSlice';
+import logo from '../../assets/logo(basic).svg';
 
 import './Game.css';
 import './UserVideo.css';
-
 import Messages from './components/Messages';
-
+import startsound from './sound/start.mp3';
+import gamemusic2 from './sound/gamemusic2.mp3';
 import UserVideoComponent from './UserVideoComponent';
 
 const OPENVIDU_SERVER_URL = 'https://i5a608.p.ssafy.io:8443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
 
 // 전체 컨테이너
+const useStyles = makeStyles({
+  button: {
+    background: 'linear-gradient(45deg, #ff859f 30%, #ffa87a 70%)',
+    borderRadius: 7,
+    border: 0,
+    fontWeight: 'bold',
+    color: 'white',
+    height: 40,
+    marginTop: '10px',
+    padding: '0 30px',
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    '&:hover': {
+      background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 70%)',
+    },
+  },
+  root: {
+    minWidth: 50,
+  },
+  bullet: {
+    display: 'inline-block',
+    margin: '0 2px',
+    transform: 'scale(0.8)',
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
+});
 const Wrapper = styled.div`
   display: flex;
-  padding: 65px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
   height: 100vh;
   width: 100%;
 `;
+const NavWrapper = styled.div`
+  height: 65px;
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+  align-items: center;
+  border-bottom: solid rgba(248, 208, 83, 0.5);
+`;
+const HeaderWrapper = styled.div`
+  margin: 0 2em 0 2em;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+`;
 
+const Logo = styled.img`
+  width: 200px;
+  height: 100px;
+`;
+
+const LeftList = styled.ul`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > * {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  > button {
+    font-size: 1rem;
+    cursor: pointer;
+  }
+`;
+
+const music = new Audio(gamemusic2);
 class Game extends Component {
   constructor(props) {
     super(props);
@@ -75,7 +146,6 @@ class Game extends Component {
       count: 0,
       webcam: undefined,
       model: undefined,
-      maxPrediction: undefined,
       URL: undefined,
       ranking: new Map(),
       sortedrank: new Map(),
@@ -85,6 +155,12 @@ class Game extends Component {
       message: '',
       ishost: false,
       timer: false,
+      gameId: undefined,
+      token: undefined,
+      audiostate: true,
+      videostate: true,
+      headerText: '',
+      arrow: false,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -103,37 +179,56 @@ class Game extends Component {
     this.renderTableData = this.renderTableData.bind(this);
     this.chattoggle = this.chattoggle.bind(this);
     // ref
-    this.chatboxmessage = createRef(null);
+    this.messageContainer = createRef(null);
     this.sendmessageByClick = this.sendmessageByClick.bind(this);
     this.sendmessageByEnter = this.sendmessageByEnter.bind(this);
     this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
   }
 
   componentDidMount() {
-    const { doQuickStart } = this.props;
-    const data = { gameType: 1 };
-    doQuickStart(data)
-      .unwrap()
-      .then(() => {
-        const { home } = this.props;
-        // 각 slice의 state에서 원하는 변수들을 가져온다.
-        const { roomId, nickname, gameType } = home;
-        this.setState({
-          mySessionId: roomId,
-          myUserName: nickname,
-          gametype: gameType,
-        });
-        this.joinSession();
+    music.currentTime = 0;
+    setTimeout(() => {
+      const { home } = this.props;
+      const { token, roomId, nickname, gameType } = home;
+      if (roomId === '') {
+        this.props.history.push('/error');
+      }
+      this.setState({
+        token,
+        mySessionId: roomId,
+        myUserName: nickname,
+        gametype: gameType,
       });
+      switch (gameType) {
+        case 1:
+          this.setState({ headerText: roomId + '/스쿼트' });
+          break;
+        case 3:
+          this.setState({ headerText: roomId + '/버피' });
+          break;
+        case 2:
+          this.setState({ headerText: roomId + '/팔굽혀펴기' });
+          break;
+      }
+      this.joinSession();
+    }, 500);
     window.addEventListener('beforeunload', this.onbeforeunload);
   }
 
   componentWillUnmount() {
+    this.leaveSession();
+    music.pause();
     window.removeEventListener('beforeunload', this.onbeforeunload);
   }
 
   onbeforeunload(event) {
     this.leaveSession();
+  }
+
+  componentDidUpdate(previousProps, previousState) {
+    if (this.refs.chatoutput != null) {
+      this.refs.chatoutput.scrollTop = this.refs.chatoutput.scrollHeight;
+    }
   }
 
   handleChangeSessionId(e) {
@@ -253,6 +348,7 @@ class Game extends Component {
           });
         });
         mySession.on('signal:start', (event) => {
+          this.setState({ gameId: event.data });
           this.start();
         });
         mySession.on('signal:count', (event) => {
@@ -325,6 +421,9 @@ class Game extends Component {
 
         // 'getToken' method is simulating what your server-side should do.
         // 'token' parameter should be retrieved and returned by your own backend
+
+        // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
+        // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
         this.getToken().then((token) => {
           // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
@@ -403,10 +502,24 @@ class Game extends Component {
     });
   }
 
-  // 시작버튼
+  // 게임시작
   start() {
+    new Audio(startsound).play();
     setTimeout(() => {
-      this.setState({ started: false, timer: true });
+      this.setState({
+        started: false,
+        timer: true,
+        count: 0,
+        status: 'up',
+        ranking: new Map(),
+        sortedrank: new Map(),
+        readystate: 'ready',
+      });
+      music.loop = true;
+      music.play();
+      this.setState({
+        arrow: true,
+      });
       this.init();
     }, 5000);
     setTimeout(() => {
@@ -423,18 +536,23 @@ class Game extends Component {
 
   startButton() {
     let mySession = this.state.session;
-    mySession.signal({
-      data: 'start',
-      type: 'start',
-    });
+    axios1
+      .put(`/api/game/start?roomId=${this.state.mySessionId}`)
+      .then((response) => {
+        mySession.signal({
+          data: response.data.gameId,
+          type: 'start',
+        });
+      });
   }
 
   // 시작버튼
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
-
+    axios1.put('/api/rooms', {
+      roomId: this.state.mySessionId,
+    });
     const mySession = this.state.session;
-
     if (mySession) {
       mySession.disconnect();
     }
@@ -449,25 +567,26 @@ class Game extends Component {
       mainStreamManager: undefined,
       publisher: undefined,
     });
+    this.props.history.push('/');
   }
 
   // 티처블 머신
   async init() {
     console.log(`teachablemachinestart${this.state.gametype}`);
     switch (this.state.gametype) {
-      case 1:
+      case 2: // 푸쉬업
         this.setState({
-          URL: 'https://teachablemachine.withgoogle.com/models/RmHPFT0M2/',
+          URL: 'https://teachablemachine.withgoogle.com/models/cIjn1XveJ/',
         });
         break;
-      case 2:
-        this.setState({
-          URL: 'https://teachablemachine.withgoogle.com/models/y1scUcaWN/',
-        });
-        break;
-      case 3:
+      case 3: // 버피
         this.setState({
           URL: 'https://teachablemachine.withgoogle.com/models/j1ifbpLKk/',
+        });
+        break;
+      case 1: // 스쿼트
+        this.setState({
+          URL: 'https://teachablemachine.withgoogle.com/models/y1scUcaWN/',
         });
         break;
     }
@@ -478,9 +597,6 @@ class Game extends Component {
     // Note: the pose library adds a tmPose object to your window (window.tmPose)
     this.setState({
       model: await tmPose.load(modelURL, metadataURL),
-    });
-    this.setState({
-      maxPredictions: this.state.model.getTotalClasses(),
     });
     // Convenience function to setup a webcam
     const size = 200;
@@ -495,13 +611,13 @@ class Game extends Component {
     this.state.webcam.update(); // update the webcam frame
     switch (this.state.gametype) {
       case 1:
-        await this.pushUppredict();
-        break;
-      case 2:
-        await this.burpeepredict();
+        await this.squatpredict();
         break;
       case 3:
-        await this.squatpredict();
+        await this.burpeepredict();
+        break;
+      case 2:
+        await this.pushUppredict();
         break;
     }
 
@@ -516,31 +632,27 @@ class Game extends Component {
     );
     // Prediction 2: run input through teachable machine classification model
     const prediction = await this.state.model.predict(posenetOutput);
-    if (prediction[0].probability.toFixed(2) > 0.99) {
-      if (this.state.status === 'middle') {
-        if (this.state.check) {
-          this.setState({
-            count: this.state.count + 1,
+    if (prediction[0].probability.toFixed(2) > 0.95) {
+      if (this.state.check) {
+        this.setState({
+          count: this.state.count + 1,
+        });
+        this.state.session
+          .signal({
+            data: `${this.state.myUserName},${this.state.count}`, // Any string (optional)
+            to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+            type: 'count', // The type of message (optional)
+          })
+          .then(() => {
+            console.log('Message successfully sent');
+            this.setState({ check: false });
+          })
+          .catch((error) => {
+            console.error(error);
           });
-          this.state.session
-            .signal({
-              data: `${this.state.myUserName},${this.state.count}`, // Any string (optional)
-              to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-              type: 'count', // The type of message (optional)
-            })
-            .then(() => {
-              console.log('Message successfully sent');
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-          this.setState({ check: false });
-        }
       }
       this.setState({ status: 'up' });
-    } else if (prediction[1].probability.toFixed(2) > 0.99) {
-      this.setState({ status: 'middle' });
-    } else if (prediction[2].probability.toFixed(2) > 0.99) {
+    } else if (prediction[1].probability.toFixed(2) > 0.95) {
       this.setState({ status: 'down' });
       this.setState({ check: true });
     }
@@ -554,31 +666,27 @@ class Game extends Component {
     );
     // Prediction 2: run input through teachable machine classification model
     const prediction = await this.state.model.predict(posenetOutput);
-    if (prediction[0].probability.toFixed(2) > 0.99) {
-      if (this.state.status === 'middle') {
-        if (this.state.check) {
-          this.setState({
-            count: this.state.count + 1,
+    if (prediction[0].probability.toFixed(2) > 0.95) {
+      if (this.state.check) {
+        this.setState({
+          count: this.state.count + 1,
+        });
+        this.state.session
+          .signal({
+            data: `${this.state.myUserName},${this.state.count}`, // Any string (optional)
+            to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+            type: 'count', // The type of message (optional)
+          })
+          .then(() => {
+            console.log('Message successfully sent');
+            this.setState({ check: false });
+          })
+          .catch((error) => {
+            console.error(error);
           });
-          this.state.session
-            .signal({
-              data: `${this.state.myUserName},${this.state.count}`, // Any string (optional)
-              to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-              type: 'count', // The type of message (optional)
-            })
-            .then(() => {
-              console.log('Message successfully sent');
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-          this.setState({ check: false });
-        }
       }
       this.setState({ status: 'up' });
-    } else if (prediction[1].probability.toFixed(2) > 0.99) {
-      this.setState({ status: 'middle' });
-    } else if (prediction[2].probability.toFixed(2) > 0.99) {
+    } else if (prediction[2].probability.toFixed(2) > 0.95) {
       this.setState({ status: 'down' });
       this.setState({ check: true });
     }
@@ -592,7 +700,7 @@ class Game extends Component {
     );
     // Prediction 2: run input through teachable machine classification model
     const prediction = await this.state.model.predict(posenetOutput);
-    if (prediction[0].probability.toFixed(2) > 0.99) {
+    if (prediction[0].probability.toFixed(2) > 0.95) {
       if (this.state.check) {
         this.setState({
           count: this.state.count + 1,
@@ -605,14 +713,14 @@ class Game extends Component {
           })
           .then(() => {
             console.log('Message successfully sent');
+            this.setState({ check: false });
           })
           .catch((error) => {
             console.error(error);
           });
-        this.setState({ check: false });
       }
       this.setState({ status: 'up' });
-    } else if (prediction[1].probability.toFixed(2) > 0.99) {
+    } else if (prediction[1].probability.toFixed(2) > 0.95) {
       this.setState({ status: 'down' });
       this.setState({ check: true });
     }
@@ -622,46 +730,22 @@ class Game extends Component {
     return (
       this.state.rankdata &&
       this.state.rankdata.map((rank, index) => {
-        const useStyles = makeStyles({
-          root: {
-            minWidth: 50,
-          },
-          bullet: {
-            display: 'inline-block',
-            margin: '0 2px',
-            transform: 'scale(0.8)',
-          },
-          title: {
-            fontSize: 14,
-          },
-          pos: {
-            marginBottom: 12,
-          },
-        });
-        const classes = useStyles;
-        const bull = <span className={classes.bullet}>•</span>;
         const { nickname, count } = rank; // destructuring
+        let finalRanking;
+        if (index === 0) {
+          finalRanking = '🥇';
+        } else if (index === 1) {
+          finalRanking = '🥈';
+        } else if (index === 2) {
+          finalRanking = '🥉';
+        }
         if (index < 3) {
           return (
-            <li key={index}>
-              <Card className={classes.root} variant="outlined">
-                <CardContent>
-                  <Typography
-                    className={classes.title}
-                    color="textSecondary"
-                    gutterBottom
-                  >
-                    {index + 1}위
-                  </Typography>
-                  <Typography variant="h5" component="h2">
-                    {nickname}님
-                  </Typography>
-                  <Typography className={classes.pos} color="textSecondary">
-                    {count}개
-                  </Typography>
-                </CardContent>
-              </Card>
-            </li>
+            <tr key={index}>
+              <td className="tableitem">{finalRanking}</td>
+              <td className="tableitem">{nickname}님</td>
+              <td className="tableitem">{count}개</td>
+            </tr>
           );
         }
       })
@@ -739,7 +823,7 @@ class Game extends Component {
   }
 
   render() {
-    const mySessionId = this.state.mySessionId;
+    const classes = useStyles;
     const renderTime = ({ remainingTime }) => {
       if (remainingTime === 0) {
         return <div className="timer">Too lale...</div>;
@@ -754,196 +838,218 @@ class Game extends Component {
       );
     };
     const messages = this.state.messages;
-    const { home } = this.props;
-    // 각 slice의 state에서 원하는 변수들을 가져온다.
-    const { token, roomId, nickname, gameType } = home;
-    const useStyles = makeStyles({
-      root: {
-        minWidth: 50,
-      },
-      bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
-      },
-      title: {
-        fontSize: 14,
-      },
-      pos: {
-        marginBottom: 12,
-      },
-    });
-    const classes = useStyles;
     const bull = <span className={classes.bullet}>•</span>;
 
     return (
-      <>
-        <Navbar />
-        <Wrapper>
-          {this.state.timer ? (
-            <div className="timer-wrapper">
-              <CountdownCircleTimer
-                isPlaying
-                duration={10}
-                colors={[['#004777', 0.33], ['#F7B801', 0.33], ['#A30000']]}
-                onComplete={() => [this.setState({ timer: false }), 2000]}
+      <Wrapper>
+        <NavWrapper>
+          <HeaderWrapper>
+            <Link to="/">
+              <Logo src={logo} />
+            </Link>
+            <LeftList>
+              <span>{this.state.headerText}</span>
+            </LeftList>
+
+            <Button
+              onClick={() => {
+                this.state.publisher.publishAudio(!this.state.audiostate);
+                this.setState({ audiostate: !this.state.audiostate });
+              }}
+            >
+              {this.state.audiostate ? '음소거' : '소리재생'}
+            </Button>
+            <Button
+              onClick={() => {
+                this.state.publisher.publishVideo(!this.state.videostate);
+                this.setState({ videostate: !this.state.videostate });
+              }}
+            >
+              {this.state.videostate ? '카메라 끄기' : '카메라 켜기'}
+            </Button>
+            {this.state.ishost ? (
+              <Button
+                className={classes.button}
+                type="primary"
+                onClick={this.startButton}
               >
-                {renderTime}
-              </CountdownCircleTimer>
-            </div>
-          ) : null}
-          {this.state.started ? (
-            <div className="demo">
+                게임시작
+              </Button>
+            ) : null}
+            <Button
+              className={classes.button}
+              type="primary"
+              onClick={this.leaveSession}
+            >
+              나가기
+            </Button>
+          </HeaderWrapper>
+        </NavWrapper>
+        {this.state.arrow ? (
+          <div
+            className={`arrow-container ${this.state.check ? 'rotate' : ''}`}
+          >
+            <div className="chevron" />
+            <div className="chevron" />
+            <div className="chevron" />
+          </div>
+        ) : null}
+        {this.state.timer ? (
+          <div className="timer-wrapper">
+            <CountdownCircleTimer
+              isPlaying
+              duration={20}
+              colors={[['#004777', 0.33], ['#F7B801', 0.33], ['#A30000']]}
+              onComplete={() => {
+                setTimeout(() => {
+                  this.setState({
+                    ranking: new Map(),
+                    sortedrank: new Map(),
+                    rankdata: [],
+                    timer: false,
+                    arrow: false,
+                    status: 'up',
+                  });
+                  axios1.post('/api/game/end', {
+                    count: this.state.count,
+                    gameId: this.state.gameId,
+                  });
+                  music.pause();
+                  this.renderTableData();
+                }, 300);
+              }}
+            >
+              {renderTime}
+            </CountdownCircleTimer>
+          </div>
+        ) : null}
+        {this.state.started ? (
+          <div className="demo">
+            <div
+              className={
+                this.state.started
+                  ? 'demo__colored-blocks'
+                  : 'demo__colored-blocks'
+              }
+            >
               <div
                 className={
                   this.state.started
-                    ? 'demo__colored-blocks'
-                    : 'demo__colored-blocks'
+                    ? 'demo__colored-blocks-rotater'
+                    : 'demo__colored-blocks-rotater1'
                 }
               >
-                <div
+                <div className="demo__colored-block" />
+                <div className="demo__colored-block" />
+                <div className="demo__colored-block" />
+              </div>
+              <div className="demo__colored-blocks-inner" />
+              <div className={this.state.started ? 'demo__text' : 'demo_text1'}>
+                {this.state.readystate}
+              </div>
+            </div>
+            <div className="demo__inner">
+              <svg className="demo__numbers" viewBox="0 0 100 100">
+                <defs>
+                  <path className="demo__num-path-1" d="M40,28 55,22 55,78" />
+                  <path
+                    className="demo__num-join-1-2"
+                    d="M55,78 55,83 a17,17 0 1,0 34,0 a20,10 0 0,0 -20,-10"
+                  />
+                  <path
+                    className="demo__num-path-2"
+                    d="M69,73 l-35,0 l30,-30 a16,16 0 0,0 -22.6,-22.6 l-7,7"
+                  />
+                  <path
+                    className="demo__num-join-2-3"
+                    d="M28,69 Q25,44 34.4,27.4"
+                  />
+                  <path
+                    className="demo__num-path-3"
+                    d="M30,20 60,20 40,50 a18,15 0 1,1 -12,19"
+                  />
+                </defs>
+                <path
                   className={
                     this.state.started
-                      ? 'demo__colored-blocks-rotater'
-                      : 'demo__colored-blocks-rotater1'
+                      ? 'demo__numbers-path'
+                      : 'demo__numbers-path1'
                   }
-                >
-                  <div className="demo__colored-block" />
-                  <div className="demo__colored-block" />
-                  <div className="demo__colored-block" />
-                </div>
-                <div className="demo__colored-blocks-inner" />
-                <div
-                  className={this.state.started ? 'demo__text' : 'demo_text1'}
-                >
-                  {this.state.readystate}
-                </div>
-              </div>
-              <div className="demo__inner">
-                <svg className="demo__numbers" viewBox="0 0 100 100">
-                  <defs>
-                    <path className="demo__num-path-1" d="M40,28 55,22 55,78" />
-                    <path
-                      className="demo__num-join-1-2"
-                      d="M55,78 55,83 a17,17 0 1,0 34,0 a20,10 0 0,0 -20,-10"
-                    />
-                    <path
-                      className="demo__num-path-2"
-                      d="M69,73 l-35,0 l30,-30 a16,16 0 0,0 -22.6,-22.6 l-7,7"
-                    />
-                    <path
-                      className="demo__num-join-2-3"
-                      d="M28,69 Q25,44 34.4,27.4"
-                    />
-                    <path
-                      className="demo__num-path-3"
-                      d="M30,20 60,20 40,50 a18,15 0 1,1 -12,19"
-                    />
-                  </defs>
-                  <path
-                    className={
-                      this.state.started
-                        ? 'demo__numbers-path'
-                        : 'demo__numbers-path1'
-                    }
-                    d="M-10,20 60,20 40,50 a18,15 0 1,1 -12,19 
+                  d="M-10,20 60,20 40,50 a18,15 0 1,1 -12,19 
                        Q25,44 34.4,27.4
                        l7,-7 a16,16 0 0,1 22.6,22.6 l-30,30 l35,0 L69,73 
                        a20,10 0 0,1 20,10 a17,17 0 0,1 -34,0 L55,83 
                        l0,-61 L40,28"
-                  />
-                </svg>
-              </div>
-            </div>
-          ) : null}
-          {this.state.session !== undefined ? (
-            <div id="session">
-              <div id="session-header">
-                <h1 id="session-title">{mySessionId}</h1>
-                <input
-                  className="btn btn-large btn-danger"
-                  type="button"
-                  id="buttonLeaveSession"
-                  onClick={this.leaveSession}
-                  value="Leave session"
                 />
-                {this.state.ishost ? (
-                  <input
-                    className="btn btn-large btn-danger"
-                    type="button"
-                    value="START GAME"
-                    onClick={this.startButton}
-                  />
-                ) : null}
-              </div>
-              <div>현재상태</div>
-              <div>{this.state.status}</div>
-              <div>개수</div>
-              <div>{this.state.count}</div>
-              <div className="rankingtable">
-                <ul>{this.renderTableData()} </ul>
-              </div>
-              <div id="video-container" className="video-container col-md-6">
-                {this.state.publisher !== undefined ? (
-                  <div
-                    className="stream-container col-md-6 col-xs-6"
-                    onClick={() =>
-                      this.handleMainVideoStream(this.state.publisher)
-                    }
-                  >
-                    <UserVideoComponent streamManager={this.state.publisher} />
-                  </div>
-                ) : null}
-                {this.state.subscribers.map((sub, i) => (
-                  <div
-                    key={i}
-                    className="stream-container col-md-6 col-xs-6"
-                    onClick={() => this.handleMainVideoStream(sub)}
-                  >
-                    <UserVideoComponent streamManager={sub} />
-                  </div>
-                ))}
-              </div>
-              <div className="chatbox">
-                {this.state.chaton ? (
-                  <div className="chat chatbox__support chatbox--active">
-                    <div className="chat chatbox__header" />
-                    <div
-                      className="chatbox__messages"
-                      ref={this.chatboxmessage}
-                    >
-                      {/* {this.displayElements} */}
-                      <Messages messages={messages} />
-                      <div />
-                    </div>
-                    <div className="chat chatbox__footer">
-                      <input
-                        id="chat_message"
-                        type="text"
-                        placeholder="Write a message..."
-                        onChange={this.handleChatMessageChange}
-                        onKeyPress={this.sendmessageByEnter}
-                        value={this.state.message}
-                      />
-                      <p
-                        className="chat chatbox__send--footer"
-                        onClick={this.sendmessageByClick}
-                      >
-                        Send
-                      </p>
-                    </div>
-                  </div>
-                ) : null}
-                <div className="chatbox__button" ref={this.chatButton}>
-                  <button onClick={this.chattoggle}>
-                    <img src={butimg} />
-                  </button>
+              </svg>
+            </div>
+          </div>
+        ) : null}
+        {this.state.session !== undefined ? (
+          <div id="session">
+            <table
+              id="ranking"
+              className={`table ${this.state.arrow ? null : 'invisible'}`}
+            >
+              <tbody>{this.renderTableData()}</tbody>
+            </table>
+            <div id="video-container" className="video-container col-md-6">
+              {this.state.publisher !== undefined ? (
+                <div
+                  className="stream-container col-md-6 col-xs-6"
+                  onClick={() =>
+                    this.handleMainVideoStream(this.state.publisher)
+                  }
+                >
+                  <UserVideoComponent streamManager={this.state.publisher} />
                 </div>
+              ) : null}
+              {this.state.subscribers.map((sub, i) => (
+                <div
+                  key={i}
+                  className="stream-container col-md-6 col-xs-6"
+                  onClick={() => this.handleMainVideoStream(sub)}
+                >
+                  <UserVideoComponent streamManager={sub} />
+                </div>
+              ))}
+            </div>
+            <div className="chatbox">
+              {this.state.chaton ? (
+                <div className="chat chatbox__support chatbox--active">
+                  <div className="chat chatbox__header" />
+                  <div className="chatbox__messages" ref="chatoutput">
+                    {/* {this.displayElements} */}
+                    <Messages messages={messages} />
+                    <div />
+                  </div>
+                  <div className="chat chatbox__footer">
+                    <input
+                      id="chat_message"
+                      type="text"
+                      placeholder="Write a message..."
+                      onChange={this.handleChatMessageChange}
+                      onKeyPress={this.sendmessageByEnter}
+                      value={this.state.message}
+                    />
+                    <p
+                      className="chat chatbox__send--footer"
+                      onClick={this.sendmessageByClick}
+                    >
+                      Send
+                    </p>
+                  </div>
+                </div>
+              ) : null}
+              <div className="chatbox__button" ref={this.chatButton}>
+                <button onClick={this.chattoggle}>
+                  <img src={butimg} />
+                </button>
               </div>
             </div>
-          ) : null}
-        </Wrapper>
-      </>
+          </div>
+        ) : null}
+      </Wrapper>
     );
   }
 

@@ -59,7 +59,6 @@ export default function Navbar() {
   const [isFindOpen, setIsFindOpen] = useState(false);
   const handleMakeModal = () => setIsMakeOpen(false);
   const handleFindModal = () => setIsFindOpen(false);
-
   return (
     <Wrapper>
       <HeaderWrapper>

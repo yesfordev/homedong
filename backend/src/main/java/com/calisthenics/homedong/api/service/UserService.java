@@ -68,7 +68,6 @@ public class UserService {
                 .img(Integer.toString(imgNum))
                 .authKey(authKey)
                 .authStatus(false)
-                .isLogin(false)
                 .build();
 
         return userRepository.save(user);
@@ -112,7 +111,13 @@ public class UserService {
 
     @Transactional
     public void deleteUser() {
-        entryRepositry.deleteByUserId(SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithRolesByEmail).orElse(null).getUserId());
+        User user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithRolesByEmail).orElse(null);
+
+        if(user == null) {
+            throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
+        }
+
+        entryRepositry.deleteByUserId(user.getUserId());
 
         if(userRepository.deleteByEmail(SecurityUtil.getCurrentEmail().orElse("")) == 0) {
             throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
@@ -121,7 +126,19 @@ public class UserService {
 
     @Transactional
     public void deleteUser(final String email) {
-        entryRepositry.deleteByUserId(userRepository.findOneWithRolesByEmail(email).orElse(null).getUserId());
+        User user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithRolesByEmail).orElse(null);
+
+        if(user == null) {
+            throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
+        }
+
+        User deleteUser = userRepository.findOneWithRolesByEmail(email).orElse(null);
+
+        if(deleteUser == null) {
+            throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
+        }
+
+        entryRepositry.deleteByUserId(deleteUser.getUserId());
 
         if(userRepository.deleteByEmail(email) == 0) {
             throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
@@ -186,16 +203,4 @@ public class UserService {
         userRepository.save(updateUser);
     }
 
-    @Transactional
-    public void updateIsLogin(boolean status) {
-        User updateUser = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse(null)).orElse(null);
-
-        if(updateUser == null) {
-            throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(null));
-        }
-
-        updateUser.setLogin(status);
-
-        userRepository.save(updateUser);
-    }
 }
