@@ -67,7 +67,7 @@ const mypageSlice = createSlice({
       state.dailyInfo = {};
     },
     loadBadgesOwned: (state) => {
-      const gameTypes = ['sitUp', 'pushUp', 'squat'];
+      const gameTypes = ['squat', 'pushUp', 'burpee'];
       let gameType = '';
       const { badgeInfo } = state;
       Object.entries(badgeInfo).forEach(([exercise, detailInfo]) => {
