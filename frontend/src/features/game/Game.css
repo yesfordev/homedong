@@ -315,7 +315,7 @@ nav {
   color: white;
 }
 
-.chatbox__button,
+.chatbox__button button,
 .chatbox__button button:focus,
 .chatbox__button button:visited {
   padding: 10px;
@@ -459,24 +459,24 @@ h1 {
   position: absolute;
   justify-content: center;
   align-items: center;
-  top: 30%;
+  top: 50%;
   left: 50%;
-  width: 50%;
-  height: 100%;
+  width: 40%;
+  height: 50%;
   z-index: 123;
   transform: translate(-50%, -50%);
 }
 .rotate {
   /* -o-transform: scaleY(-1);
   -webkit-transform: scaleY(-1);*/
-  transform: scaleY(-1) translate(-50%, 20%);
+  transform: scaleY(-1) translate(-50%, 50%);
   /* filter: FlipH;
   -ms-filter: 'FlipH'; */
 }
 .chevron {
   position: absolute;
-  width: 30%;
-  height: 7%;
+  width: 40%;
+  height: 12%;
   opacity: 0;
   transform: scale(0.3);
   animation: move-chevron 3s ease-out infinite;
@@ -518,15 +518,15 @@ h1 {
   }
   33.3% {
     opacity: 1;
-    transform: translateY(100%);
+    transform: translateY(-250%);
   }
   66.6% {
     opacity: 1;
-    transform: translateY(300%);
+    transform: translateY(0%);
   }
   100% {
     opacity: 0;
-    transform: translateY(500%) scale(0.5);
+    transform: translateY(250%) scale(0.5);
   }
 }
 /*게임 지시*/

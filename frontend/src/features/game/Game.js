@@ -159,6 +159,8 @@ class Game extends Component {
       gameId: undefined,
       token: undefined,
       requestId: undefined,
+      audiostate: true,
+      videostate: true,
       headerText: '',
       arrow: false,
     };
@@ -568,7 +570,7 @@ class Game extends Component {
     switch (this.state.gametype) {
       case 3: // 푸쉬업
         this.setState({
-          URL: 'https://teachablemachine.withgoogle.com/models/RmHPFT0M2/',
+          URL: 'https://teachablemachine.withgoogle.com/models/cIjn1XveJ/',
         });
         break;
       case 2: // 버피
@@ -624,83 +626,7 @@ class Game extends Component {
     );
     // Prediction 2: run input through teachable machine classification model
     const prediction = await this.state.model.predict(posenetOutput);
-    if (prediction[0].probability.toFixed(2) > 0.99) {
-      if (this.state.status === 'middle') {
-        if (this.state.check) {
-          this.setState({
-            count: this.state.count + 1,
-          });
-          this.state.session
-            .signal({
-              data: `${this.state.myUserName},${this.state.count}`, // Any string (optional)
-              to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-              type: 'count', // The type of message (optional)
-            })
-            .then(() => {
-              console.log('Message successfully sent');
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-          this.setState({ check: false });
-        }
-      }
-      this.setState({ status: 'up' });
-    } else if (prediction[1].probability.toFixed(2) > 0.99) {
-      this.setState({ status: 'middle' });
-    } else if (prediction[2].probability.toFixed(2) > 0.99) {
-      this.setState({ status: 'down' });
-      this.setState({ check: true });
-    }
-  }
-
-  async squatpredict() {
-    // Prediction #1: run input through posenet
-    // estimatePose can take in an image, video or canvas html element
-    const { pose, posenetOutput } = await this.state.model.estimatePose(
-      this.state.webcam.canvas
-    );
-    // Prediction 2: run input through teachable machine classification model
-    const prediction = await this.state.model.predict(posenetOutput);
-    if (prediction[0].probability.toFixed(2) > 0.99) {
-      if (this.state.status === 'middle') {
-        if (this.state.check) {
-          this.setState({
-            count: this.state.count + 1,
-          });
-          this.state.session
-            .signal({
-              data: `${this.state.myUserName},${this.state.count}`, // Any string (optional)
-              to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-              type: 'count', // The type of message (optional)
-            })
-            .then(() => {
-              console.log('Message successfully sent');
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-          this.setState({ check: false });
-        }
-      }
-      this.setState({ status: 'up' });
-    } else if (prediction[1].probability.toFixed(2) > 0.99) {
-      this.setState({ status: 'middle' });
-    } else if (prediction[2].probability.toFixed(2) > 0.99) {
-      this.setState({ status: 'down' });
-      this.setState({ check: true });
-    }
-  }
-
-  async burpeepredict() {
-    // Prediction #1: run input through posenet
-    // estimatePose can take in an image, video or canvas html element
-    const { pose, posenetOutput } = await this.state.model.estimatePose(
-      this.state.webcam.canvas
-    );
-    // Prediction 2: run input through teachable machine classification model
-    const prediction = await this.state.model.predict(posenetOutput);
-    if (prediction[0].probability.toFixed(2) > 0.99) {
+    if (prediction[0].probability.toFixed(2) > 0.95) {
       if (this.state.check) {
         this.setState({
           count: this.state.count + 1,
@@ -720,7 +646,75 @@ class Game extends Component {
         this.setState({ check: false });
       }
       this.setState({ status: 'up' });
-    } else if (prediction[1].probability.toFixed(2) > 0.99) {
+    } else if (prediction[1].probability.toFixed(2) > 0.95) {
+      this.setState({ status: 'down' });
+      this.setState({ check: true });
+    }
+  }
+
+  async squatpredict() {
+    // Prediction #1: run input through posenet
+    // estimatePose can take in an image, video or canvas html element
+    const { pose, posenetOutput } = await this.state.model.estimatePose(
+      this.state.webcam.canvas
+    );
+    // Prediction 2: run input through teachable machine classification model
+    const prediction = await this.state.model.predict(posenetOutput);
+    if (prediction[0].probability.toFixed(2) > 0.95) {
+      if (this.state.check) {
+        this.setState({
+          count: this.state.count + 1,
+        });
+        this.state.session
+          .signal({
+            data: `${this.state.myUserName},${this.state.count}`, // Any string (optional)
+            to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+            type: 'count', // The type of message (optional)
+          })
+          .then(() => {
+            console.log('Message successfully sent');
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+        this.setState({ check: false });
+      }
+      this.setState({ status: 'up' });
+    } else if (prediction[2].probability.toFixed(2) > 0.95) {
+      this.setState({ status: 'down' });
+      this.setState({ check: true });
+    }
+  }
+
+  async burpeepredict() {
+    // Prediction #1: run input through posenet
+    // estimatePose can take in an image, video or canvas html element
+    const { pose, posenetOutput } = await this.state.model.estimatePose(
+      this.state.webcam.canvas
+    );
+    // Prediction 2: run input through teachable machine classification model
+    const prediction = await this.state.model.predict(posenetOutput);
+    if (prediction[0].probability.toFixed(2) > 0.95) {
+      if (this.state.check) {
+        this.setState({
+          count: this.state.count + 1,
+        });
+        this.state.session
+          .signal({
+            data: `${this.state.myUserName},${this.state.count}`, // Any string (optional)
+            to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+            type: 'count', // The type of message (optional)
+          })
+          .then(() => {
+            console.log('Message successfully sent');
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+        this.setState({ check: false });
+      }
+      this.setState({ status: 'up' });
+    } else if (prediction[1].probability.toFixed(2) > 0.95) {
       this.setState({ status: 'down' });
       this.setState({ check: true });
     }
@@ -859,7 +853,22 @@ class Game extends Component {
               <span>{this.state.headerText}</span>
             </LeftList>
 
-            <span>타이머</span>
+            <Button
+              onClick={() => {
+                this.state.publisher.publishAudio(!this.state.audiostate);
+                this.setState({ audiostate: !this.state.audiostate });
+              }}
+            >
+              {this.state.audiostate ? '음소거' : '소리재생'}
+            </Button>
+            <Button
+              onClick={() => {
+                this.state.publisher.publishVideo(!this.state.videostate);
+                this.setState({ videostate: !this.state.videostate });
+              }}
+            >
+              {this.state.videostate ? '카메라 끄기' : '카메라 켜기'}
+            </Button>
             {this.state.ishost ? (
               <Button
                 className={classes.button}
@@ -897,6 +906,7 @@ class Game extends Component {
                 setTimeout(() => {
                   this.setState({
                     timer: false,
+                    arrow: false,
                   });
                   axios1.post('/api/game/end', {
                     count: this.state.count,
