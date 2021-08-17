@@ -1,3 +1,7 @@
+/* eslint-disable no-var */
+/* eslint-disable prefer-template */
+/* eslint-disable react/no-string-refs */
+/* eslint-disable react/no-find-dom-node */
 /* eslint-disable import/extensions */
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
@@ -34,15 +38,18 @@ import { Button } from '@material-ui/core';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
+import axios1 from '../../common/api/http-common';
 import Navbar from '../../common/navbar/Navbar';
 import butimg from '../../assets/chatbox-icon.svg';
 import { quickStart } from '../home/homeSlice';
 
 import './Game.css';
 import './UserVideo.css';
-
 import Messages from './components/Messages';
-
+import startsound from './sound/start.mp3';
+import gamemusic1 from './sound/gamemusic1.mp3';
+import gamemusic2 from './sound/gamemusic2.mp3';
+import gamemusic3 from './sound/gamemusic3.mp3';
 import UserVideoComponent from './UserVideoComponent';
 
 const OPENVIDU_SERVER_URL = 'https://i5a608.p.ssafy.io:8443';
@@ -55,6 +62,7 @@ const Wrapper = styled.div`
   height: 100vh;
   width: 100%;
 `;
+const music = new Audio(gamemusic2);
 
 class Game extends Component {
   constructor(props) {
@@ -85,6 +93,9 @@ class Game extends Component {
       message: '',
       ishost: false,
       timer: false,
+      gameId: undefined,
+      token: undefined,
+      requestId: undefined,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -103,37 +114,43 @@ class Game extends Component {
     this.renderTableData = this.renderTableData.bind(this);
     this.chattoggle = this.chattoggle.bind(this);
     // ref
-    this.chatboxmessage = createRef(null);
+    this.messageContainer = createRef(null);
     this.sendmessageByClick = this.sendmessageByClick.bind(this);
     this.sendmessageByEnter = this.sendmessageByEnter.bind(this);
     this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
   }
 
   componentDidMount() {
-    const { doQuickStart } = this.props;
-    const data = { gameType: 1 };
-    doQuickStart(data)
-      .unwrap()
-      .then(() => {
-        const { home } = this.props;
-        // 각 slice의 state에서 원하는 변수들을 가져온다.
-        const { roomId, nickname, gameType } = home;
-        this.setState({
-          mySessionId: roomId,
-          myUserName: nickname,
-          gametype: gameType,
-        });
-        this.joinSession();
+    music.currentTime = 0;
+    setTimeout(() => {
+      const { home } = this.props;
+      const { token, roomId, nickname, gameType } = home;
+      this.setState({
+        token,
+        mySessionId: roomId,
+        myUserName: nickname,
+        gametype: gameType,
       });
+      console.log(`asdfasdfadsfadsf${this.state.mySessionId}`);
+      this.joinSession();
+    }, 500);
     window.addEventListener('beforeunload', this.onbeforeunload);
   }
 
   componentWillUnmount() {
+    this.leaveSession();
+    music.pause();
     window.removeEventListener('beforeunload', this.onbeforeunload);
   }
 
   onbeforeunload(event) {
     this.leaveSession();
+  }
+
+  componentDidUpdate(previousProps, previousState) {
+    if (this.refs.chatoutput != null) {
+      this.refs.chatoutput.scrollTop = this.refs.chatoutput.scrollHeight;
+    }
   }
 
   handleChangeSessionId(e) {
@@ -253,6 +270,7 @@ class Game extends Component {
           });
         });
         mySession.on('signal:start', (event) => {
+          this.setState({ gameId: event.data });
           this.start();
         });
         mySession.on('signal:count', (event) => {
@@ -325,6 +343,9 @@ class Game extends Component {
 
         // 'getToken' method is simulating what your server-side should do.
         // 'token' parameter should be retrieved and returned by your own backend
+
+        // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
+        // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
         this.getToken().then((token) => {
           // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
@@ -403,10 +424,13 @@ class Game extends Component {
     });
   }
 
-  // 시작버튼
+  // 게임시작
   start() {
+    new Audio(startsound).play();
     setTimeout(() => {
       this.setState({ started: false, timer: true });
+      music.loop = true;
+      music.play();
       this.init();
     }, 5000);
     setTimeout(() => {
@@ -423,18 +447,26 @@ class Game extends Component {
 
   startButton() {
     let mySession = this.state.session;
-    mySession.signal({
-      data: 'start',
-      type: 'start',
-    });
+    axios1
+      .put(`/api/game/start?roomId=${this.state.mySessionId}`)
+      .then((response) => {
+        mySession.signal({
+          data: response.data.gameId,
+          type: 'start',
+        });
+      });
   }
 
   // 시작버튼
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
-
+    axios1.put('/api/rooms', {
+      roomId: this.state.mySessionId,
+    });
     const mySession = this.state.session;
-
+    if (this.state.requestId) {
+      window.cancelAnimationFrame(this.state.requestId);
+    }
     if (mySession) {
       mySession.disconnect();
     }
@@ -449,25 +481,26 @@ class Game extends Component {
       mainStreamManager: undefined,
       publisher: undefined,
     });
+    this.props.history.push('/');
   }
 
   // 티처블 머신
   async init() {
     console.log(`teachablemachinestart${this.state.gametype}`);
     switch (this.state.gametype) {
-      case 1:
+      case 3: // 푸쉬업
         this.setState({
           URL: 'https://teachablemachine.withgoogle.com/models/RmHPFT0M2/',
         });
         break;
-      case 2:
-        this.setState({
-          URL: 'https://teachablemachine.withgoogle.com/models/y1scUcaWN/',
-        });
-        break;
-      case 3:
+      case 2: // 버피
         this.setState({
           URL: 'https://teachablemachine.withgoogle.com/models/j1ifbpLKk/',
+        });
+        break;
+      case 1: // 스쿼트
+        this.setState({
+          URL: 'https://teachablemachine.withgoogle.com/models/y1scUcaWN/',
         });
         break;
     }
@@ -488,7 +521,7 @@ class Game extends Component {
     this.setState({ webcam: new tmPose.Webcam(size, size, flip) }); // width, height, flip
     await this.state.webcam.setup(); // request access to the webcam
     await this.state.webcam.play();
-    window.requestAnimationFrame(this.loop);
+    this.setState({ requestId: window.requestAnimationFrame(this.loop) });
   }
 
   async loop(timestamp) {
@@ -641,7 +674,7 @@ class Game extends Component {
         const classes = useStyles;
         const bull = <span className={classes.bullet}>•</span>;
         const { nickname, count } = rank; // destructuring
-        if (index < 3) {
+        if (index < 3 && count > 0) {
           return (
             <li key={index}>
               <Card className={classes.root} variant="outlined">
@@ -754,9 +787,6 @@ class Game extends Component {
       );
     };
     const messages = this.state.messages;
-    const { home } = this.props;
-    // 각 slice의 state에서 원하는 변수들을 가져온다.
-    const { token, roomId, nickname, gameType } = home;
     const useStyles = makeStyles({
       root: {
         minWidth: 50,
@@ -784,9 +814,21 @@ class Game extends Component {
             <div className="timer-wrapper">
               <CountdownCircleTimer
                 isPlaying
-                duration={10}
+                duration={20}
                 colors={[['#004777', 0.33], ['#F7B801', 0.33], ['#A30000']]}
-                onComplete={() => [this.setState({ timer: false }), 2000]}
+                onComplete={() => {
+                  setTimeout(() => {
+                    this.setState({
+                      timer: false,
+                    });
+                    axios1.post('/api/game/end', {
+                      count: this.state.count,
+                      gameId: this.state.gameId,
+                    });
+                    music.pause();
+                    window.cancelAnimationFrame(this.state.requestId);
+                  }, 300);
+                }}
               >
                 {renderTime}
               </CountdownCircleTimer>
@@ -876,8 +918,6 @@ class Game extends Component {
                   />
                 ) : null}
               </div>
-              <div>현재상태</div>
-              <div>{this.state.status}</div>
               <div>개수</div>
               <div>{this.state.count}</div>
               <div className="rankingtable">
@@ -908,10 +948,7 @@ class Game extends Component {
                 {this.state.chaton ? (
                   <div className="chat chatbox__support chatbox--active">
                     <div className="chat chatbox__header" />
-                    <div
-                      className="chatbox__messages"
-                      ref={this.chatboxmessage}
-                    >
+                    <div className="chatbox__messages" ref="chatoutput">
                       {/* {this.displayElements} */}
                       <Messages messages={messages} />
                       <div />
