@@ -161,6 +161,7 @@ class Game extends Component {
       videostate: true,
       headerText: '',
       arrow: false,
+      leaved: false,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -168,7 +169,6 @@ class Game extends Component {
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
     this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
-    this.onbeforeunload = this.onbeforeunload.bind(this);
     this.startButton = this.startButton.bind(this);
     this.loop = this.loop.bind(this);
     this.start = this.start.bind(this);
@@ -212,17 +212,13 @@ class Game extends Component {
       }
       this.joinSession();
     }, 500);
-    window.addEventListener('beforeunload', this.onbeforeunload);
   }
 
   componentWillUnmount() {
-    this.leaveSession();
     music.pause();
-    window.removeEventListener('beforeunload', this.onbeforeunload);
-  }
-
-  onbeforeunload(event) {
-    this.leaveSession();
+    if (!this.state.leaved) {
+      this.leaveSession();
+    }
   }
 
   componentDidUpdate(previousProps, previousState) {
@@ -359,10 +355,8 @@ class Game extends Component {
               [...this.state.ranking.entries()].sort((a, b) => b[1] - a[1])
             ),
           });
-          console.log(this.state.sortedrank);
           this.setState({ rankdata: [] });
           this.state.sortedrank.forEach((item, index) => {
-            console.log(index);
             this.state.rankdata = [
               ...this.state.rankdata,
               { nickname: index, count: item },
@@ -548,26 +542,32 @@ class Game extends Component {
 
   // 시작버튼
   leaveSession() {
+    console.log('난 떠나요');
+    console.log(this.state.mySessionId);
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
-    axios1.put('/api/rooms', {
-      roomId: this.state.mySessionId,
-    });
     const mySession = this.state.session;
     if (mySession) {
       mySession.disconnect();
     }
-
-    // Empty all properties...
-    this.OV = null;
-    this.setState({
-      session: undefined,
-      subscribers: [],
-      mySessionId: 'SessionA',
-      myUserName: `Participant${Math.floor(Math.random() * 100)}`,
-      mainStreamManager: undefined,
-      publisher: undefined,
-    });
-    this.props.history.push('/');
+    axios1
+      .put('/api/rooms', {
+        roomId: this.state.mySessionId,
+      })
+      .then(() => {
+        // Empty all properties...
+        this.OV = null;
+        this.setState({
+          leaved: true,
+          session: '',
+          subscribers: [],
+          mySessionId: 'SessionA',
+          myUserName: `Participant${Math.floor(Math.random() * 100)}`,
+          mainStreamManager: undefined,
+          publisher: undefined,
+        });
+        console.log(this.state.leaved);
+        this.props.history.push('/');
+      });
   }
 
   // 티처블 머신
