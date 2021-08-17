@@ -7,9 +7,9 @@ import lombok.Getter;
  */
 @Getter
 public enum BadgeUtil {
-    SQUAT(1, 100, 200, 500),
-    PUSHUP(2, 60, 80, 120),
-    BURPEE(3, 60, 80, 120);
+    SQUAT(1, 10, 20, 30),
+    PUSHUP(2, 10, 15, 20),
+    BURPEE(3, 5, 10, 15);
 
     private final Integer gameType;
     private final int beginner;
