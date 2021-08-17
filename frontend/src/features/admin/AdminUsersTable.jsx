@@ -1,8 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // style
-import { Button } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -11,8 +10,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import styled from 'styled-components';
-
+import { MdDeleteForever } from 'react-icons/md';
 import Divider from '@material-ui/core/Divider';
+
+// action
+import { letUserDeleted } from './adminSlice';
 
 const CustomTableContainer = styled(TableContainer)`
   width: 90%;
@@ -28,9 +30,27 @@ const CustomTableContainer = styled(TableContainer)`
   }
 `;
 
+const DeleteTableCell = styled(TableCell)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Nickname = styled.div`
+  margin-right: 5px;
+`;
+
+const DeleteButton = styled(MdDeleteForever)`
+  cursor: pointer;
+`;
+
 export default function AdminUsersInfo() {
   const { usersData } = useSelector((state) => state.admin);
-  console.log(usersData, 'userdata');
+  const dispatch = useDispatch();
+
+  function deleteUser(email) {
+    dispatch(letUserDeleted(email));
+  }
   // 현재 순위 정보
   const rows = [];
 
@@ -38,8 +58,6 @@ export default function AdminUsersInfo() {
     const { userId, email, nickname } = user;
     rows.push({ userId, email, nickname });
   });
-
-  console.log(rows);
   return (
     <CustomTableContainer component={Paper}>
       <Table
@@ -61,12 +79,10 @@ export default function AdminUsersInfo() {
             <TableRow key={row.userId}>
               <TableCell align="center">{row.userId}</TableCell>
               <TableCell align="center">{row.email}</TableCell>
-              <TableCell align="center">
-                <div>{row.nickname}</div>
-              </TableCell>
-              <TableCell align="center">
-                <Button>efef</Button>
-              </TableCell>
+              <DeleteTableCell align="center">
+                <Nickname>{row.nickname}</Nickname>
+                <DeleteButton onClick={() => deleteUser(row.email)} />
+              </DeleteTableCell>
             </TableRow>
           ))}
         </TableBody>

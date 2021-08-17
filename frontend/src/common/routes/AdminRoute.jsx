@@ -10,8 +10,7 @@ export default function AdminRoute({ component: Component, ...rest }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const { isAdmin, user } = useSelector((state) => state.auth);
-  console.log(isAdmin, user, 'isAdmin');
+  const { isAdmin } = useSelector((state) => state.auth);
   useEffect(() => {
     dispatch(loadUser())
       .unwrap()
