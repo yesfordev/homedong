@@ -14,11 +14,12 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 // image
-import defaultImage from '../../assets/default.png';
+// import defaultImage from '../../assets/default.png';
 import badgeImages from '../../assets/badges/badgeImages';
 import burpee from '../../assets/burpee.svg';
 import pushUp from '../../assets/pushup.svg';
 import squat from '../../assets/squat.svg';
+import profileImages from '../../assets/profile/profileImages';
 
 // component
 import Navbar from '../../common/navbar/Navbar';
@@ -27,8 +28,14 @@ import Calendar from './Calendar';
 import DeleteModal from './DeleteModal';
 
 // action
-import { loadBadge, loadBestRecord, loadBadgesOwned } from './mypageSlice';
+import {
+  loadBadge,
+  loadBestRecord,
+  loadBadgesOwned,
+  changeUserProfile,
+} from './mypageSlice';
 import { deleteToken } from '../../common/api/JWT-common';
+import { loadUser } from '../auth/authSlice';
 
 // 전체 컨테이너
 const Wrapper = styled.div`
@@ -45,9 +52,29 @@ const Sidebar = styled.aside`
 `;
 
 const ProfileImage = styled.img`
-  width: 70%;
+  width: 60%;
   height: 15%;
   border-radius: 50%;
+  border: 1px solid;
+  cursor: pointer;
+`;
+
+// 선택할 수 있는 프로필 image 뿌려주기
+const VariousImage = styled.img`
+  width: 95px;
+  margin: 5px;
+  cursor: pointer;
+  border: 1px solid;
+  border-radius: 50%;
+`;
+
+const SelectedImage = styled.img`
+  width: 95px;
+  margin: 5px;
+  cursor: pointer;
+  border: 4px solid;
+  border-radius: 50%;
+  border-color: #fbd14b;
 `;
 
 // 메인
@@ -159,7 +186,7 @@ const Footer = styled.footer`
 `;
 
 export default function MyPage() {
-  const { nickname, email } = useSelector((state) => state.auth.user);
+  const { nickname, email, img } = useSelector((state) => state.auth.user);
   // badgesOwned
   const { consecutiveRecordInfo, badgesOwned } = useSelector(
     (state) => state.mypage
@@ -169,13 +196,30 @@ export default function MyPage() {
   const history = useHistory();
 
   const [open, setOpen] = useState(false);
+  const [currentImage, setCurrentImage] = useState(0);
 
   const handleClickOpen = () => {
     setOpen(true);
+    setCurrentImage(Number(img));
   };
 
   const handleClose = () => {
     setOpen(false);
+    if (Number(img) === currentImage) return;
+    dispatch(changeUserProfile(currentImage.toString()))
+      .then(() => {
+        dispatch(loadUser());
+        toast.success('🎨 프로필 사진이 변경되었습니다!');
+      })
+      .catch((err) => {
+        if (err.status === 401) {
+          toast.error('😥 로그인을 다시 해주세요!');
+          deleteToken();
+          history.push('/login');
+        } else if (err.status === 500) {
+          history.push('/error');
+        }
+      });
   };
 
   // badge 가지고 있는 것 추출하는 함수
@@ -188,6 +232,10 @@ export default function MyPage() {
         badgeImages[kind][level][1] = true;
       }
     });
+  }
+
+  function updateCurrentImg(imgNum) {
+    setCurrentImage(imgNum);
   }
 
   useEffect(() => {
@@ -227,15 +275,26 @@ export default function MyPage() {
       <Navbar />
       <Wrapper>
         <Sidebar>
-          <ProfileImage src={defaultImage} alt="profile" />
+          {profileImages.map((profileImage, index) => {
+            if (index + 1 === Number(img)) {
+              return (
+                <ProfileImage
+                  src={profileImage}
+                  alt="profile"
+                  onClick={handleClickOpen}
+                />
+              );
+            }
+            return <span> </span>;
+          })}
           <div>
-            <Button
+            {/* <Button
               variant="outlined"
               color="primary"
               onClick={handleClickOpen}
             >
               프로필 변경하기
-            </Button>
+            </Button> */}
             <Dialog
               open={open}
               onClose={handleClose}
@@ -243,21 +302,27 @@ export default function MyPage() {
               aria-describedby="alert-dialog-description"
             >
               <DialogTitle id="alert-dialog-title">
-                변경할 사진을 골라주세요
+                변경할 프로필을 골라주세요
               </DialogTitle>
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                  Let Google help apps determine location. This means sending
-                  anonymous location data to Google, even when no apps are
-                  running.
+                  {profileImages.map((profileImage, index) => {
+                    if (index + 1 === currentImage) {
+                      return <SelectedImage alt="profile" src={profileImage} />;
+                    }
+                    return (
+                      <VariousImage
+                        alt="profile"
+                        src={profileImage}
+                        onClick={() => updateCurrentImg(index + 1)}
+                      />
+                    );
+                  })}
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose} color="primary">
-                  Disagree
-                </Button>
                 <Button onClick={handleClose} color="primary" autoFocus>
-                  Agree
+                  변경하기
                 </Button>
               </DialogActions>
             </Dialog>
