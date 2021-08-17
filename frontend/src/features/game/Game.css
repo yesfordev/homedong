@@ -533,7 +533,7 @@ h1 {
 }
 /*게임 지시*/
 /*랭킹 테이블*/
-table {
+.table {
   display: flex;
   display: -webkit-box;
   display: -ms-flexbox;

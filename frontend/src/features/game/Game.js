@@ -989,7 +989,7 @@ class Game extends Component {
           <div id="session">
             <table
               id="ranking"
-              className={this.state.arrow ? null : 'invisible'}
+              className={`table ${this.state.arrow ? null : 'invisible'}`}
             >
               <tbody>{this.renderTableData()}</tbody>
             </table>
