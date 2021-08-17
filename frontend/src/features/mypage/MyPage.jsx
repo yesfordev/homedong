@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -7,6 +7,11 @@ import { Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 // image
 import defaultImage from '../../assets/default.png';
@@ -163,6 +168,16 @@ export default function MyPage() {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   // badge 가지고 있는 것 추출하는 함수
   // 각 경기에 대한 뱃지 이미지의 색을 살려준다.
   function drawBadge() {
@@ -213,6 +228,40 @@ export default function MyPage() {
       <Wrapper>
         <Sidebar>
           <ProfileImage src={defaultImage} alt="profile" />
+          <div>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleClickOpen}
+            >
+              프로필 변경하기
+            </Button>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                변경할 사진을 골라주세요
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Let Google help apps determine location. This means sending
+                  anonymous location data to Google, even when no apps are
+                  running.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Disagree
+                </Button>
+                <Button onClick={handleClose} color="primary" autoFocus>
+                  Agree
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
         </Sidebar>
         <CustomMain>
           <BasicInfo>
