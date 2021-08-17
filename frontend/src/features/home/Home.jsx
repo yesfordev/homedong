@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 /* eslint-disable prettier/prettier */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -84,7 +85,19 @@ class Home extends Component {
               return (
                 <div
                   onClick={() => {
-                    const data = { gameType: index + 1 };
+                    let num;
+                    switch (index) {
+                      case 0:
+                        num = 1;
+                        break;
+                      case 1:
+                        num = 3;
+                        break;
+                      case 2:
+                        num = 2;
+                        break;
+                    }
+                    const data = { gameType: num };
                     navigator.mediaDevices
                       .getUserMedia({
                         video: true,
