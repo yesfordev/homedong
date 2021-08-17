@@ -5,8 +5,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Avatar } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom';
-import { deleteToken } from '../api/JWT-common';
-import { resetUser } from '../../features/auth/authSlice';
+import { resetUser, logout } from '../../features/auth/authSlice';
 import { resetMyPageInfo } from '../../features/mypage/mypageSlice';
 
 import defaultImage from '../../assets/default.png';
@@ -25,10 +24,14 @@ export default function SimpleMenu() {
   };
 
   const handleLogout = () => {
-    deleteToken();
-    dispatch(resetUser());
-    dispatch(resetMyPageInfo());
-    history.push('/login');
+    console.log('logout');
+    dispatch(logout())
+      .unwrap()
+      .then(() => {
+        history.push('/login');
+        dispatch(resetUser());
+        dispatch(resetMyPageInfo());
+      });
   };
 
   return (

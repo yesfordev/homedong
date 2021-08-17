@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { saveToken } from '../../common/api/JWT-common';
+import { deleteToken, saveToken, getToken } from '../../common/api/JWT-common';
 import axios from '../../common/api/http-common';
 
 // 메서드 전체 REST API, params 필요
@@ -43,7 +43,23 @@ export const login = createAsyncThunk(
       saveToken(token);
       return response;
     } catch (err) {
-      // status 500이면, 500의 에러로 처리
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+// 로그아웃
+export const logout = createAsyncThunk(
+  'LOGOUT',
+  async (arg, { rejectWithValue }) => {
+    try {
+      const token = await getToken();
+      const data = { token };
+      const response = await axios.post('/api/auth/logout', data);
+      deleteToken();
+      return response;
+    } catch (err) {
+      console.log('thunkerror');
       return rejectWithValue(err.response);
     }
   }
@@ -133,18 +149,18 @@ const authSlice = createSlice({
       state.isNicknameChecked = false;
     },
     resetUser: (state) => {
-      console.log('resetUser');
       state.user = {};
     },
   },
   extraReducers: {
     [login.fulfilled]: (state) => {
       state.isAuthenticated = true;
-      console.log('reducer 로그인 성공');
     },
-    [login.rejected]: (state, action) => {
+    [login.rejected]: (state) => {
       state.isAuthenticated = false;
-      console.log('reducer 로그인 실패', action.payload.status);
+    },
+    [logout.fulfilled]: (state) => {
+      state.isAuthenticated = false;
     },
     [checkNickname.fulfilled]: (state) => {
       state.isNicknameChecked = true;
