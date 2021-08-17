@@ -30,6 +30,7 @@
     "react-simple-image-slider": "^2.1.2",
     "react-toastify": "^7.0.4",
     "redux": "^4.1.0",
+    "redux-persist": "^6.0.0",
     "styled-components": "^5.3.0",
     "styled-reset": "^4.3.4",
     "turn.js": "https://github.com/rizalibnu/turn.js.git",

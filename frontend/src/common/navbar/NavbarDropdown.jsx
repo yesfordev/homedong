@@ -55,6 +55,9 @@ export default function SimpleMenu() {
           <MenuItem onClick={handleClose}>마이페이지</MenuItem>
         </Link>
         <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
+        <Link to="/admin">
+          <MenuItem onClick={handleClose}>관리자페이지</MenuItem>
+        </Link>
       </Menu>
     </div>
   );
