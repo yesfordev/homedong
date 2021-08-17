@@ -136,6 +136,7 @@ const initialState = {
   user: {},
   isAdmin: false,
   isNicknameChecked: false,
+  isLoading: false,
 };
 
 // slice
@@ -151,6 +152,15 @@ const authSlice = createSlice({
     },
   },
   extraReducers: {
+    [signup.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [signup.fulfilled]: (state) => {
+      state.isLoading = false;
+    },
+    [signup.rejected]: (state) => {
+      state.isLoading = false;
+    },
     [login.fulfilled]: (state) => {
       state.isAuthenticated = true;
     },
@@ -173,7 +183,6 @@ const authSlice = createSlice({
       const { roles } = action.payload;
       if (roles[0].roleName === 'ROLE_ADMIN') {
         state.isAdmin = true;
-        console.log('reducer');
       }
       state.user = action.payload;
     },

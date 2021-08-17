@@ -41,6 +41,14 @@ const StyledToastContainer = styled(ToastContainer).attrs({})`
     line-height: 1.5;
     word-break: keep-all;
   }
+  .Toastify__toast--success {
+    background-color: rgba(106, 96, 169, 0.7);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    word-break: keep-all;
+    & .Toastify__progress-bar--success {
+    }
+  }
 `;
 
 function App() {
