@@ -2,10 +2,22 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../common/api/http-common';
 
 export const getUsersData = createAsyncThunk(
-  'GET_USER_DATA',
+  'GET_USERS_DATA',
   async (arg, { rejectWithValue }) => {
     try {
       const response = await axios.get('/api/admin');
+      return response;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+export const letUserDeleted = createAsyncThunk(
+  'LET_USER_DELETED',
+  async (email, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`/api/admin/${email}`);
       return response;
     } catch (err) {
       return rejectWithValue(err.response);

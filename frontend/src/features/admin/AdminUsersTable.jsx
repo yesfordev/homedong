@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 // style
+import { Button } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -26,10 +27,6 @@ const CustomTableContainer = styled(TableContainer)`
     font-size: 1.3rem;
   }
 `;
-
-// const TableCellUserId = styled(TableCell)`
-//   font-size: 1.2rem;
-// `;
 
 export default function AdminUsersInfo() {
   const { usersData } = useSelector((state) => state.admin);
@@ -56,6 +53,7 @@ export default function AdminUsersInfo() {
             <TableCell align="center">회원번호</TableCell>
             <TableCell align="center">아이디</TableCell>
             <TableCell align="center">닉네임</TableCell>
+            <TableCell align="center" />
           </TableRow>
         </TableHead>
         <TableBody>
@@ -63,7 +61,12 @@ export default function AdminUsersInfo() {
             <TableRow key={row.userId}>
               <TableCell align="center">{row.userId}</TableCell>
               <TableCell align="center">{row.email}</TableCell>
-              <TableCell align="center">{row.nickname}</TableCell>
+              <TableCell align="center">
+                <div>{row.nickname}</div>
+              </TableCell>
+              <TableCell align="center">
+                <Button>efef</Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
