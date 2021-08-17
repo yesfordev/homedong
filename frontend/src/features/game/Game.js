@@ -902,15 +902,17 @@ class Game extends Component {
                   this.setState({
                     ranking: new Map(),
                     sortedrank: new Map(),
-                    rankdata: undefined,
+                    rankdata: [],
                     timer: false,
                     arrow: false,
+                    status: 'up',
                   });
                   axios1.post('/api/game/end', {
                     count: this.state.count,
                     gameId: this.state.gameId,
                   });
                   music.pause();
+                  this.renderTableData();
                 }, 300);
               }}
             >
