@@ -122,6 +122,7 @@ export const deleteUser = createAsyncThunk(
 const initialState = {
   user: {},
   isNicknameChecked: false,
+  isLoading: false,
 };
 
 // slice
@@ -133,18 +134,24 @@ const authSlice = createSlice({
       state.isNicknameChecked = false;
     },
     resetUser: (state) => {
-      console.log('resetUser');
       state.user = {};
     },
   },
   extraReducers: {
+    [signup.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [signup.fulfilled]: (state) => {
+      state.isLoading = false;
+    },
+    [signup.rejected]: (state) => {
+      state.isLoading = false;
+    },
     [login.fulfilled]: (state) => {
       state.isAuthenticated = true;
-      console.log('reducer 로그인 성공');
     },
-    [login.rejected]: (state, action) => {
+    [login.rejected]: (state) => {
       state.isAuthenticated = false;
-      console.log('reducer 로그인 실패', action.payload.status);
     },
     [checkNickname.fulfilled]: (state) => {
       state.isNicknameChecked = true;
