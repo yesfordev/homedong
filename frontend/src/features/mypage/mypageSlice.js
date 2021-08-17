@@ -51,6 +51,18 @@ export const loadConsecutiveRecord = createAsyncThunk(
   }
 );
 
+export const changeUserProfile = createAsyncThunk(
+  'CHANGE_USER_PROFILE',
+  async (imgNum, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`/api/user/image?imgNum=${imgNum}`);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
 const mypageSlice = createSlice({
   name: 'mypage',
   initialState: {
