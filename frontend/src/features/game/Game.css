@@ -408,6 +408,8 @@ nav {
 }
 /*랭킹테이블*/
 #session {
+  justify-content: center;
+  margin-top: 200px;
   width: 100%;
 }
 /*타이머*/
@@ -450,7 +452,7 @@ h1 {
   margin-right: 3%;
   margin-top: 1%;
 
-  width: 25%;
+  width: 23%;
 }
 /*게임 지시*/
 
@@ -530,3 +532,25 @@ h1 {
   }
 }
 /*게임 지시*/
+/*랭킹 테이블*/
+table {
+  display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: fixed;
+  top: 10%;
+  left: 50%;
+}
+
+tbody {
+  display: flex;
+}
+
+.tableitem {
+  display: block;
+  font-size: 30px;
+}
+
+/*랭킹 테이블*/

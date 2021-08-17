@@ -724,30 +724,22 @@ class Game extends Component {
     return (
       this.state.rankdata &&
       this.state.rankdata.map((rank, index) => {
-        const classes = useStyles;
-        const bull = <span className={classes.bullet}>•</span>;
         const { nickname, count } = rank; // destructuring
-        if (index < 3 && count > 0) {
+        let finalRanking;
+        if (index === 0) {
+          finalRanking = '🥇';
+        } else if (index === 1) {
+          finalRanking = '🥈';
+        } else if (index === 2) {
+          finalRanking = '🥉';
+        }
+        if (index < 3) {
           return (
-            <li key={index}>
-              <Card className={classes.root} variant="outlined">
-                <CardContent>
-                  <Typography
-                    className={classes.title}
-                    color="textSecondary"
-                    gutterBottom
-                  >
-                    {index + 1}위
-                  </Typography>
-                  <Typography variant="h5" component="h2">
-                    {nickname}님
-                  </Typography>
-                  <Typography className={classes.pos} color="textSecondary">
-                    {count}개
-                  </Typography>
-                </CardContent>
-              </Card>
-            </li>
+            <tr key={index}>
+              <td className="tableitem">{finalRanking}</td>
+              <td className="tableitem">{nickname}님</td>
+              <td className="tableitem">{count}개</td>
+            </tr>
           );
         }
       })
@@ -985,11 +977,9 @@ class Game extends Component {
         ) : null}
         {this.state.session !== undefined ? (
           <div id="session">
-            <div>개수</div>
-            <div>{this.state.count}</div>
-            <div className="rankingtable">
-              <ul>{this.renderTableData()} </ul>
-            </div>
+            <table id="ranking" className="scrolltable">
+              <tbody>{this.renderTableData()}</tbody>
+            </table>
             <div id="video-container" className="video-container col-md-6">
               {this.state.publisher !== undefined ? (
                 <div
