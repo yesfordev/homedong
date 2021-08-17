@@ -13,7 +13,7 @@ const rootPersistConfig = {
   key: 'root',
   version: 1,
   storage,
-  whitelist: ['auth', 'admin'],
+  whitelist: ['auth', 'admin', 'mypage'],
 };
 
 const authPersistConfig = {
