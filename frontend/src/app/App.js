@@ -50,11 +50,11 @@ function App() {
           <Switch>
             <PublicRoute restricted path="/login" component={Login} />
             <PublicRoute restricted path="/signup" component={SignUp} />
+            <PublicRoute path="/tutorial" component={Tutorial} />
             <Route path="/emailchecked" component={EmailChecked} />
             <Route path="/emailcheckedplease" component={EmailCheckedPlease} />
             <Route path="/error" component={Error500} />
             <PrivateRoute exact path="/" component={Home} />
-            <PrivateRoute path="/tutorial" component={Tutorial} />
             <PrivateRoute path="/rank" component={Rank} />
             <PrivateRoute path="/mypage" component={MyPage} />
             <PrivateRoute path="/checkpassword" component={CheckPassword} />
