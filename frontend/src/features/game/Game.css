@@ -14,11 +14,6 @@
   --italic: 300;
   --primary: #9fa9d8;
 }
-ul li {
-  list-style-type: none;
-  float: left;
-  padding: 20px;
-}
 
 nav {
   height: 50px;
