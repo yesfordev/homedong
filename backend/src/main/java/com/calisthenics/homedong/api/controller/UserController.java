@@ -118,10 +118,13 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity deleteUser(@RequestBody @Valid LogoutReq logoutReq) {
+    public ResponseEntity deleteUser(@RequestHeader String Authorization) {
+        String token = Authorization.split(" ")[1];
+        log.info(token);
+
         ValueOperations<String, String> logoutValueOperations = redisTemplate.opsForValue();
-        logoutValueOperations.set(logoutReq.getToken(), logoutReq.getToken()); // redis set 명령어
-        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) tokenProvider.getAuthentication(logoutReq.getToken()).getPrincipal();
+        logoutValueOperations.set(token, token); // redis set 명령어
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) tokenProvider.getAuthentication(token).getPrincipal();
         log.info("회원탈퇴 유저 이메일 : '{}' , 유저 권한 : '{}'", user.getUsername(), user.getAuthorities());
         userService.deleteUser();
 
