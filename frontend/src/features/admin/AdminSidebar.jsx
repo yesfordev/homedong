@@ -19,11 +19,13 @@ import { setCurrentMode } from './adminSlice';
 const Wrapper = styled.div`
   display: flex;
   & .MuiPaper-root {
-    background-color: rgba(246, 245, 253, 0.8);
+    background-color: rgba(246, 245, 253, 1);
   }
 
   & .MuiList-root {
     padding: 0;
+  }
+  & span {
   }
 `;
 

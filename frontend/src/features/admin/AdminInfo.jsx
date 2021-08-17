@@ -1,117 +1,43 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  margin-top: 50px;
+`;
+
+export const Title = styled.div`
+  display: inline-block;
+  font-weight: bold;
+  font-size: 2.5rem;
+  border-bottom: 5px solid rgba(251, 209, 75, 0.5);
+`;
+
+export const Content = styled.div`
+  font-size: 2rem;
+  margin: 40px;
+`;
+
+const Container = styled.div``;
 
 // style
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import styled from 'styled-components';
-import TablePagination from '@material-ui/core/TablePagination';
-
-const CustomTableContainer = styled(TableContainer)`
-  width: 55%;
-  border-radius: 10px;
-  margin-bottom: 60px;
-  & th {
-    font-size: 1.7rem;
-    padding: 20px 0;
-    font-weight: 550;
-    background-color: rgba(159, 169, 216, 1);
-    color: rgba(0, 0, 0, 0.6);
-  }
-  & td {
-    font-size: 1.3rem;
-  }
-
-  @media (max-width: 414px) {
-    width: 90%;
-    & th {
-      font-size: 1.2rem;
-      padding: 10px 0;
-    }
-  }
-`;
-
-const TableCellRank = styled(TableCell)`
-  font-size: 1.2rem;
-`;
-
-const CustomTableRow = styled(TableRow)`
-  border-radius: 10px;
-`;
-
-// function createData(ranking, nickname, count, changeStatus, changeRanking) {
-//   return { finalRanking, nickname, count, finalChangeStatus };
-// }
-
 export default function AdminInfo() {
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [page, setPage] = useState(0);
-  const { currentRankInfo } = useSelector((state) => state.rank);
-  // 현재 순위 정보
-  const rows = [];
-  if (currentRankInfo) {
-    currentRankInfo.forEach((item) => {
-      console.log(item);
-      // rows.push(createData(...item));
-    });
-  }
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
+  const { user } = useSelector((state) => state.auth);
+  const { userId, nickname, email } = user;
   return (
-    <>
-      <CustomTableContainer component={Paper}>
-        <Table
-          padding="normal"
-          size="small"
-          stickyHeader
-          aria-label="a dense table"
-        >
-          <caption>매일 자정에 업데이트됩니다</caption>
-          <TableHead>
-            <CustomTableRow hover>
-              <TableCell align="center">순위</TableCell>
-              <TableCell align="center">닉네임</TableCell>
-              <TableCell align="center">갯수</TableCell>
-              <TableCell align="center">순위변동</TableCell>
-            </CustomTableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow key={[row.finalRanking, row.nickname]}>
-                <TableCellRank align="center" scope="row">
-                  {row.finalRanking}
-                </TableCellRank>
-                <TableCell align="center">{row.nickname}</TableCell>
-                <TableCell align="center">{row.count}</TableCell>
-                <TableCell style={{ fontSize: '0.6rem' }} align="center">
-                  {row.finalChangeStatus}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </CustomTableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </>
+    <Wrapper>
+      <Container>
+        <Title>회원번호</Title>
+        <Content>{userId}</Content>
+      </Container>
+      <Container>
+        <Title>닉네임</Title>
+        <Content>{nickname}</Content>
+      </Container>
+      <Container>
+        <Title>이메일</Title>
+        <Content>{email}</Content>
+      </Container>
+    </Wrapper>
   );
 }

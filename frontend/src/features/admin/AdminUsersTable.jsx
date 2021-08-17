@@ -13,12 +13,15 @@ import styled from 'styled-components';
 import { MdDeleteForever } from 'react-icons/md';
 import Divider from '@material-ui/core/Divider';
 
+// feature
+import { Title } from './AdminInfo';
+
 // action
 import { letUserDeleted } from './adminSlice';
 
 const CustomTableContainer = styled(TableContainer)`
   width: 90%;
-  height: 80%;
+  height: auto;
   margin: 50px;
   & th {
     font-size: 1.2rem;
@@ -44,6 +47,10 @@ const DeleteButton = styled(MdDeleteForever)`
   cursor: pointer;
 `;
 
+const CustomTitle = styled(Title)`
+  margin-top: 50px;
+`;
+
 export default function AdminUsersInfo() {
   const { usersData } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
@@ -59,35 +66,38 @@ export default function AdminUsersInfo() {
     rows.push({ userId, email, nickname });
   });
   return (
-    <CustomTableContainer component={Paper}>
-      <Table
-        padding="normal"
-        size="small"
-        stickyHeader
-        aria-label="a dense table"
-      >
-        <TableHead>
-          <TableRow hover>
-            <TableCell align="center">회원번호</TableCell>
-            <TableCell align="center">아이디</TableCell>
-            <TableCell align="center">닉네임</TableCell>
-            <TableCell align="center" />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {Array.from(rows).map((row) => (
-            <TableRow key={row.userId}>
-              <TableCell align="center">{row.userId}</TableCell>
-              <TableCell align="center">{row.email}</TableCell>
-              <DeleteTableCell align="center">
-                <Nickname>{row.nickname}</Nickname>
-                <DeleteButton onClick={() => deleteUser(row.email)} />
-              </DeleteTableCell>
+    <>
+      <CustomTitle>회원 목록</CustomTitle>
+      <CustomTableContainer component={Paper}>
+        <Table
+          padding="normal"
+          size="small"
+          stickyHeader
+          aria-label="a dense table"
+        >
+          <TableHead>
+            <TableRow hover>
+              <TableCell align="center">회원번호</TableCell>
+              <TableCell align="center">아이디</TableCell>
+              <TableCell align="center">닉네임</TableCell>
+              <TableCell align="center" />
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Divider />
-    </CustomTableContainer>
+          </TableHead>
+          <TableBody>
+            {Array.from(rows).map((row) => (
+              <TableRow key={row.userId}>
+                <TableCell align="center">{row.userId}</TableCell>
+                <TableCell align="center">{row.email}</TableCell>
+                <DeleteTableCell align="center">
+                  <Nickname>{row.nickname}</Nickname>
+                  <DeleteButton onClick={() => deleteUser(row.email)} />
+                </DeleteTableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <Divider />
+      </CustomTableContainer>
+    </>
   );
 }
