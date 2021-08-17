@@ -52,11 +52,12 @@ const Sidebar = styled.aside`
 `;
 
 const ProfileImage = styled.img`
-  width: 60%;
-  height: 15%;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
-  border: 1px solid;
+  border: ${(props) => (!props.isMouseOver ? '1px solid' : '5px solid')};
   cursor: pointer;
+  border-color: ${(props) => (!props.isMouseOver ? '' : '#9FA9D8')};
 `;
 
 // 선택할 수 있는 프로필 image 뿌려주기
@@ -197,6 +198,7 @@ export default function MyPage() {
 
   const [open, setOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
+  const [mouseState, setMouseState] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -236,6 +238,14 @@ export default function MyPage() {
 
   function updateCurrentImg(imgNum) {
     setCurrentImage(imgNum);
+  }
+
+  function handleMouseOver() {
+    setMouseState(true);
+  }
+
+  function handleMouseOut() {
+    setMouseState(false);
   }
 
   useEffect(() => {
@@ -282,6 +292,9 @@ export default function MyPage() {
                   src={profileImage}
                   alt="profile"
                   onClick={handleClickOpen}
+                  onMouseOver={handleMouseOver}
+                  onMouseOut={handleMouseOut}
+                  isMouseOver={mouseState}
                 />
               );
             }
