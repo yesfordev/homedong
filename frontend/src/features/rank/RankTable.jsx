@@ -77,6 +77,7 @@ export default function RankTable() {
       rows.push(createData(...item));
     });
   }
+
   return (
     <CustomTableContainer component={Paper}>
       <Table
