@@ -53,7 +53,7 @@ public class RankingService {
         List<RankingRes> rankingResList = new ArrayList<>();
 
         for (IRanking nowRanking : nowRankingList) {
-            rankingResList.add(new RankingRes(nowRanking.getRanking(), nowRanking.getNickname(), nowRanking.getCount()));
+            rankingResList.add(new RankingRes(nowRanking.getRanking(), nowRanking.getNickname(), nowRanking.getImg(), nowRanking.getCount()));
         }
 
         for (RankingRes rankingRes : rankingResList) {
