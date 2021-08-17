@@ -510,6 +510,9 @@ class Game extends Component {
         started: false,
         timer: true,
         count: 0,
+        status: 'up',
+        ranking: new Map(),
+        sortedrank: new Map(),
         readystate: 'ready',
       });
       music.loop = true;
