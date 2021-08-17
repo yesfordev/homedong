@@ -92,13 +92,13 @@ class Tutorial extends Component {
             <Logo src={pushup} alt="logo" />
             <div>
               <SimpleImageSlider
-                width={500}
-                height={400}
+                width={600}
+                height={600}
                 images={images}
                 style={{
                   position: 'absolute',
-                  marginTop: '10%',
-                  right: '15px',
+                  marginTop: '5%',
+                  right: '10%',
                 }}
                 background="transparent"
                 showBullets

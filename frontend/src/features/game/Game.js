@@ -95,6 +95,7 @@ class Game extends Component {
       timer: false,
       gameId: undefined,
       token: undefined,
+      requestId: undefined,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -464,7 +465,9 @@ class Game extends Component {
       roomId: this.state.mySessionId,
     });
     const mySession = this.state.session;
-
+    if (this.state.requestId) {
+      window.cancelAnimationFrame(this.state.requestId);
+    }
     if (mySession) {
       mySession.disconnect();
     }
@@ -519,7 +522,7 @@ class Game extends Component {
     this.setState({ webcam: new tmPose.Webcam(size, size, flip) }); // width, height, flip
     await this.state.webcam.setup(); // request access to the webcam
     await this.state.webcam.play();
-    window.requestAnimationFrame(this.loop);
+    this.setState({ requestId: window.requestAnimationFrame(this.loop) });
   }
 
   async loop(timestamp) {
@@ -812,7 +815,7 @@ class Game extends Component {
             <div className="timer-wrapper">
               <CountdownCircleTimer
                 isPlaying
-                duration={120}
+                duration={20}
                 colors={[['#004777', 0.33], ['#F7B801', 0.33], ['#A30000']]}
                 onComplete={() => {
                   setTimeout(() => {
@@ -824,6 +827,7 @@ class Game extends Component {
                       gameId: this.state.gameId,
                     });
                     music.pause();
+                    window.cancelAnimationFrame(this.state.requestId);
                   }, 300);
                 }}
               >
