@@ -11,9 +11,9 @@ import Navbar from '../../common/navbar/Navbar';
 import RankTable from './RankTable';
 
 // images
-import { ReactComponent as Burpee } from '../../assets/burpee.svg';
-import { ReactComponent as Pushup } from '../../assets/pushup.svg';
-import { ReactComponent as Squat } from '../../assets/squat.svg';
+import Burpee from '../../assets/burpee.svg';
+import Pushup from '../../assets/pushup.svg';
+import Squat from '../../assets/squat.svg';
 
 // action
 import { loadRank } from './rankSlice';
@@ -23,26 +23,35 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 100px 0px 0px 0px;
-  height: 200vh;
-  width: 100%;
+  height: 100vh;
+  overflow-y: scroll;
 `;
 
 const Title = styled(motion.p)`
   font-size: 2rem;
   font-weight: 600;
   margin: 20px 0;
+
+  @media (max-width: 414px) {
+    font-size: 1.5rem;
 `;
 const ImagesContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 30%;
 `;
-const ImageContainer = styled(motion.div)`
+const ImageContainer = styled(motion.img)`
   display: flex;
   align-items: center;
   flex-direction: column;
   margin: 0px 15px;
   cursor: pointer;
+  width: 40%;
+  @media (max-width: 414px) {
+    width: 90%;
+    margin: 0px 10px;
+  }
 `;
 
 function Rank() {
@@ -63,23 +72,23 @@ function Rank() {
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setExercise(1)}
-          >
-            <Squat width="150px" height="200px" alt="squat" />
-          </ImageContainer>
-          <ImageContainer
-            whileHover={{ scale: 1.2 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => setExercise(2)}
-          >
-            <Pushup width="150px" height="200px" alt="pushup" />
-          </ImageContainer>
+            src={Squat}
+            alt="squat"
+          />
           <ImageContainer
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setExercise(3)}
-          >
-            <Burpee width="150px" height="200px" alt="burpee" />
-          </ImageContainer>
+            src={Burpee}
+            alt="burpee"
+          />
+          <ImageContainer
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setExercise(2)}
+            src={Pushup}
+            alt="pushup"
+          />
         </ImagesContainer>
         <Title layout>{title[exercise - 1]}</Title>
         <RankTable />

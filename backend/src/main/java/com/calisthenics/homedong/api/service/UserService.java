@@ -6,22 +6,22 @@ import com.calisthenics.homedong.api.request.PasswordReq;
 import com.calisthenics.homedong.api.request.SignUpReq;
 import com.calisthenics.homedong.db.entity.Role;
 import com.calisthenics.homedong.db.entity.User;
+import com.calisthenics.homedong.db.repository.EntryRepositry;
 import com.calisthenics.homedong.db.repository.UserRepository;
 import com.calisthenics.homedong.error.exception.custom.EmailDuplicateException;
+import com.calisthenics.homedong.error.exception.custom.LoginDuplicateException;
 import com.calisthenics.homedong.error.exception.custom.NicknameDuplicateException;
 import com.calisthenics.homedong.error.exception.custom.UserNotFoundException;
 import com.calisthenics.homedong.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.net.UnknownHostException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by Seo Youngeun on 2021-07-26
@@ -31,12 +31,17 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final EntryRepositry entryRepositry;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
 
+    @Value("${custom.imgcnt}")
+    private Integer imgCnt;
+
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, MailService mailService) {
+    public UserService(UserRepository userRepository, EntryRepositry entryRepositry, PasswordEncoder passwordEncoder, MailService mailService) {
         this.userRepository = userRepository;
+        this.entryRepositry = entryRepositry;
         this.passwordEncoder = passwordEncoder;
         this.mailService = mailService;
     }
@@ -53,6 +58,7 @@ public class UserService {
                 .build();
 
         String authKey = mailService.sendAuthMail(signUpReq.getEmail(), signUpReq.getNickname());
+        int imgNum = (int) (Math.random()*25 + 1);
 
         User user = User.builder()
                 .email(signUpReq.getEmail())
@@ -60,8 +66,10 @@ public class UserService {
                 .nickname(signUpReq.getNickname())
                 .roles(Collections.singleton(role))
                 .isTutorialFinished(false)
+                .img(Integer.toString(imgNum))
                 .authKey(authKey)
                 .authStatus(false)
+                .isLogin(false)
                 .build();
 
         return userRepository.save(user);
@@ -75,6 +83,11 @@ public class UserService {
     @Transactional(readOnly = true)
     public Optional<User> getMyUserWithRoles() {
         return SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithRolesByEmail);
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> getAllUserWithRoles() {
+        return userRepository.findByRoles_RoleNameNot("ROLE_ADMIN");
     }
 
     @Transactional
@@ -91,6 +104,7 @@ public class UserService {
         return userRepository.save(updateUser);
     }
 
+    @Transactional(readOnly = true)
     public void checkDuplicateNickname(String nickname) {
         if(userRepository.findAllByNickname(nickname).size() > 0) {
             throw new NicknameDuplicateException(nickname);
@@ -99,11 +113,23 @@ public class UserService {
 
     @Transactional
     public void deleteUser() {
+        entryRepositry.deleteByUserId(SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithRolesByEmail).orElse(null).getUserId());
+
         if(userRepository.deleteByEmail(SecurityUtil.getCurrentEmail().orElse("")) == 0) {
             throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
         }
     }
 
+    @Transactional
+    public void deleteUser(final String email) {
+        entryRepositry.deleteByUserId(userRepository.findOneWithRolesByEmail(email).orElse(null).getUserId());
+
+        if(userRepository.deleteByEmail(email) == 0) {
+            throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(""));
+        }
+    }
+
+    @Transactional(readOnly = true)
     public Map<String, Boolean> checkPassword(PasswordReq passwordReq) {
         User user = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
 
@@ -148,4 +174,33 @@ public class UserService {
         userRepository.save(updateUser);
     }
 
+    @Transactional
+    public void updateProfileImage(String imgNum) {
+        User updateUser = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse(null)).orElse(null);
+
+        if(updateUser == null) {
+            throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(null));
+        }
+
+        updateUser.setImg(imgNum);
+
+        userRepository.save(updateUser);
+    }
+
+    @Transactional
+    public void updateIsLogin(boolean status) {
+        User updateUser = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse(null)).orElse(null);
+
+        if(updateUser == null) {
+            throw new UserNotFoundException(SecurityUtil.getCurrentEmail().orElse(null));
+        }
+
+        if(status && updateUser.isLogin()) {
+            throw new LoginDuplicateException(SecurityUtil.getCurrentEmail().orElse(null));
+        }
+
+        updateUser.setLogin(status);
+
+        userRepository.save(updateUser);
+    }
 }

@@ -14,11 +14,6 @@ import lombok.*;
 @AllArgsConstructor
 @ApiModel("RoomResponse")
 public class RoomRes {
-    //token, roomId, gameType, nickname
-
-    @ApiModelProperty(name = "세션 관련 token", example = "wss://demos.openvidu.io?sessionId=ses_EtBjWA2tzI&token=tok_HLcEvbTdNnf4t7gO")
-    private String token;
-
     @ApiModelProperty(name = "방 번호", example = "KUXY0XR9B5")
     private String roomId;
 

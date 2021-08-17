@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import { ValidatorForm } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import { signup, checkNickname, setNicknameCheckedFalse } from '../authSlice';
-import { CommonButton } from '../login/Login';
+import { CommonButton, CommonTextValidator } from '../login/Login';
 import logo from '../../../assets/logo.svg';
 
 // style
@@ -20,19 +20,18 @@ const Wrapper = styled.div`
 `;
 
 const LogoWrapper = styled.div`
-  height: 10%;
+  flex: 0.4;
   justify-content: center;
   align-items: center;
 `;
 
 const Logo = styled.img`
   width: 400px;
-  height: 200px;
+  height: 100px;
 `;
 
 const SignUpContainer = styled.div`
   width: 100%;
-  height: 80%;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -41,7 +40,7 @@ const SignUpContainer = styled.div`
 
 const useStyles = makeStyles({
   validatorForm: {
-    width: '35%',
+    width: '40%',
   },
 });
 
@@ -116,8 +115,14 @@ export default function SignUp() {
       .then(() => {
         toast.success(`😀 사용할 수 있는 닉네임입니다`);
       })
-      .catch(() => {
-        toast.error(`😥 닉네임이 중복되었습니다`);
+      .catch((err) => {
+        if (err.status === 400) {
+          toast.error('😥 입력된 정보를 다시 확인해주세요');
+        } else if (err.status === 409) {
+          toast.error('😥 중복된 닉네임입니다.');
+        } else if (err.status === 500) {
+          history.push('/error');
+        }
       });
   }
 
@@ -133,7 +138,7 @@ export default function SignUp() {
       .unwrap()
       .then(() => {
         toast.success('😀 회원가입에 성공했습니다');
-        history.push('/login');
+        history.push('/emailcheckedplease');
       })
       .catch((err) => {
         if (err.status === 400) {
@@ -157,7 +162,7 @@ export default function SignUp() {
           onSubmit={handleSubmit}
           className={classes.validatorForm}
         >
-          <TextValidator
+          <CommonTextValidator
             label="닉네임"
             onChange={handleNickname}
             color="secondary"
@@ -185,7 +190,7 @@ export default function SignUp() {
           >
             중복확인
           </CommonButton>
-          <TextValidator
+          <CommonTextValidator
             label="이메일"
             onChange={(e) => setEmail(e.target.value.replace(/\s/g, ''))}
             name="email"
@@ -203,7 +208,7 @@ export default function SignUp() {
             size="small"
             fullWidth
           />
-          <TextValidator
+          <CommonTextValidator
             label="비밀번호"
             onChange={handlePassword}
             name="password"
@@ -224,7 +229,7 @@ export default function SignUp() {
             size="small"
             fullWidth
           />
-          <TextValidator
+          <CommonTextValidator
             label="비밀번호 확인"
             onChange={handleRepeatPassword}
             type="password"
@@ -253,7 +258,7 @@ export default function SignUp() {
             회원가입
           </CommonButton>
           <Link to="/login">
-            <CommonButton yellow="true">로그인</CommonButton>
+            <CommonButton yellow="true">로그인 하러 가기</CommonButton>
           </Link>
         </ValidatorForm>
       </SignUpContainer>

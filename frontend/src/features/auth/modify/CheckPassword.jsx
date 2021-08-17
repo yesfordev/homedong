@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
+import { makeStyles } from '@material-ui/core';
 import styled from 'styled-components';
-import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
+import { ValidatorForm } from 'react-material-ui-form-validator';
 import { checkPassword } from '../authSlice';
-import { CommonButton } from '../login/Login';
+import { CommonButton, CommonTextValidator } from '../login/Login';
 import logo from '../../../assets/logo(angled).svg';
+import { deleteToken } from '../../../common/api/JWT-common';
 
 // style
 const Wrapper = styled.div`
-  display: flex;
   height: 100vh;
   justify-content: center;
   align-items: center;
@@ -18,6 +19,8 @@ const Wrapper = styled.div`
 `;
 
 const LogoWrapper = styled.div`
+  display: flex;
+  flex: 1;
   justify-content: center;
   align-items: center;
 `;
@@ -29,6 +32,8 @@ const Logo = styled.img`
 
 const Title = styled.div`
   font-size: 1rem;
+  display: flex;
+  justify-content: center;
   margin-bottom: 25px;
 `;
 
@@ -40,9 +45,16 @@ const PasswordContainer = styled.div`
   align-items: center;
 `;
 
+const useStyles = makeStyles({
+  validatorForm: {
+    width: '40%',
+  },
+});
+
 function CheckPassword() {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const classes = useStyles();
   const history = useHistory();
 
   // function
@@ -66,10 +78,15 @@ function CheckPassword() {
           toast.error('😥 비밀번호를 다시 입력해주세요');
         } else if (err.status === 401) {
           toast.error('😥 로그인을 다시 해주세요!');
+          deleteToken();
+          history.push('/login');
+        } else if (err.status === 404) {
+          toast.error('😥 로그인을 다시 해주세요');
+          deleteToken();
           history.push('/login');
         } else if (err.status === 500) {
           history.push('/error');
-        } // 404페이지
+        }
       });
   }
 
@@ -80,9 +97,12 @@ function CheckPassword() {
       </LogoWrapper>
 
       <PasswordContainer>
-        <ValidatorForm onSubmit={handleSubmit}>
-          <Title>비밀번호</Title>
-          <TextValidator
+        <ValidatorForm
+          onSubmit={handleSubmit}
+          className={classes.validatorForm}
+        >
+          <Title>비밀번호 확인</Title>
+          <CommonTextValidator
             label="비밀번호"
             onChange={(e) => setPassword(e.target.value)}
             value={password}

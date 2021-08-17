@@ -35,9 +35,10 @@ public class RankingController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "조회 성공"),
             @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ErrorResponse.class)
     })
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<List<RankingRes>> getRanking(@PathVariable(required = true) Integer gameType, @RequestParam(required = true) Integer limit) {
         return ResponseEntity.ok(rankingService.getRanking(gameType, limit));
     }

@@ -23,16 +23,13 @@ import DeleteModal from './DeleteModal';
 
 // action
 import { loadBadge, loadBestRecord, loadBadgesOwned } from './mypageSlice';
+import { deleteToken } from '../../common/api/JWT-common';
 
 // 전체 컨테이너
 const Wrapper = styled.div`
   display: flex;
   padding: 100px 0px 0px 0px;
-  height: 230vh;
-  width: 100%;
-  @media (max-width: 767px) {
-    height: auto;
-  }
+  height: auto;
 `;
 
 // 사이드바
@@ -146,15 +143,14 @@ const Message = styled.p`
   font-size: 2rem;
 `;
 
-const CustomCalendar = styled(Calendar)`
-  .react-calendar {
-    width: 100%;
-  }
-`;
+const CustomCalendar = styled(Calendar)``;
 // footer
+
 const Footer = styled.footer`
-  align-self: flex-end;
-  margin-top: 50px;
+  width: 95%;
+  display: flex;
+  justify-content: flex-end;
+  margin: 50px 0;
 `;
 
 export default function MyPage() {
@@ -188,6 +184,7 @@ export default function MyPage() {
       .catch((err) => {
         if (err.status === 401) {
           toast.error('😥 로그인을 다시 해주세요!');
+          deleteToken();
           history.push('/login');
         } else if (err.status === 500) {
           history.push('/error');
@@ -198,6 +195,7 @@ export default function MyPage() {
       .catch((err) => {
         if (err.status === 401) {
           toast.error('😥 로그인을 다시 해주세요!');
+          deleteToken();
           history.push('/login');
         } else if (err.status === 500) {
           history.push('/error');

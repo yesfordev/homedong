@@ -460,7 +460,6 @@ class Game extends Component {
   // 시작버튼
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
-    console.log(this.state.token);
     axios1.put('/api/rooms', {
       roomId: this.state.mySessionId,
     });
@@ -489,17 +488,17 @@ class Game extends Component {
   async init() {
     console.log(`teachablemachinestart${this.state.gametype}`);
     switch (this.state.gametype) {
-      case 1:
+      case 3: // 푸쉬업
         this.setState({
           URL: 'https://teachablemachine.withgoogle.com/models/RmHPFT0M2/',
         });
         break;
-      case 2:
+      case 2: // 버피
         this.setState({
           URL: 'https://teachablemachine.withgoogle.com/models/j1ifbpLKk/',
         });
         break;
-      case 3:
+      case 1: // 스쿼트
         this.setState({
           URL: 'https://teachablemachine.withgoogle.com/models/y1scUcaWN/',
         });

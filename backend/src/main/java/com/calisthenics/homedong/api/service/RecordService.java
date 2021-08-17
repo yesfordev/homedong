@@ -2,6 +2,7 @@ package com.calisthenics.homedong.api.service;
 
 import com.calisthenics.homedong.api.response.BadgeRes;
 import com.calisthenics.homedong.api.response.BestRecordRes;
+import com.calisthenics.homedong.api.response.ICurrnetRanking;
 import com.calisthenics.homedong.db.entity.User;
 import com.calisthenics.homedong.db.repository.RoomRepository;
 import com.calisthenics.homedong.db.repository.UserRepository;
@@ -12,6 +13,7 @@ import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -40,6 +42,7 @@ public class RecordService {
         gameMap.put(3, "BURPEE");
     }
 
+    @Transactional(readOnly = true)
     public List<BestRecordRes> getBestRecord() {
         User user = userRepository.findOneWithRolesByEmail(SecurityUtil.getCurrentEmail().orElse("")).orElse(null);
 
@@ -66,9 +69,17 @@ public class RecordService {
         }
 
         for (BestRecordRes bestRecordRes : bestRecordResList) {
-            Integer ranking = roomRepository.findRankingByUserId(bestRecordRes.getGameType(), userId).orElse(null);
+            List<ICurrnetRanking> rankingList = roomRepository.findRankingByUserId(bestRecordRes.getGameType());
 
-            if (ranking != null) {
+            Integer ranking = -1;
+            for(ICurrnetRanking currnetRanking : rankingList) {
+                if(currnetRanking.getUserId() == userId) {
+                    ranking = currnetRanking.getRanking();
+                    break;
+                }
+            }
+
+            if (ranking != -1) {
                 bestRecordRes.setRanking(ranking);
             }
         }
@@ -83,6 +94,7 @@ public class RecordService {
         return bestRecordResList;
     }
 
+    @Transactional(readOnly = true)
     public BadgeRes getBadgeRecord() {
         List<BestRecordRes> bestRecordResList = getBestRecord();
         BadgeRes badgeRes = new BadgeRes(gameTypeCount);
@@ -99,7 +111,6 @@ public class RecordService {
 
         return badgeRes;
     }
-
 
     private void updateBadgeRes(BestRecordRes bestRecordRes, BadgeRes badgeRes) {
         int gameType = bestRecordRes.getGameType();

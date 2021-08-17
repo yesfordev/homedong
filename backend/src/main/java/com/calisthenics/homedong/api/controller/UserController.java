@@ -1,15 +1,16 @@
 package com.calisthenics.homedong.api.controller;
 
-import com.calisthenics.homedong.api.request.ChangeNicknameReq;
-import com.calisthenics.homedong.api.request.ChangePasswordReq;
-import com.calisthenics.homedong.api.request.PasswordReq;
-import com.calisthenics.homedong.api.request.SignUpReq;
+import com.calisthenics.homedong.api.request.*;
 import com.calisthenics.homedong.db.entity.User;
 import com.calisthenics.homedong.api.service.UserService;
 import com.calisthenics.homedong.error.ErrorResponse;
+import com.calisthenics.homedong.jwt.TokenProvider;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,10 +35,17 @@ import java.util.Map;
 @RequestMapping("/api")
 public class UserController {
     private final UserService userService;
+    private final StringRedisTemplate redisTemplate;
+    private final TokenProvider tokenProvider;
+
+    @Value("${custom.host}")
+    private String serverAddress;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, StringRedisTemplate redisTemplate, TokenProvider tokenProvider) {
         this.userService = userService;
+        this.redisTemplate = redisTemplate;
+        this.tokenProvider = tokenProvider;
     }
 
     @PostMapping("/signup")
@@ -50,6 +58,7 @@ public class UserController {
     })
     public ResponseEntity signup(@Valid @RequestBody SignUpReq signUpReq) throws UnknownHostException, MessagingException {
         userService.signup(signUpReq);
+
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -65,7 +74,7 @@ public class UserController {
         //email, authKey가 일치할 경우 authStatus 업데이트
         userService.updateAuthStatus(map);
 
-        URI redirectUri = new URI("https://www.naver.com/");
+        URI redirectUri = new URI(serverAddress + "/emailchecked");
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(redirectUri);
 
@@ -82,20 +91,6 @@ public class UserController {
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<User> getMyUserInfo() {
         return ResponseEntity.ok(userService.getMyUserWithRoles().get());
-    }
-
-    @GetMapping("/user/{email}")
-    @ApiOperation(value = "관리자가 유저 정보 보기", notes = "<strong>헤더에 관리자임을 나타내는 jwt 토큰과 pathVariable에 email로</strong> 유저 정보를 조회한다.")
-    @ApiImplicitParam(name = "email", value = "조회할 유저의 email", required = true, dataType = "String", paramType = "path")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "유저 정보 조회 성공", response = User.class),
-            @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
-            @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
-            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
-    })
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<User> getUserInfo(@PathVariable(required = true) String email) {
-        return ResponseEntity.ok(userService.getUserWithRoles(email).get());
     }
 
     @GetMapping("/user/check_nickname")
@@ -123,7 +118,11 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity deleteUser() {
+    public ResponseEntity deleteUser(@RequestBody @Valid LogoutReq logoutReq) {
+        ValueOperations<String, String> logoutValueOperations = redisTemplate.opsForValue();
+        logoutValueOperations.set(logoutReq.getToken(), logoutReq.getToken()); // redis set 명령어
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) tokenProvider.getAuthentication(logoutReq.getToken()).getPrincipal();
+        log.info("회원탈퇴 유저 이메일 : '{}' , 유저 권한 : '{}'", user.getUsername(), user.getAuthorities());
         userService.deleteUser();
 
         return new ResponseEntity(HttpStatus.OK);
@@ -138,7 +137,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<Map<String, Boolean>> checkPassword(@RequestBody PasswordReq passwordReq) {
         return ResponseEntity.ok(userService.checkPassword(passwordReq));
     }
@@ -152,7 +151,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "회원 탈퇴할 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity changeUserPassword(@RequestBody ChangePasswordReq changePasswordReq) {
         userService.updatePassword(changePasswordReq);
 
@@ -168,10 +167,27 @@ public class UserController {
             @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity changeUserNickname(@RequestBody ChangeNicknameReq changeNicknameReq) {
         userService.updateNickname(changeNicknameReq);
 
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @PutMapping("/user/image")
+    @ApiOperation(value = "유저 프로필 이미지 변경", notes = "<strong>token과 선택된 imgNum</strong>를 이용해 해당 유저의 프로필 이미지를 변경한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "프로필 이미지 변경 성공"),
+            @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
+            @ApiResponse(code = 404, message = "회원 정보가 없습니다.", response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
+    })
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity changeProfileImage(@RequestParam String imgNum) {
+        userService.updateProfileImage(imgNum);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }

@@ -47,18 +47,18 @@ export const CommonButton = styled(Button)`
   }
 `;
 
-export default function EmailChecked() {
+export default function EmailCheckedPlease() {
   return (
     <Wrapper>
       <Logo src={logo} width="60vh" alt="logo" />
       <Title>
-        이메일 인증이 완료되었습니다😀 <br /> <br />
-        로그인 후 서비스 이용 부탁드립니다
+        HOMEDONG 회원가입을 축하드립니다🎉 <br /> <br />
+        모든 서비스를 이용하기 위해 이메일 인증을 완료하여 주세요
       </Title>
       <br />
       <div>
         <CommonButton mauve="true">
-          <Link to="/login">로그인 하러 가기</Link>
+          <Link to="/login">홈으로</Link>
         </CommonButton>
       </div>
     </Wrapper>

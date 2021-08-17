@@ -1,9 +1,9 @@
 .chat {
-  --primaryGradient: linear-gradient(93.12deg, #581b98 0.52%, #9c1de7 100%);
+  --primaryGradient: linear-gradient(93.12deg, #7a68bd 0.52%, #9fa9d8 100%);
   --secondaryGradient: linear-gradient(
     268.91deg,
-    #581b98 -2.14%,
-    #9c1de7 99.69%
+    #7a68bd -2.14%,
+    #9fa9d8 99.69%
   );
   --primaryBoxShadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
   --secondaryBoxShadow: 0px -10px 15px rgba(0, 0, 0, 0.1);
@@ -12,7 +12,7 @@
   --semiBold: 600;
   --extraLight: 300;
   --italic: 300;
-  --primary: #581b98;
+  --primary: #9fa9d8;
 }
 ul li {
   list-style-type: none;
