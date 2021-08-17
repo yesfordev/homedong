@@ -59,9 +59,6 @@ public class User implements UserDetails {
     @Column(name = "created_at", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp createdAt;
 
-    @Column(name = "is_login")
-    private boolean isLogin;
-
     @Builder.Default
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
