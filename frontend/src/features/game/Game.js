@@ -605,13 +605,13 @@ class Game extends Component {
     this.state.webcam.update(); // update the webcam frame
     switch (this.state.gametype) {
       case 1:
-        await this.pushUppredict();
+        await this.squatpredict();
         break;
       case 2:
         await this.burpeepredict();
         break;
       case 3:
-        await this.squatpredict();
+        await this.pushUppredict();
         break;
     }
 
