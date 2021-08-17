@@ -127,7 +127,6 @@ const LeftList = styled.ul`
 `;
 
 const music = new Audio(gamemusic2);
-
 class Game extends Component {
   constructor(props) {
     super(props);
@@ -158,7 +157,6 @@ class Game extends Component {
       timer: false,
       gameId: undefined,
       token: undefined,
-      requestId: undefined,
       audiostate: true,
       videostate: true,
       headerText: '',
@@ -192,6 +190,9 @@ class Game extends Component {
     setTimeout(() => {
       const { home } = this.props;
       const { token, roomId, nickname, gameType } = home;
+      if (roomId === '') {
+        this.props.history.push('/error');
+      }
       this.setState({
         token,
         mySessionId: roomId,
@@ -505,7 +506,12 @@ class Game extends Component {
   start() {
     new Audio(startsound).play();
     setTimeout(() => {
-      this.setState({ started: false, timer: true });
+      this.setState({
+        started: false,
+        timer: true,
+        count: 0,
+        readystate: 'ready',
+      });
       music.loop = true;
       music.play();
       this.setState({
@@ -544,9 +550,6 @@ class Game extends Component {
       roomId: this.state.mySessionId,
     });
     const mySession = this.state.session;
-    if (this.state.requestId) {
-      window.cancelAnimationFrame(this.state.requestId);
-    }
     if (mySession) {
       mySession.disconnect();
     }
@@ -598,7 +601,7 @@ class Game extends Component {
     this.setState({ webcam: new tmPose.Webcam(size, size, flip) }); // width, height, flip
     await this.state.webcam.setup(); // request access to the webcam
     await this.state.webcam.play();
-    this.setState({ requestId: window.requestAnimationFrame(this.loop) });
+    window.requestAnimationFrame(this.loop);
   }
 
   async loop(timestamp) {
@@ -639,11 +642,11 @@ class Game extends Component {
           })
           .then(() => {
             console.log('Message successfully sent');
+            this.setState({ check: false });
           })
           .catch((error) => {
             console.error(error);
           });
-        this.setState({ check: false });
       }
       this.setState({ status: 'up' });
     } else if (prediction[1].probability.toFixed(2) > 0.95) {
@@ -673,11 +676,11 @@ class Game extends Component {
           })
           .then(() => {
             console.log('Message successfully sent');
+            this.setState({ check: false });
           })
           .catch((error) => {
             console.error(error);
           });
-        this.setState({ check: false });
       }
       this.setState({ status: 'up' });
     } else if (prediction[2].probability.toFixed(2) > 0.95) {
@@ -707,11 +710,11 @@ class Game extends Component {
           })
           .then(() => {
             console.log('Message successfully sent');
+            this.setState({ check: false });
           })
           .catch((error) => {
             console.error(error);
           });
-        this.setState({ check: false });
       }
       this.setState({ status: 'up' });
     } else if (prediction[1].probability.toFixed(2) > 0.95) {
@@ -897,6 +900,9 @@ class Game extends Component {
               onComplete={() => {
                 setTimeout(() => {
                   this.setState({
+                    ranking: new Map(),
+                    sortedrank: new Map(),
+                    rankdata: undefined,
                     timer: false,
                     arrow: false,
                   });
@@ -905,7 +911,6 @@ class Game extends Component {
                     gameId: this.state.gameId,
                   });
                   music.pause();
-                  window.cancelAnimationFrame(this.state.requestId);
                 }, 300);
               }}
             >
@@ -977,7 +982,10 @@ class Game extends Component {
         ) : null}
         {this.state.session !== undefined ? (
           <div id="session">
-            <table id="ranking" className="scrolltable">
+            <table
+              id="ranking"
+              className={this.state.arrow ? null : 'invisible'}
+            >
               <tbody>{this.renderTableData()}</tbody>
             </table>
             <div id="video-container" className="video-container col-md-6">

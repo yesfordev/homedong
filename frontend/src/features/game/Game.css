@@ -552,5 +552,8 @@ tbody {
   display: block;
   font-size: 30px;
 }
+.invisible {
+  visibility: hidden;
+}
 
 /*랭킹 테이블*/
