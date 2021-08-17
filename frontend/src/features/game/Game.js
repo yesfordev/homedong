@@ -202,10 +202,10 @@ class Game extends Component {
         case 1:
           this.setState({ headerText: roomId + '/스쿼트' });
           break;
-        case 2:
+        case 3:
           this.setState({ headerText: roomId + '/버피' });
           break;
-        case 3:
+        case 2:
           this.setState({ headerText: roomId + '/팔굽혀펴기' });
           break;
       }
@@ -568,12 +568,12 @@ class Game extends Component {
   async init() {
     console.log(`teachablemachinestart${this.state.gametype}`);
     switch (this.state.gametype) {
-      case 3: // 푸쉬업
+      case 2: // 푸쉬업
         this.setState({
           URL: 'https://teachablemachine.withgoogle.com/models/cIjn1XveJ/',
         });
         break;
-      case 2: // 버피
+      case 3: // 버피
         this.setState({
           URL: 'https://teachablemachine.withgoogle.com/models/j1ifbpLKk/',
         });
@@ -607,10 +607,10 @@ class Game extends Component {
       case 1:
         await this.squatpredict();
         break;
-      case 2:
+      case 3:
         await this.burpeepredict();
         break;
-      case 3:
+      case 2:
         await this.pushUppredict();
         break;
     }
