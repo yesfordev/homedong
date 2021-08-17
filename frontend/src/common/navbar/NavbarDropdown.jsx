@@ -5,10 +5,11 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Avatar } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { resetUser, logout } from '../../features/auth/authSlice';
 import { resetMyPageInfo } from '../../features/mypage/mypageSlice';
-
 import defaultImage from '../../assets/default.png';
+import { deleteToken } from '../api/JWT-common';
 
 export default function SimpleMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -24,13 +25,25 @@ export default function SimpleMenu() {
   };
 
   const handleLogout = () => {
-    console.log('logout');
     dispatch(logout())
       .unwrap()
       .then(() => {
         history.push('/login');
         dispatch(resetUser());
         dispatch(resetMyPageInfo());
+      })
+      .catch((err) => {
+        if (err.status === 400) {
+          toast.error('😥 다시 시도해주세요');
+        } else if (err.status === 404) {
+          deleteToken();
+          history.push('/login');
+        } else if (err.status === 401) {
+          deleteToken();
+          history.push('/login');
+        } else if (err.status === 500) {
+          history.push('/error');
+        }
       });
   };
 
