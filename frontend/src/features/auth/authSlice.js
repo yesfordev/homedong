@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { deleteToken, saveToken, getToken } from '../../common/api/JWT-common';
+import { deleteToken, saveToken } from '../../common/api/JWT-common';
 import axios from '../../common/api/http-common';
 
 // 메서드 전체 REST API, params 필요
@@ -124,10 +124,7 @@ export const deleteUser = createAsyncThunk(
   'DELETE_USER',
   async (arg, { rejectWithValue }) => {
     try {
-      const token = await getToken();
-      const data = { token };
-      console.log(data, 'res');
-      const response = await axios.delete('/api/user', data);
+      const response = await axios.delete('/api/user');
       return response;
     } catch (err) {
       return rejectWithValue(err.response);
