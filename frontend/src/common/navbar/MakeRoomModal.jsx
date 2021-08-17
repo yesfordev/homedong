@@ -118,6 +118,9 @@ export default function MakeRoomModal({ isOpen, handleModalClose }) {
         } else if (err.status === 500) {
           history.push('/error');
         }
+      })
+      .then(() => {
+        history.push('game');
       });
     handleModalClose();
     setPassword('');

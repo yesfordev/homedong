@@ -104,6 +104,9 @@ export default function FindRoomModal({ isOpen, handleModalClose }) {
         } else if (err.status === 500) {
           history.push('/error');
         }
+      })
+      .then(() => {
+        history.push('/game');
       });
     setRoomId('');
     setPassword('');

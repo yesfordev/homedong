@@ -81,10 +81,13 @@ public class AuthController {
             @ApiResponse(code = 500, message = "서버 오류", response = ErrorResponse.class)
     })
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity logout(@RequestBody @Valid LogoutReq logoutReq) {
+    public ResponseEntity logout(@RequestHeader String Authorization) {
+        String token = Authorization.split(" ")[1];
+        log.info(token);
+
         ValueOperations<String, String> logoutValueOperations = redisTemplate.opsForValue();
-        logoutValueOperations.set(logoutReq.getToken(), logoutReq.getToken()); // redis set 명령어
-        User user = (User) tokenProvider.getAuthentication(logoutReq.getToken()).getPrincipal();
+        logoutValueOperations.set(token, token); // redis set 명령어
+        User user = (User) tokenProvider.getAuthentication(token).getPrincipal();
         log.info("로그아웃 유저 이메일 : '{}' , 유저 권한 : '{}'", user.getUsername(), user.getAuthorities());
         return new ResponseEntity(HttpStatus.OK);
     }
