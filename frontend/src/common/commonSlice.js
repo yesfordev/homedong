@@ -7,7 +7,6 @@ const commonSlice = createSlice({
   },
   reducers: {
     setPrivate: (state) => {
-      console.log('reducer');
       state.isPrivate = true;
     },
     setPublic: (state) => {

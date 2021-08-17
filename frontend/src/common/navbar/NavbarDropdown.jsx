@@ -5,9 +5,10 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Avatar } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { makeStyles } from '@material-ui/core/styles';
+import { resetUser, logout } from '../../features/auth/authSlice';
 import { deleteToken } from '../api/JWT-common';
-import { resetUser } from '../../features/auth/authSlice';
 import { resetMyPageInfo } from '../../features/mypage/mypageSlice';
 import profileImages from '../../assets/profile/profileImages';
 
@@ -37,10 +38,26 @@ export default function SimpleMenu() {
   };
 
   const handleLogout = () => {
-    deleteToken();
-    dispatch(resetUser());
-    dispatch(resetMyPageInfo());
-    history.push('/login');
+    dispatch(logout())
+      .unwrap()
+      .then(() => {
+        history.push('/login');
+        dispatch(resetUser());
+        dispatch(resetMyPageInfo());
+      })
+      .catch((err) => {
+        if (err.status === 400) {
+          toast.error('😥 다시 시도해주세요');
+        } else if (err.status === 404) {
+          deleteToken();
+          history.push('/login');
+        } else if (err.status === 401) {
+          deleteToken();
+          history.push('/login');
+        } else if (err.status === 500) {
+          history.push('/error');
+        }
+      });
   };
 
   const classes = useStyles();
@@ -81,6 +98,9 @@ export default function SimpleMenu() {
           <MenuItem onClick={handleClose}>마이페이지</MenuItem>
         </Link>
         <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
+        <Link to="/admin">
+          <MenuItem onClick={handleClose}>관리자페이지</MenuItem>
+        </Link>
       </Menu>
     </div>
   );

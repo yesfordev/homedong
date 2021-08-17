@@ -127,7 +127,6 @@ const LeftList = styled.ul`
 `;
 
 const music = new Audio(gamemusic2);
-
 class Game extends Component {
   constructor(props) {
     super(props);
@@ -158,7 +157,6 @@ class Game extends Component {
       timer: false,
       gameId: undefined,
       token: undefined,
-      requestId: undefined,
       audiostate: true,
       videostate: true,
       headerText: '',
@@ -192,6 +190,9 @@ class Game extends Component {
     setTimeout(() => {
       const { home } = this.props;
       const { token, roomId, nickname, gameType } = home;
+      if (roomId === '') {
+        this.props.history.push('/error');
+      }
       this.setState({
         token,
         mySessionId: roomId,
@@ -505,7 +506,15 @@ class Game extends Component {
   start() {
     new Audio(startsound).play();
     setTimeout(() => {
-      this.setState({ started: false, timer: true });
+      this.setState({
+        started: false,
+        timer: true,
+        count: 0,
+        status: 'up',
+        ranking: new Map(),
+        sortedrank: new Map(),
+        readystate: 'ready',
+      });
       music.loop = true;
       music.play();
       this.setState({
@@ -544,9 +553,6 @@ class Game extends Component {
       roomId: this.state.mySessionId,
     });
     const mySession = this.state.session;
-    if (this.state.requestId) {
-      window.cancelAnimationFrame(this.state.requestId);
-    }
     if (mySession) {
       mySession.disconnect();
     }
@@ -598,7 +604,7 @@ class Game extends Component {
     this.setState({ webcam: new tmPose.Webcam(size, size, flip) }); // width, height, flip
     await this.state.webcam.setup(); // request access to the webcam
     await this.state.webcam.play();
-    this.setState({ requestId: window.requestAnimationFrame(this.loop) });
+    window.requestAnimationFrame(this.loop);
   }
 
   async loop(timestamp) {
@@ -639,11 +645,11 @@ class Game extends Component {
           })
           .then(() => {
             console.log('Message successfully sent');
+            this.setState({ check: false });
           })
           .catch((error) => {
             console.error(error);
           });
-        this.setState({ check: false });
       }
       this.setState({ status: 'up' });
     } else if (prediction[1].probability.toFixed(2) > 0.95) {
@@ -673,11 +679,11 @@ class Game extends Component {
           })
           .then(() => {
             console.log('Message successfully sent');
+            this.setState({ check: false });
           })
           .catch((error) => {
             console.error(error);
           });
-        this.setState({ check: false });
       }
       this.setState({ status: 'up' });
     } else if (prediction[2].probability.toFixed(2) > 0.95) {
@@ -707,11 +713,11 @@ class Game extends Component {
           })
           .then(() => {
             console.log('Message successfully sent');
+            this.setState({ check: false });
           })
           .catch((error) => {
             console.error(error);
           });
-        this.setState({ check: false });
       }
       this.setState({ status: 'up' });
     } else if (prediction[1].probability.toFixed(2) > 0.95) {
@@ -724,30 +730,22 @@ class Game extends Component {
     return (
       this.state.rankdata &&
       this.state.rankdata.map((rank, index) => {
-        const classes = useStyles;
-        const bull = <span className={classes.bullet}>•</span>;
         const { nickname, count } = rank; // destructuring
-        if (index < 3 && count > 0) {
+        let finalRanking;
+        if (index === 0) {
+          finalRanking = '🥇';
+        } else if (index === 1) {
+          finalRanking = '🥈';
+        } else if (index === 2) {
+          finalRanking = '🥉';
+        }
+        if (index < 3) {
           return (
-            <li key={index}>
-              <Card className={classes.root} variant="outlined">
-                <CardContent>
-                  <Typography
-                    className={classes.title}
-                    color="textSecondary"
-                    gutterBottom
-                  >
-                    {index + 1}위
-                  </Typography>
-                  <Typography variant="h5" component="h2">
-                    {nickname}님
-                  </Typography>
-                  <Typography className={classes.pos} color="textSecondary">
-                    {count}개
-                  </Typography>
-                </CardContent>
-              </Card>
-            </li>
+            <tr key={index}>
+              <td className="tableitem">{finalRanking}</td>
+              <td className="tableitem">{nickname}님</td>
+              <td className="tableitem">{count}개</td>
+            </tr>
           );
         }
       })
@@ -905,15 +903,19 @@ class Game extends Component {
               onComplete={() => {
                 setTimeout(() => {
                   this.setState({
+                    ranking: new Map(),
+                    sortedrank: new Map(),
+                    rankdata: [],
                     timer: false,
                     arrow: false,
+                    status: 'up',
                   });
                   axios1.post('/api/game/end', {
                     count: this.state.count,
                     gameId: this.state.gameId,
                   });
                   music.pause();
-                  window.cancelAnimationFrame(this.state.requestId);
+                  this.renderTableData();
                 }, 300);
               }}
             >
@@ -985,11 +987,12 @@ class Game extends Component {
         ) : null}
         {this.state.session !== undefined ? (
           <div id="session">
-            <div>개수</div>
-            <div>{this.state.count}</div>
-            <div className="rankingtable">
-              <ul>{this.renderTableData()} </ul>
-            </div>
+            <table
+              id="ranking"
+              className={`table ${this.state.arrow ? null : 'invisible'}`}
+            >
+              <tbody>{this.renderTableData()}</tbody>
+            </table>
             <div id="video-container" className="video-container col-md-6">
               {this.state.publisher !== undefined ? (
                 <div

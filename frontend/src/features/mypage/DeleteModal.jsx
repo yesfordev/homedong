@@ -54,11 +54,15 @@ export default function DraggableDialog() {
           toast.error('😥 로그인을 다시 해주세요!');
           deleteToken();
           history.push('/login');
+        } else if (err.status === 404) {
+          toast.error('😥 회원정보가 존재하지 않습니다');
+          deleteToken();
+          history.push('/login');
         } else if (err.status === 400) {
           toast.error('😥 다시 한 번 시도해주세요');
         } else if (err.status === 500) {
           history.push('/error');
-        } // 404 에러 처리
+        }
       });
   };
 
