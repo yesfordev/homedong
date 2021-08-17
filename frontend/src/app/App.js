@@ -24,10 +24,12 @@ import Rank from '../features/rank/Rank';
 import Game from '../features/game/Game';
 import Error404 from '../common/error/Error404';
 import Error500 from '../common/error/Error500';
+import Admin from '../features/admin/Admin';
 
 // routes
 import PrivateRoute from '../common/routes/PrivateRoute';
 import PublicRoute from '../common/routes/PublicRoute';
+import AdminRoute from '../common/routes/AdminRoute';
 
 const Wrapper = styled.div`
   background-color: rgba(246, 245, 253, 1);
@@ -38,6 +40,14 @@ const StyledToastContainer = styled(ToastContainer).attrs({})`
     font-size: 0.8rem;
     line-height: 1.5;
     word-break: keep-all;
+  }
+  .Toastify__toast--success {
+    background-color: rgba(106, 96, 169, 0.7);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    word-break: keep-all;
+    & .Toastify__progress-bar--success {
+    }
   }
 `;
 
@@ -55,6 +65,8 @@ function App() {
             <Route path="/emailcheckedplease" component={EmailCheckedPlease} />
             <Route path="/error" component={Error500} />
             <PrivateRoute exact path="/" component={Home} />
+            <AdminRoute exact path="/admin" component={Admin} />
+            <PrivateRoute path="/tutorial" component={Tutorial} />
             <PrivateRoute path="/rank" component={Rank} />
             <PrivateRoute path="/mypage" component={MyPage} />
             <PrivateRoute path="/checkpassword" component={CheckPassword} />

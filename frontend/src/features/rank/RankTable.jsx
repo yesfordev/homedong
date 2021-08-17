@@ -10,6 +10,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import styled from 'styled-components';
+import profileImages from '../../assets/profile/profileImages';
 
 const CustomTableContainer = styled(TableContainer)`
   width: 55%;
@@ -43,7 +44,22 @@ const CustomTableRow = styled(TableRow)`
   border-radius: 10px;
 `;
 
-function createData(ranking, nickname, count, changeStatus, changeRanking) {
+const ProfileImage = styled.img`
+  width: 45px;
+  margin: 5px;
+  cursor: pointer;
+  border: 1px solid;
+  border-radius: 50%;
+`;
+
+function createData(
+  ranking,
+  nickname,
+  img,
+  count,
+  changeStatus,
+  changeRanking
+) {
   let finalChangeStatus;
   let finalRanking;
   if (changeStatus === 'noChange') {
@@ -65,7 +81,7 @@ function createData(ranking, nickname, count, changeStatus, changeRanking) {
     finalRanking = ranking;
   }
 
-  return { finalRanking, nickname, count, finalChangeStatus };
+  return { finalRanking, nickname, img, count, finalChangeStatus };
 }
 
 export default function RankTable() {
@@ -77,6 +93,7 @@ export default function RankTable() {
       rows.push(createData(...item));
     });
   }
+
   return (
     <CustomTableContainer component={Paper}>
       <Table
@@ -89,6 +106,7 @@ export default function RankTable() {
         <TableHead>
           <CustomTableRow hover>
             <TableCell align="center">순위</TableCell>
+            <TableCell align="center">프로필</TableCell>
             <TableCell align="center">닉네임</TableCell>
             <TableCell align="center">갯수</TableCell>
             <TableCell align="center">순위변동</TableCell>
@@ -100,6 +118,14 @@ export default function RankTable() {
               <TableCellRank align="center" scope="row">
                 {row.finalRanking}
               </TableCellRank>
+              <TableCell align="center">
+                {profileImages.map((profileImage, index) => {
+                  if (index + 1 === Number(row.img)) {
+                    return <ProfileImage src={profileImage} alt="profile" />;
+                  }
+                  return <span> </span>;
+                })}
+              </TableCell>
               <TableCell align="center">{row.nickname}</TableCell>
               <TableCell align="center">{row.count}</TableCell>
               <TableCell style={{ fontSize: '0.6rem' }} align="center">

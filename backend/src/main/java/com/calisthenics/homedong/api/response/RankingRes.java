@@ -23,6 +23,9 @@ public class RankingRes {
     @ApiModelProperty(name = "사용자 닉네임", example = "yes")
     private String nickname;
 
+    @ApiModelProperty(name = "사용자 프로필 사진", example = "1")
+    private String img;
+
     @ApiModelProperty(name = "총 갯수", example = "300")
     private int count;
 
@@ -32,9 +35,10 @@ public class RankingRes {
     @ApiModelProperty(name = "변동 추이", example = "2")
     private int changeRanking;
 
-    public RankingRes(Integer ranking, String nickname, int count) {
+    public RankingRes(Integer ranking, String nickname, String img, int count) {
         this.ranking = ranking;
         this.nickname = nickname;
+        this.img = img;
         this.count = count;
         this.changeStatus = "new";
         this.changeRanking = -1;

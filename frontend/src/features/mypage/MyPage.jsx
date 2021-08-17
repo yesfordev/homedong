@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -7,13 +7,19 @@ import { Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 // image
-import defaultImage from '../../assets/default.png';
+// import defaultImage from '../../assets/default.png';
 import badgeImages from '../../assets/badges/badgeImages';
 import burpee from '../../assets/burpee.svg';
 import pushUp from '../../assets/pushup.svg';
 import squat from '../../assets/squat.svg';
+import profileImages from '../../assets/profile/profileImages';
 
 // component
 import Navbar from '../../common/navbar/Navbar';
@@ -22,8 +28,14 @@ import Calendar from './Calendar';
 import DeleteModal from './DeleteModal';
 
 // action
-import { loadBadge, loadBestRecord, loadBadgesOwned } from './mypageSlice';
+import {
+  loadBadge,
+  loadBestRecord,
+  loadBadgesOwned,
+  changeUserProfile,
+} from './mypageSlice';
 import { deleteToken } from '../../common/api/JWT-common';
+import { loadUser } from '../auth/authSlice';
 
 // 전체 컨테이너
 const Wrapper = styled.div`
@@ -40,9 +52,30 @@ const Sidebar = styled.aside`
 `;
 
 const ProfileImage = styled.img`
-  width: 70%;
-  height: 15%;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
+  border: ${(props) => (!props.isMouseOver ? '1px solid' : '5px solid')};
+  cursor: pointer;
+  border-color: ${(props) => (!props.isMouseOver ? '' : '#9FA9D8')};
+`;
+
+// 선택할 수 있는 프로필 image 뿌려주기
+const VariousImage = styled.img`
+  width: 95px;
+  margin: 5px;
+  cursor: pointer;
+  border: 1px solid;
+  border-radius: 50%;
+`;
+
+const SelectedImage = styled.img`
+  width: 95px;
+  margin: 5px;
+  cursor: pointer;
+  border: 4px solid;
+  border-radius: 50%;
+  border-color: #fbd14b;
 `;
 
 // 메인
@@ -154,7 +187,7 @@ const Footer = styled.footer`
 `;
 
 export default function MyPage() {
-  const { nickname, email } = useSelector((state) => state.auth.user);
+  const { nickname, email, img } = useSelector((state) => state.auth.user);
   // badgesOwned
   const { consecutiveRecordInfo, badgesOwned } = useSelector(
     (state) => state.mypage
@@ -162,6 +195,34 @@ export default function MyPage() {
   const { duration, workToday } = consecutiveRecordInfo;
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const [open, setOpen] = useState(false);
+  const [currentImage, setCurrentImage] = useState(0);
+  const [mouseState, setMouseState] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+    setCurrentImage(Number(img));
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    if (Number(img) === currentImage) return;
+    dispatch(changeUserProfile(currentImage.toString()))
+      .then(() => {
+        dispatch(loadUser());
+        toast.success('🎨 프로필 사진이 변경되었습니다!');
+      })
+      .catch((err) => {
+        if (err.status === 401) {
+          toast.error('😥 로그인을 다시 해주세요!');
+          deleteToken();
+          history.push('/login');
+        } else if (err.status === 500) {
+          history.push('/error');
+        }
+      });
+  };
 
   // badge 가지고 있는 것 추출하는 함수
   // 각 경기에 대한 뱃지 이미지의 색을 살려준다.
@@ -173,6 +234,18 @@ export default function MyPage() {
         badgeImages[kind][level][1] = true;
       }
     });
+  }
+
+  function updateCurrentImg(imgNum) {
+    setCurrentImage(imgNum);
+  }
+
+  function handleMouseOver() {
+    setMouseState(true);
+  }
+
+  function handleMouseOut() {
+    setMouseState(false);
   }
 
   useEffect(() => {
@@ -212,7 +285,61 @@ export default function MyPage() {
       <Navbar />
       <Wrapper>
         <Sidebar>
-          <ProfileImage src={defaultImage} alt="profile" />
+          {profileImages.map((profileImage, index) => {
+            if (index + 1 === Number(img)) {
+              return (
+                <ProfileImage
+                  src={profileImage}
+                  alt="profile"
+                  onClick={handleClickOpen}
+                  onMouseOver={handleMouseOver}
+                  onMouseOut={handleMouseOut}
+                  isMouseOver={mouseState}
+                />
+              );
+            }
+            return <span> </span>;
+          })}
+          <div>
+            {/* <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleClickOpen}
+            >
+              프로필 변경하기
+            </Button> */}
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                변경할 프로필을 골라주세요
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {profileImages.map((profileImage, index) => {
+                    if (index + 1 === currentImage) {
+                      return <SelectedImage alt="profile" src={profileImage} />;
+                    }
+                    return (
+                      <VariousImage
+                        alt="profile"
+                        src={profileImage}
+                        onClick={() => updateCurrentImg(index + 1)}
+                      />
+                    );
+                  })}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary" autoFocus>
+                  변경하기
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
         </Sidebar>
         <CustomMain>
           <BasicInfo>
