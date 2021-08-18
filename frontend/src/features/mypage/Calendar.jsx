@@ -44,8 +44,8 @@ function Calender() {
                 <Typography color="inherit">
                   {y}년 {m}월 {d}일의 기록
                 </Typography>
-                {squatCnt !== -1 ? <div>👉🏼 스쿼트 : {squatCnt} 개</div> : null}
-                {burpeeCnt !== -1 ? <div>👉🏼 버피 : {burpeeCnt} 개</div> : null}
+                {squatCnt !== -1 ? <div>👉🏼 스쿼트: {squatCnt} 개</div> : null}
+                {burpeeCnt !== -1 ? <div>👉🏼 버피: {burpeeCnt} 개</div> : null}
                 {pushupCnt !== -1 ? (
                   <div>👉🏼 푸쉬업 : {pushupCnt} 개</div>
                 ) : null}
