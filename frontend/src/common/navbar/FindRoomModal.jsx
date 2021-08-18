@@ -20,6 +20,7 @@ import { deleteToken } from '../api/JWT-common';
 
 // action
 import { searchRoom } from '../../features/home/homeSlice';
+import { resetMyPageInfo } from '../../features/mypage/mypageSlice';
 
 const useStyles = makeStyles({
   back: {
@@ -91,6 +92,7 @@ export default function FindRoomModal({ isOpen, handleModalClose }) {
     dispatch(searchRoom(data))
       .unwrap()
       .then(() => {
+        dispatch(resetMyPageInfo());
         history.push('/game');
       })
       .catch((err) => {
@@ -101,7 +103,7 @@ export default function FindRoomModal({ isOpen, handleModalClose }) {
           deleteToken();
           history.push('/login');
         } else if (err.status === 409) {
-          toast.error('😥 방 인원이 초과 되었습니다');
+          toast.error('😥 현재 방에 접속할 수 없는 상태입니다');
           history.push('/');
         } else if (err.status === 404) {
           toast.error('😥 방 정보가 없습니다.');

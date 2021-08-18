@@ -71,6 +71,14 @@ public class RoomService {
             throw new RoomPasswordNotMatchException(room.getRoomId());
         }
 
+        if (room.getStatus().equals("OFF")) {
+            throw new RoomNotFoundException(room.getStatus());
+        }
+
+        if (room.getStatus().equals("GAME")) {
+            throw new RoomStatusIsNotAvailableException(room.getStatus());
+        }
+        
         if (!room.getStatus().equals("ON")) {
             throw new RoomStatusIsNotAvailableException(room.getStatus());
         }

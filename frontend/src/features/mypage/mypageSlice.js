@@ -77,6 +77,7 @@ const mypageSlice = createSlice({
       state.badgeInfo = {};
       state.bestRecordInfo = {};
       state.dailyInfo = {};
+      state.badgesOwned = [];
     },
     loadBadgesOwned: (state) => {
       const gameTypes = ['squat', 'pushUp', 'burpee'];
@@ -100,6 +101,9 @@ const mypageSlice = createSlice({
         });
       });
     },
+    saveNewBadges: (state, action) => {
+      state.badgeInfo = action.payload;
+    },
   },
   extraReducers: {
     [loadBadge.fulfilled]: (state, action) => {
@@ -112,8 +116,15 @@ const mypageSlice = createSlice({
     [loadDailyRecord.fulfilled]: (state, action) => {
       const rawData = action.payload;
       state.dailyRecordInfo = rawData.map((record) => {
-        const { date } = record;
-        return date.split('-');
+        const { date, dailyRecord } = record;
+        const dateStr = date.split('-');
+        const y = dateStr[0];
+        const m = dateStr[1];
+        const d = dateStr[2];
+        const squatCnt = dailyRecord[0].record;
+        const pushupCnt = dailyRecord[1].record;
+        const burpeeCnt = dailyRecord[2].record;
+        return [y, m, d, squatCnt, pushupCnt, burpeeCnt];
       });
     },
     [loadConsecutiveRecord.fulfilled]: (state, action) => {
@@ -122,5 +133,6 @@ const mypageSlice = createSlice({
   },
 });
 
-export const { resetMyPageInfo, loadBadgesOwned } = mypageSlice.actions;
+export const { resetMyPageInfo, loadBadgesOwned, saveNewBadges } =
+  mypageSlice.actions;
 export default mypageSlice.reducer;
