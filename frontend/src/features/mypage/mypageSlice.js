@@ -126,10 +126,6 @@ const mypageSlice = createSlice({
   },
 });
 
-export const {
-  resetMyPageInfo,
-  loadBadgesOwned,
-  saveNewBadges,
-  resetBadgesInfo,
-} = mypageSlice.actions;
+export const { resetMyPageInfo, loadBadgesOwned, saveNewBadges } =
+  mypageSlice.actions;
 export default mypageSlice.reducer;

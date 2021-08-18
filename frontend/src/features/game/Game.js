@@ -214,6 +214,17 @@ const CustomTableCell = styled(TableCell)`
   font-size: 1.2rem;
 `;
 
+const BadgeContainer = styled.div`
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const Badge = styled.img`
+  width: 100px;
+`;
+
 const Transition = forwardRef(function Transition(props, ref) {
   return <Zoom in ref={ref} {...props} />;
 });
@@ -279,7 +290,6 @@ class Game extends Component {
     this.sendmessageByEnter = this.sendmessageByEnter.bind(this);
     this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
     this.closeRankModal = this.closeRankModal.bind(this);
-    this.drawBadge = this.drawBadge.bind(this);
   }
 
   componentDidMount() {
@@ -925,16 +935,6 @@ class Game extends Component {
     this.setState({ isRankModalOpen: false });
   }
 
-  // badge 가지고 있는 것 추출하는 함수
-  drawBadge() {
-    const { mypage } = this.props;
-    const { badgesOwned } = mypage;
-    badgesOwned.forEach((badgeOwned) => {
-      const [kind, level] = badgeOwned;
-      badgeImages[kind][level][1] = true;
-    });
-  }
-
   render() {
     const classes = useStyles;
     const renderTime = ({ remainingTime }) => {
@@ -1065,12 +1065,14 @@ class Game extends Component {
                 </TableBody>
               </Table>
             </TableContainer>
-            <div>
-              {badgesOwned.map((kind, level) => {
-                console.log(kind, level);
-                // return <img src={badgeImages[kind][level][0]} />;
-              })}
-            </div>
+            <BadgeContainer>
+              {badgesOwned.length !== 0 && <Title>새로 딴 뱃지😀</Title>}
+              {badgesOwned &&
+                badgesOwned.map((badge) => {
+                  const [kind, level] = badge;
+                  return <Badge src={badgeImages[kind][level][0]} />;
+                })}
+            </BadgeContainer>
             <RankDialogActions>
               <CancelButton
                 onClick={() => {
