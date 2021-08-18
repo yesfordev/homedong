@@ -69,6 +69,7 @@ import Messages from './components/Messages';
 import startsound from './sound/start.mp3';
 import gamemusic2 from './sound/gamemusic2.mp3';
 import badgeImages from '../../assets/badges/badgeImages';
+import burpeeAdvanced from '../../assets/badges/burpeeAdvanced.png';
 
 // features
 import UserVideoComponent from './UserVideoComponent';
@@ -184,6 +185,7 @@ const Title = styled.p`
   font-weight: bold;
   font-size: 2rem;
   color: white;
+  margin-bottom: 40px;
 `;
 
 const CancelButton = styled(CgClose)`
@@ -214,15 +216,28 @@ const CustomTableCell = styled(TableCell)`
   font-size: 1.2rem;
 `;
 
-const BadgeContainer = styled.div`
+const BadgesContainer = styled.div`
   margin-top: 50px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+`;
+
+const Badges = styled.div`
+  display: flex;
   justify-content: center;
+`;
+
+const BadgeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Badge = styled.img`
   width: 100px;
+  padding: 0 10px;
+  margin-bottom: 10px;
 `;
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -1069,14 +1084,22 @@ class Game extends Component {
                 </TableBody>
               </Table>
             </TableContainer>
-            <BadgeContainer>
-              {badgesOwned.length !== 0 && <Title>새로 딴 뱃지😀</Title>}
-              {badgesOwned &&
-                badgesOwned.map((badge) => {
-                  const [kind, level] = badge;
-                  return <Badge src={badgeImages[kind][level][0]} />;
-                })}
-            </BadgeContainer>
+            <BadgesContainer>
+              {badgesOwned.length !== 0 && <Title>새로 획득한 뱃지🏆</Title>}
+              <Badges>
+                {badgesOwned &&
+                  badgesOwned.map((badge) => {
+                    const [kind, level] = badge;
+                    console.log(kind, level);
+                    return (
+                      <BadgeContainer>
+                        <Badge src={badgeImages[kind][level][0]} />
+                        <span>{badgeImages[kind][level][2]}</span>
+                      </BadgeContainer>
+                    );
+                  })}
+              </Badges>
+            </BadgesContainer>
             <RankDialogActions>
               <CancelButton
                 onClick={() => {
