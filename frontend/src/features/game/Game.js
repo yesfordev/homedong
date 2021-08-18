@@ -63,7 +63,7 @@ const Sbutton = styled.button`
   color: white;
   height: 40px;
   padding: 0 30px;
-  boxshadow: 0 3px 5px 2px rgba(255, 105, 135, 0.3);
+  box-shadow: 0 3px 5px 2px rgba(255, 105, 135, 0.3);
   &:hover {
     background: linear-gradient(45deg, #fe6b8b 30%, #ff8e53 70%);
   }
@@ -862,6 +862,7 @@ class Game extends Component {
             <Buttons>
               {this.state.audiostate ? (
                 <IoMicSharp
+                  color="#9FA9D8"
                   size="24"
                   onClick={() => {
                     this.state.publisher.publishAudio(!this.state.audiostate);
@@ -870,6 +871,7 @@ class Game extends Component {
                 />
               ) : (
                 <IoMicOffSharp
+                  color="#50468c"
                   size="24"
                   onClick={() => {
                     this.state.publisher.publishAudio(!this.state.audiostate);
@@ -879,6 +881,7 @@ class Game extends Component {
               )}
               {this.state.videostate ? (
                 <IoVideocam
+                  color="#9FA9D8"
                   size="24"
                   onClick={() => {
                     this.state.publisher.publishVideo(!this.state.videostate);
@@ -887,6 +890,7 @@ class Game extends Component {
                 />
               ) : (
                 <IoVideocamOff
+                  color="#50468c"
                   size="24"
                   onClick={() => {
                     this.state.publisher.publishVideo(!this.state.videostate);
@@ -927,7 +931,7 @@ class Game extends Component {
           <div className="timer-wrapper">
             <CountdownCircleTimer
               isPlaying
-              duration={20}
+              duration={30}
               colors={[['#004777', 0.33], ['#F7B801', 0.33], ['#A30000']]}
               onComplete={() => {
                 setTimeout(() => {

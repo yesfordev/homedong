@@ -49,17 +49,19 @@ const Wrapper = styled.div`
 // 사이드바
 const Sidebar = styled.aside`
   display: flex;
+  flex: 1;
   justify-content: center;
-  max-width: 20%;
+  margin-left: 5%;
 `;
 
 const ProfileImage = styled.img`
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(45deg, #ffa1b5 30%, #ffa87a 80%);
   border-radius: 50%;
   border: ${(props) => (!props.isMouseOver ? '1px solid' : '5px solid')};
   cursor: pointer;
-  border-color: ${(props) => (!props.isMouseOver ? '' : '#9FA9D8')};
+  border-color: ${(props) => (!props.isMouseOver ? 'white' : 'white')};
 `;
 
 // 선택할 수 있는 프로필 image 뿌려주기
@@ -67,8 +69,9 @@ const VariousImage = styled.img`
   width: 95px;
   margin: 5px;
   cursor: pointer;
-  border: 1px solid;
+  border: 2px solid;
   border-radius: 50%;
+  border-color: #f5e4e7;
 `;
 
 const SelectedImage = styled.img`
@@ -77,12 +80,14 @@ const SelectedImage = styled.img`
   cursor: pointer;
   border: 4px solid;
   border-radius: 50%;
-  border-color: #fbd14b;
+  border-color: #ff859f;
+  background: linear-gradient(45deg, #ffa1b5 30%, #ffa87a 80%);
 `;
 
 // 메인
 const Main = styled.main`
-  width: 70%;
+  flex: 5;
+  display: flex;
 `;
 
 // 닉네임 이메일
@@ -94,13 +99,14 @@ const Title = styled.div`
   margin-bottom: ${(props) => (props.getMoreMB ? '40px' : '20px')};
   margin-top: ${(props) => (props.getMoreMT ? '40px' : '0px')};
   font-weight: bold;
-  font-size: 3rem;
+  font-size: 1.5rem;
   border-bottom: 5px solid rgba(251, 209, 75, 0.5);
 `;
 
 const CustomMain = styled(Main)`
   display: flex;
   flex-direction: column;
+  margin-right: 10%;
 `;
 
 // 내용
@@ -114,6 +120,19 @@ const Content = styled.p`
 const Nickname = styled.div`
   > button {
     margin-left: 30px;
+  }
+`;
+
+const CommonButton = styled(Button)`
+  width: 100%;
+  border-radius: 6px;
+  padding: 0.4em 1em;
+  background: #9fa9d8;
+  color: white;
+
+  &:hover {
+    background: #8090d8;
+    color: white;
   }
 `;
 
@@ -352,14 +371,14 @@ export default function MyPage() {
               <ContentContainer>
                 <Content>{nickname}</Content>
                 <Link to="/checkpassword">
-                  <Button
+                  <CommonButton
                     variant="contained"
                     color="primary"
                     size="small"
                     startIcon={<EditIcon />}
                   >
                     회원정보수정
-                  </Button>
+                  </CommonButton>
                 </Link>
               </ContentContainer>
             </Nickname>
