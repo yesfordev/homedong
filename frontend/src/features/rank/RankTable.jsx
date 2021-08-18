@@ -74,7 +74,7 @@ function createData(
   if (ranking === 1) {
     finalRanking = '🥇';
   } else if (ranking === 2) {
-    finalRanking = '🥇';
+    finalRanking = '🥈';
   } else if (ranking === 3) {
     finalRanking = '🥉';
   } else {
