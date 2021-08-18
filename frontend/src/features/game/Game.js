@@ -28,17 +28,21 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/sort-comp */
 import React, { Component, createRef, forwardRef } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { OpenVidu } from 'openvidu-browser';
+import { CountdownCircleTimer } from 'react-countdown-circle-timer';
+
+// style
+import styled from 'styled-components';
+import { CgClose } from 'react-icons/cg';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Zoom from '@material-ui/core/Zoom';
-import { CgClose } from 'react-icons/cg';
-import { OpenVidu } from 'openvidu-browser';
-import { connect } from 'react-redux';
-import styled from 'styled-components';
 import { Button, makeStyles } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -49,8 +53,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { CountdownCircleTimer } from 'react-countdown-circle-timer';
-import { Link } from 'react-router-dom';
 import {
   IoMicSharp,
   IoMicOffSharp,
@@ -61,7 +63,6 @@ import axios1 from '../../common/api/http-common';
 import butimg from '../../assets/chatmsg.svg';
 import { quickStart } from '../home/homeSlice';
 import logo from '../../assets/logo(basic).svg';
-
 import './Game.css';
 import './UserVideo.css';
 import Messages from './components/Messages';
@@ -70,6 +71,9 @@ import gamemusic2 from './sound/gamemusic2.mp3';
 
 // features
 import UserVideoComponent from './UserVideoComponent';
+
+// actions
+import { saveNewBadges, loadBadgesOwned } from '../mypage/mypageSlice';
 
 const OPENVIDU_SERVER_URL = 'https://i5a608.p.ssafy.io:8443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -1015,35 +1019,34 @@ class Game extends Component {
             <Title>랭킹</Title>
           </RankDialogTitle>
           <RankDialogContent>
-            <RankDialogContentText>
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <CustomTableCell align="center"> 순위 </CustomTableCell>
-                      <CustomTableCell align="center"> 닉네임 </CustomTableCell>
-                      <CustomTableCell align="center"> 개수 </CustomTableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {this.state.finalRank.map((item, index) => {
-                      return (
-                        <TableRow key={index}>
-                          <TableCell component="th" scope="row" align="center">
-                            {index + 1 === 1 && '🥇'}
-                            {index + 1 === 2 && '🥇'}
-                            {index + 1 === 3 && '🥉'}
-                            {index + 1 >= 4 && index + 1}
-                          </TableCell>
-                          <TableCell align="center">{item.nickname}</TableCell>
-                          <TableCell align="center">{item.count}</TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </RankDialogContentText>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <CustomTableCell align="center"> 순위 </CustomTableCell>
+                    <CustomTableCell align="center"> 닉네임 </CustomTableCell>
+                    <CustomTableCell align="center"> 개수 </CustomTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {this.state.finalRank.map((item, index) => {
+                    return (
+                      <TableRow key={index}>
+                        <TableCell component="th" scope="row" align="center">
+                          {index + 1 === 1 && '🥇'}
+                          {index + 1 === 2 && '🥇'}
+                          {index + 1 === 3 && '🥉'}
+                          {index + 1 >= 4 && index + 1}
+                        </TableCell>
+                        <TableCell align="center">{item.nickname}</TableCell>
+                        <TableCell align="center">{item.count}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+
             <RankDialogActions>
               <CancelButton
                 onClick={() => {
@@ -1070,9 +1073,12 @@ class Game extends Component {
               colors={[['#004777', 0.33], ['#F7B801', 0.33], ['#A30000']]}
               onComplete={() => {
                 setTimeout(() => {
-                  console.log(this.state.rankdata);
+                  if (this.state.rankdata) {
+                    this.setState({
+                      finalRank: [...this.state.rankdata],
+                    });
+                  }
                   this.setState({
-                    finalRank: [...this.state.rankdata],
                     ranking: new Map(),
                     sortedrank: new Map(),
                     rankdata: [],
@@ -1082,10 +1088,15 @@ class Game extends Component {
                     startbuttonstate: true,
                     isRankModalOpen: true,
                   });
-                  axios1.post('/api/game/end', {
-                    count: this.state.count,
-                    gameId: this.state.gameId,
-                  });
+                  axios1
+                    .post('/api/game/end', {
+                      count: this.state.count,
+                      gameId: this.state.gameId,
+                    })
+                    .then((res) => {
+                      this.props.doSaveNewBadges(res.data);
+                      this.props.doLoadBadgesOwned();
+                    });
                   music.pause();
                   this.renderTableData();
                 }, 300);
@@ -1249,6 +1260,8 @@ const mapDispatchToProps = (dispatch) => {
     // 빠른시작
     // quickStart는 import { quickStart } from './homeSlice'; 구문을 이용해서 action 가져온 것
     doQuickStart: (type) => dispatch(quickStart(type)),
+    doSaveNewBadges: (resData) => dispatch(saveNewBadges(resData)),
+    doLoadBadgesOwned: () => dispatch(loadBadgesOwned()),
   };
 };
 

@@ -100,6 +100,9 @@ const mypageSlice = createSlice({
         });
       });
     },
+    saveNewBadges: (state, action) => {
+      state.badgeInfo = action.payload;
+    },
   },
   extraReducers: {
     [loadBadge.fulfilled]: (state, action) => {
@@ -122,5 +125,6 @@ const mypageSlice = createSlice({
   },
 });
 
-export const { resetMyPageInfo, loadBadgesOwned } = mypageSlice.actions;
+export const { resetMyPageInfo, loadBadgesOwned, saveNewBadges } =
+  mypageSlice.actions;
 export default mypageSlice.reducer;
