@@ -103,7 +103,7 @@ export default function FindRoomModal({ isOpen, handleModalClose }) {
           deleteToken();
           history.push('/login');
         } else if (err.status === 409) {
-          toast.error('😥 방 인원이 초과 되었습니다');
+          toast.error('😥 현재 방에 접속할 수 없는 상태입니다');
           history.push('/');
         } else if (err.status === 404) {
           toast.error('😥 방 정보가 없습니다.');
