@@ -32,10 +32,10 @@ const CustomTableContainer = styled(TableContainer)`
   }
 `;
 
-function createData(name, squat, pushUp, burpee) {
-  const newBurpee = burpee === -1 ? '기록없음' : burpee;
-  const newSquat = squat === -1 ? '기록없음' : squat;
-  const newPushUp = pushUp === -1 ? '기록없음' : pushUp;
+function createData(text, name, squat, pushUp, burpee) {
+  const newBurpee = burpee === -1 ? '기록없음' : `${burpee}${text}`;
+  const newSquat = squat === -1 ? '기록없음' : `${squat}${text}`;
+  const newPushUp = pushUp === -1 ? '기록없음' : `${pushUp}${text}`;
   return { name, newBurpee, newSquat, newPushUp };
 }
 
@@ -47,11 +47,11 @@ function handleData(data, rows) {
   if (data) {
     Array.from(data).forEach((record) => {
       const { bestRecord, ranking } = record;
-      bestRecords.push(`${bestRecord} 개`);
-      rankings.push(`${ranking} 위`);
+      bestRecords.push(bestRecord);
+      rankings.push(ranking);
     });
-    rows.push(createData(names[0], ...bestRecords));
-    rows.push(createData(names[1], ...rankings));
+    rows.push(createData('개', names[0], ...bestRecords));
+    rows.push(createData('위', names[1], ...rankings));
   }
 }
 

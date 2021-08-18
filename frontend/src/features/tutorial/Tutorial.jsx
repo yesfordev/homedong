@@ -1,12 +1,13 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
-import { Link, animateScroll as scroll } from 'react-scroll';
+import { animateScroll as scroll } from 'react-scroll';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
 import SimpleImageSlider from 'react-simple-image-slider';
-import burpee from '../../assets/burpee.svg';
-import pushup from '../../assets/pushup.svg';
-import squat from '../../assets/squat.svg';
+
+// features
+import TutorialLinks from './TutorialLinks';
+
+// images
 import squat1 from './images/001.png';
 import squat2 from './images/002.png';
 import squat3 from './images/003.png';
@@ -36,21 +37,13 @@ const Exercise = styled.section`
   height: 100vh;
 `;
 
-const IconButton = styled(motion.img)`
-  width: 5%;
-`;
-
-const Icons = styled.div`
-  margin-top: 50px;
-  display: flex;
-  justify-content: center;
-`;
 const SliderWrapper = styled.div`
   display: flex;
   position: absolute;
   margin-top: 10%;
   left: 85%;
 `;
+
 class Tutorial extends Component {
   constructor(props) {
     super(props);
@@ -89,39 +82,7 @@ class Tutorial extends Component {
         {/* <Navbar /> */}
         <Wrapper>
           <Exercise name="element1">
-            <Icons>
-              <Link
-                to="element1"
-                activeClass="active"
-                spy
-                smooth
-                duration={1000}
-              >
-                <IconButton
-                  whileHover={{ scale: 1.2 }}
-                  whileTap={{ scale: 0.9 }}
-                  src={squat}
-                />
-              </Link>
-              <Link
-                to="element2"
-                activeClass="active"
-                spy
-                smooth
-                duration={1000}
-              >
-                <IconButton
-                  whileHover={{ scale: 1.2 }}
-                  whileTap={{ scale: 0.9 }}
-                  src={burpee}
-                />
-              </Link>
-              <IconButton
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.9 }}
-                src={pushup}
-              />
-            </Icons>
+            <TutorialLinks />
             <SliderWrapper>
               <SimpleImageSlider
                 width={1280}
@@ -139,11 +100,7 @@ class Tutorial extends Component {
             </SliderWrapper>
           </Exercise>
           <Exercise name="element2">
-            <Icons>
-              <IconButton src={squat} />
-              <IconButton src={burpee} />
-              <IconButton src={pushup} />
-            </Icons>
+            <TutorialLinks />
             <SliderWrapper>
               <SimpleImageSlider
                 width={1280}
@@ -161,11 +118,7 @@ class Tutorial extends Component {
             </SliderWrapper>
           </Exercise>
           <Exercise name="element3">
-            <Icons>
-              <IconButton src={squat} />
-              <IconButton src={burpee} />
-              <IconButton src={pushup} />
-            </Icons>
+            <TutorialLinks />
             <SliderWrapper>
               <SimpleImageSlider
                 width={1280}

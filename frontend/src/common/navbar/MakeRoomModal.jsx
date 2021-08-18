@@ -183,6 +183,9 @@ export default function MakeRoomModal({ isOpen, handleModalClose }) {
                 id="password"
                 label="비밀번호"
                 value={password}
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 onChange={(e) => setPassword(e.target.value.replace(/\s/g, ''))}
                 validators={['required']}
                 errorMessages={['비밀번호를 입력해주세요']}
