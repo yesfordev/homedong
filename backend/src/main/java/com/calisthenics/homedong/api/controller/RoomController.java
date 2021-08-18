@@ -89,7 +89,7 @@ public class RoomController {
             @ApiResponse(code = 400, message = "input 오류", response = ErrorResponse.class),
             @ApiResponse(code = 401, message = "토큰 만료 or 토큰 없음 or 토큰 오류 -> 권한 인증 오류", response = ErrorResponse.class),
             @ApiResponse(code = 404, message = "방 정보가 없습니다.", response = ErrorResponse.class),
-            @ApiResponse(code = 409, message = "방 인원초과.", response = ErrorResponse.class),
+            @ApiResponse(code = 409, message = "방 접속 불가능 상태(GAME | FULL)", response = ErrorResponse.class),
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
