@@ -26,6 +26,7 @@ import RadioButton from './RadioButton';
 
 // action
 import { makeRoom } from '../../features/home/homeSlice';
+import { resetMyPageInfo } from '../../features/mypage/mypageSlice';
 import { deleteToken } from '../api/JWT-common';
 
 const ImageContainer = styled.div`
@@ -101,6 +102,7 @@ export default function MakeRoomModal({ isOpen, handleModalClose }) {
 
   function handleSubmit(e) {
     e.preventDefault();
+    dispatch(resetMyPageInfo());
     const data = {
       gameType: selectedGameType,
       password,
