@@ -50,8 +50,8 @@ function handleData(data, rows) {
       bestRecords.push(bestRecord);
       rankings.push(ranking);
     });
-    rows.push(createData('개', names[0], ...bestRecords));
-    rows.push(createData('위', names[1], ...rankings));
+    rows.push(createData(' 개', names[0], ...bestRecords));
+    rows.push(createData(' 위', names[1], ...rankings));
   }
 }
 

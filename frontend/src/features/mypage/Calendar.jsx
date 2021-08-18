@@ -24,7 +24,9 @@ function Calender() {
         date.getMonth() === Number(m) - 1 &&
         date.getDate() === Number(d) ? (
         <img alt="prize" key={[m, d]} src={Badge1} style={{ width: '40%' }} />
-      ) : null;
+      ) : (
+        <div style={{ width: '40%', height: '7px' }}> </div>
+      );
     });
   }
   useEffect(() => {
