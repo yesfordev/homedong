@@ -15,6 +15,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import ReactCardFlip from 'react-card-flip';
 
 // image
 // import defaultImage from '../../assets/default.png';
@@ -187,9 +188,20 @@ const BadgeContainer = styled.div`
 const Badge = styled.img`
   width: calc(100% / 3 - 14px);
   margin: 0 7px;
+  cursor: pointer;
   filter: ${(props) => (props.isPresent ? 'grayscale(0%)' : 'grayscale(100%)')};
   opacity: ${(props) => (props.isPresent ? '1' : '0.3')};
 `;
+// 뱃지 툴팁
+const BadgeTooltip = withStyles(() => ({
+  tooltip: {
+    backgroundColor: '#f5f5f9',
+    color: 'rgba(0, 0, 0, 0.87)',
+    maxWidth: 220,
+    fontSize: 11,
+    border: '1px solid #dadde9',
+  },
+}))(Tooltip);
 
 // 메세지
 const Message = styled.p`
@@ -232,6 +244,10 @@ export default function MyPage() {
   const [open, setOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
   const [mouseState, setMouseState] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const handleClick = () => {
+    setIsFlipped(!isFlipped);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -285,6 +301,7 @@ export default function MyPage() {
     dispatch(loadBadge())
       .unwrap()
       .then(() => {
+        console.log(badgeImages.burpee.beginner[1]);
         dispatch(loadBadgesOwned());
       })
       .catch((err) => {
@@ -405,74 +422,195 @@ export default function MyPage() {
             <MyTable />
           </Record>
           <Title getMoreMT>내 뱃지</Title>
-          {badgeImages.homedongKing.best[1] === true ? (
-            <Badges isHomeDongKing>
-              <Badge isPresent src={badgeImages.homedongKing.best[0]} />
-            </Badges>
-          ) : (
-            <Badges>
+          <ReactCardFlip isFlipped={isFlipped} flipDirection="vertical">
+            <Badges onClick={handleClick}>
               <ExerciseKind>
                 <ExerciseImage src={squat} alt="badge" />
                 <BadgeContainer>
-                  <Badge
-                    isPresent={badgeImages.squat.beginner[1]}
-                    src={badgeImages.squat.beginner[0]}
-                    alt="badge"
-                  />
-                  <Badge
-                    isPresent={badgeImages.squat.intermediate[1]}
-                    src={badgeImages.squat.intermediate[0]}
-                    alt="badge"
-                  />
-                  <Badge
-                    isPresent={badgeImages.squat.advanced[1]}
-                    src={badgeImages.squat.advanced[0]}
-                    alt="badge"
-                  />
+                  <BadgeTooltip
+                    title={
+                      <div>
+                        <Typography color="inherit">스쿼트 브론즈</Typography>
+                        <span>
+                          {badgeImages.squat.beginner[1]
+                            ? '게임에서 스쿼트 10개를 성공하셨습니다.'
+                            : '미획득'}
+                        </span>
+                      </div>
+                    }
+                  >
+                    <Badge
+                      isPresent={badgeImages.squat.beginner[1]}
+                      src={badgeImages.squat.beginner[0]}
+                      alt="badge"
+                    />
+                  </BadgeTooltip>
+                  <BadgeTooltip
+                    title={
+                      <div>
+                        <Typography color="inherit">스쿼트 실버</Typography>
+                        <span>
+                          {badgeImages.squat.intermediate[1]
+                            ? '게임에서 스쿼트 20개를 성공하셨습니다.'
+                            : '미획득'}
+                        </span>
+                      </div>
+                    }
+                  >
+                    <Badge
+                      isPresent={badgeImages.squat.intermediate[1]}
+                      src={badgeImages.squat.intermediate[0]}
+                      alt="badge"
+                    />
+                  </BadgeTooltip>
+                  <BadgeTooltip
+                    title={
+                      <div>
+                        <Typography color="inherit">스쿼트 골드</Typography>
+                        <span>
+                          {badgeImages.squat.advanced[1]
+                            ? '게임에서 스쿼트 30개를 성공하셨습니다.'
+                            : '미획득'}
+                        </span>
+                      </div>
+                    }
+                  >
+                    <Badge
+                      isPresent={badgeImages.squat.advanced[1]}
+                      src={badgeImages.squat.advanced[0]}
+                      alt="badge"
+                    />
+                  </BadgeTooltip>
                 </BadgeContainer>
               </ExerciseKind>
               <ExerciseKind>
                 <ExerciseImage src={burpee} alt="badge" />
                 <BadgeContainer>
-                  <Badge
-                    isPresent={badgeImages.burpee.beginner[1]}
-                    src={badgeImages.burpee.beginner[0]}
-                    alt="badge"
-                  />
-                  <Badge
-                    isPresent={badgeImages.burpee.intermediate[1]}
-                    src={badgeImages.burpee.intermediate[0]}
-                    alt="badge"
-                  />
-                  <Badge
-                    isPresent={badgeImages.burpee.advanced[1]}
-                    src={badgeImages.burpee.advanced[0]}
-                    alt="badge"
-                  />
+                  <BadgeTooltip
+                    title={
+                      <div>
+                        <Typography color="inherit">버피 브론즈</Typography>
+                        <span>
+                          {badgeImages.burpee.beginner[1]
+                            ? '게임에서 버피 5개를 성공하셨습니다.'
+                            : '미획득'}
+                        </span>
+                      </div>
+                    }
+                  >
+                    <Badge
+                      isPresent={badgeImages.burpee.beginner[1]}
+                      src={badgeImages.burpee.beginner[0]}
+                      alt="badge"
+                    />
+                  </BadgeTooltip>
+                  <BadgeTooltip
+                    title={
+                      <div>
+                        <Typography color="inherit">버피 실버</Typography>
+                        <span>
+                          {badgeImages.burpee.intermediate[1]
+                            ? '게임에서 버피 10개를 성공하셨습니다.'
+                            : '미획득'}
+                        </span>
+                      </div>
+                    }
+                  >
+                    <Badge
+                      isPresent={badgeImages.burpee.intermediate[1]}
+                      src={badgeImages.burpee.intermediate[0]}
+                      alt="badge"
+                    />
+                  </BadgeTooltip>
+                  <BadgeTooltip
+                    title={
+                      <div>
+                        <Typography color="inherit">버피 골드</Typography>
+                        <span>
+                          {badgeImages.burpee.advanced[1]
+                            ? '게임에서 버피 15개를 성공하셨습니다.'
+                            : '미획득'}
+                        </span>
+                      </div>
+                    }
+                  >
+                    <Badge
+                      isPresent={badgeImages.burpee.advanced[1]}
+                      src={badgeImages.burpee.advanced[0]}
+                      alt="badge"
+                    />
+                  </BadgeTooltip>
                 </BadgeContainer>
               </ExerciseKind>
               <ExerciseKind>
                 <ExerciseImage src={pushUp} alt="badge" />
                 <BadgeContainer>
-                  <Badge
-                    isPresent={badgeImages.pushUp.beginner[1]}
-                    src={badgeImages.pushUp.beginner[0]}
-                    alt="badge"
-                  />
-                  <Badge
-                    isPresent={badgeImages.pushUp.intermediate[1]}
-                    src={badgeImages.pushUp.intermediate[0]}
-                    alt="badge"
-                  />
-                  <Badge
-                    isPresent={badgeImages.pushUp.advanced[1]}
-                    src={badgeImages.pushUp.advanced[0]}
-                    alt="badge"
-                  />
+                  <BadgeTooltip
+                    title={
+                      <div>
+                        <Typography color="inherit">푸시업 브론즈</Typography>
+                        <span>
+                          {badgeImages.pushUp.beginner[1]
+                            ? '게임에서 푸시업 10개를 성공하셨습니다.'
+                            : '미획득'}
+                        </span>
+                      </div>
+                    }
+                  >
+                    <Badge
+                      isPresent={badgeImages.pushUp.beginner[1]}
+                      src={badgeImages.pushUp.beginner[0]}
+                      alt="badge"
+                    />
+                  </BadgeTooltip>
+                  <BadgeTooltip
+                    title={
+                      <div>
+                        <Typography color="inherit">푸시업 실버</Typography>
+                        <span>
+                          {badgeImages.pushUp.intermediate[1]
+                            ? '게임에서 푸시업 15개를 성공하셨습니다.'
+                            : '미획득'}
+                        </span>
+                      </div>
+                    }
+                  >
+                    <Badge
+                      isPresent={badgeImages.pushUp.intermediate[1]}
+                      src={badgeImages.pushUp.intermediate[0]}
+                      alt="badge"
+                    />
+                  </BadgeTooltip>
+                  <BadgeTooltip
+                    title={
+                      <div>
+                        <Typography color="inherit">푸시업 골드</Typography>
+                        <span>
+                          {badgeImages.pushUp.advanced[1]
+                            ? '게임에서 푸시업 20개를 성공하셨습니다.'
+                            : '미획득'}
+                        </span>
+                      </div>
+                    }
+                  >
+                    <Badge
+                      isPresent={badgeImages.pushUp.advanced[1]}
+                      src={badgeImages.pushUp.advanced[0]}
+                      alt="badge"
+                    />
+                  </BadgeTooltip>
                 </BadgeContainer>
               </ExerciseKind>
             </Badges>
-          )}
+            <Badges isHomeDongKing onClick={handleClick}>
+              <Badge
+                isPresent={badgeImages.homedongKing.best[1]}
+                src={badgeImages.homedongKing.best[0]}
+                alt="badge"
+              />
+            </Badges>
+          </ReactCardFlip>
+
           <Title getMoreMB getMoreMT>
             1일 1동
           </Title>
