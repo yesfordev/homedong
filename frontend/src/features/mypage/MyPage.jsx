@@ -1,3 +1,4 @@
+/* eslint-disable no-var */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
@@ -12,6 +13,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import ReactCardFlip from 'react-card-flip';
 
 // image
 // import defaultImage from '../../assets/default.png';
@@ -130,6 +132,7 @@ const Record = styled.section``;
 const Badges = styled.section`
   display: flex;
   justify-content: ${(props) => (props.isHomeDongKing ? 'center' : '')};
+  cursor: pointer;
   flex-direction: row;
   margin-bottom: 40px;
   
@@ -195,16 +198,17 @@ export default function MyPage() {
   const { duration, workToday } = consecutiveRecordInfo;
   const dispatch = useDispatch();
   const history = useHistory();
-
   const [open, setOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
   const [mouseState, setMouseState] = useState(false);
-
+  const [isFlipped, setIsFlipped] = useState(false);
+  const handleClick = () => {
+    setIsFlipped(!isFlipped);
+  };
   const handleClickOpen = () => {
     setOpen(true);
     setCurrentImage(Number(img));
   };
-
   const handleClose = () => {
     setOpen(false);
     if (Number(img) === currentImage) return;
@@ -369,12 +373,8 @@ export default function MyPage() {
             <MyTable />
           </Record>
           <Title getMoreMT>내 뱃지</Title>
-          {badgeImages.homedongKing.best[1] === true ? (
-            <Badges isHomeDongKing>
-              <Badge isPresent src={badgeImages.homedongKing.best[0]} />
-            </Badges>
-          ) : (
-            <Badges>
+          <ReactCardFlip isFlipped={isFlipped} flipDirection="vertical">
+            <Badges onClick={handleClick}>
               <ExerciseKind>
                 <ExerciseImage src={squat} alt="badge" />
                 <BadgeContainer>
@@ -436,7 +436,15 @@ export default function MyPage() {
                 </BadgeContainer>
               </ExerciseKind>
             </Badges>
-          )}
+
+            <Badges isHomeDongKing onClick={handleClick}>
+              <Badge
+                isPresent={badgeImages.homedongKing.best[1]}
+                src={badgeImages.homedongKing.best[0]}
+                alt="badge"
+              />
+            </Badges>
+          </ReactCardFlip>
           <Title getMoreMB getMoreMT>
             1일 1동
           </Title>
