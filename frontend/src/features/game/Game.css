@@ -14,21 +14,6 @@
   --italic: 300;
   --primary: #9fa9d8;
 }
-ul li {
-  list-style-type: none;
-  float: left;
-  padding: 20px;
-}
-
-nav {
-  height: 50px;
-  width: 100%;
-  z-index: 1;
-  background-color: #4d4d4d !important;
-  border-color: #4d4d4d !important;
-  border-top-right-radius: 0 !important;
-  border-top-left-radius: 0 !important;
-}
 .stream-container {
   padding: 0;
 }
