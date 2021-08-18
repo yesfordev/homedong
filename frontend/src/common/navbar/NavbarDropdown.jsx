@@ -24,8 +24,7 @@ const useStyles = makeStyles({
 });
 
 export default function SimpleMenu() {
-  const { img } = useSelector((state) => state.auth.user);
-
+  const { img, isAdmin } = useSelector((state) => state.auth.user);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -99,9 +98,11 @@ export default function SimpleMenu() {
           <MenuItem onClick={handleClose}>마이페이지</MenuItem>
         </Link>
         <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
-        <Link to="/admin">
-          <MenuItem onClick={handleClose}>관리자페이지</MenuItem>
-        </Link>
+        {isAdmin && (
+          <Link to="/admin">
+            <MenuItem onClick={handleClose}>관리자페이지</MenuItem>
+          </Link>
+        )}
       </Menu>
     </div>
   );

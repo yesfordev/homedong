@@ -77,6 +77,7 @@ const mypageSlice = createSlice({
       state.badgeInfo = {};
       state.bestRecordInfo = {};
       state.dailyInfo = {};
+      state.badgesOwned = [];
     },
     loadBadgesOwned: (state) => {
       const gameTypes = ['squat', 'pushUp', 'burpee'];
@@ -99,6 +100,9 @@ const mypageSlice = createSlice({
           });
         });
       });
+    },
+    saveNewBadges: (state, action) => {
+      state.badgeInfo = action.payload;
     },
   },
   extraReducers: {
@@ -129,5 +133,6 @@ const mypageSlice = createSlice({
   },
 });
 
-export const { resetMyPageInfo, loadBadgesOwned } = mypageSlice.actions;
+export const { resetMyPageInfo, loadBadgesOwned, saveNewBadges } =
+  mypageSlice.actions;
 export default mypageSlice.reducer;

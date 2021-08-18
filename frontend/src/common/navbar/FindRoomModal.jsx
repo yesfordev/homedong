@@ -20,6 +20,7 @@ import { deleteToken } from '../api/JWT-common';
 
 // action
 import { searchRoom } from '../../features/home/homeSlice';
+import { resetMyPageInfo } from '../../features/mypage/mypageSlice';
 
 const useStyles = makeStyles({
   back: {
@@ -91,6 +92,7 @@ export default function FindRoomModal({ isOpen, handleModalClose }) {
     dispatch(searchRoom(data))
       .unwrap()
       .then(() => {
+        dispatch(resetMyPageInfo());
         history.push('/game');
       })
       .catch((err) => {
