@@ -1,4 +1,3 @@
-/* eslint-disable no-var */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
@@ -13,7 +12,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import ReactCardFlip from 'react-card-flip';
+import { withStyles } from '@material-ui/styles';
+import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
 
 // image
 // import defaultImage from '../../assets/default.png';
@@ -61,7 +62,7 @@ const ProfileImage = styled.img`
   border-radius: 50%;
   border: ${(props) => (!props.isMouseOver ? '1px solid' : '5px solid')};
   cursor: pointer;
-  border-color: ${(props) => (!props.isMouseOver ? 'white' : 'white')};
+  border-color: ${(props) => (!props.isMouseOver ? 'white' : '#edb9bb')};
 `;
 
 // 선택할 수 있는 프로필 image 뿌려주기
@@ -111,7 +112,7 @@ const CustomMain = styled(Main)`
 
 // 내용
 const Content = styled.p`
-  font-size: 2rem;
+  font-size: 1.9rem;
   display: block;
   word-break: break-all;
   margin: 0 15px 60px 40px;
@@ -151,7 +152,6 @@ const Record = styled.section``;
 const Badges = styled.section`
   display: flex;
   justify-content: ${(props) => (props.isHomeDongKing ? 'center' : '')};
-  cursor: pointer;
   flex-direction: row;
   margin-bottom: 40px;
   
@@ -208,6 +208,17 @@ const Footer = styled.footer`
   margin: 50px 0;
 `;
 
+// tooltip
+const ProfileTooltip = withStyles(() => ({
+  tooltip: {
+    backgroundColor: '#9FA9D8',
+    color: 'white',
+    maxWidth: 280,
+    fontSize: 11,
+    border: '1px solid #9FA9D8',
+  },
+}))(Tooltip);
+
 export default function MyPage() {
   const { nickname, email, img } = useSelector((state) => state.auth.user);
   // badgesOwned
@@ -217,17 +228,16 @@ export default function MyPage() {
   const { duration, workToday } = consecutiveRecordInfo;
   const dispatch = useDispatch();
   const history = useHistory();
+
   const [open, setOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
   const [mouseState, setMouseState] = useState(false);
-  const [isFlipped, setIsFlipped] = useState(false);
-  const handleClick = () => {
-    setIsFlipped(!isFlipped);
-  };
+
   const handleClickOpen = () => {
     setOpen(true);
     setCurrentImage(Number(img));
   };
+
   const handleClose = () => {
     setOpen(false);
     if (Number(img) === currentImage) return;
@@ -311,26 +321,29 @@ export default function MyPage() {
           {profileImages.map((profileImage, index) => {
             if (index + 1 === Number(img)) {
               return (
-                <ProfileImage
-                  src={profileImage}
-                  alt="profile"
-                  onClick={handleClickOpen}
-                  onMouseOver={handleMouseOver}
-                  onMouseOut={handleMouseOut}
-                  isMouseOver={mouseState}
-                />
+                <ProfileTooltip
+                  title={
+                    <>
+                      <Typography color="inherit">
+                        프로필을 변경하려면 👆🏼 클릭해주세요!
+                      </Typography>
+                    </>
+                  }
+                >
+                  <ProfileImage
+                    src={profileImage}
+                    alt="profile"
+                    onClick={handleClickOpen}
+                    onMouseOver={handleMouseOver}
+                    onMouseOut={handleMouseOut}
+                    isMouseOver={mouseState}
+                  />
+                </ProfileTooltip>
               );
             }
             return <span> </span>;
           })}
           <div>
-            {/* <Button
-              variant="outlined"
-              color="primary"
-              onClick={handleClickOpen}
-            >
-              프로필 변경하기
-            </Button> */}
             <Dialog
               open={open}
               onClose={handleClose}
@@ -392,8 +405,12 @@ export default function MyPage() {
             <MyTable />
           </Record>
           <Title getMoreMT>내 뱃지</Title>
-          <ReactCardFlip isFlipped={isFlipped} flipDirection="vertical">
-            <Badges onClick={handleClick}>
+          {badgeImages.homedongKing.best[1] === true ? (
+            <Badges isHomeDongKing>
+              <Badge isPresent src={badgeImages.homedongKing.best[0]} />
+            </Badges>
+          ) : (
+            <Badges>
               <ExerciseKind>
                 <ExerciseImage src={squat} alt="badge" />
                 <BadgeContainer>
@@ -455,15 +472,7 @@ export default function MyPage() {
                 </BadgeContainer>
               </ExerciseKind>
             </Badges>
-
-            <Badges isHomeDongKing onClick={handleClick}>
-              <Badge
-                isPresent={badgeImages.homedongKing.best[1]}
-                src={badgeImages.homedongKing.best[0]}
-                alt="badge"
-              />
-            </Badges>
-          </ReactCardFlip>
+          )}
           <Title getMoreMB getMoreMT>
             1일 1동
           </Title>
