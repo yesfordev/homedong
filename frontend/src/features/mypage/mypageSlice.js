@@ -116,8 +116,15 @@ const mypageSlice = createSlice({
     [loadDailyRecord.fulfilled]: (state, action) => {
       const rawData = action.payload;
       state.dailyRecordInfo = rawData.map((record) => {
-        const { date } = record;
-        return date.split('-');
+        const { date, dailyRecord } = record;
+        const dateStr = date.split('-');
+        const y = dateStr[0];
+        const m = dateStr[1];
+        const d = dateStr[2];
+        const squatCnt = dailyRecord[0].record;
+        const pushupCnt = dailyRecord[1].record;
+        const burpeeCnt = dailyRecord[2].record;
+        return [y, m, d, squatCnt, pushupCnt, burpeeCnt];
       });
     },
     [loadConsecutiveRecord.fulfilled]: (state, action) => {

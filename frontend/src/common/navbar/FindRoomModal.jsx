@@ -150,6 +150,9 @@ export default function FindRoomModal({ isOpen, handleModalClose }) {
               margin="dense"
               id="roomNumber"
               label="방번호"
+              InputLabelProps={{
+                shrink: true,
+              }}
               value={roomId}
               onChange={(e) => setRoomId(e.target.value.replace(/\s/g, ''))}
               validators={['required']}
@@ -161,6 +164,9 @@ export default function FindRoomModal({ isOpen, handleModalClose }) {
                 autoComplete="off"
                 label="비밀번호"
                 margin="dense"
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 onChange={(e) => setPassword(e.target.value.replace(/\s/g, ''))}
                 value={password}
                 validators={['required']}

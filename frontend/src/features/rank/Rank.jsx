@@ -23,7 +23,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 100px 0px 0px 0px;
-  height: 100vh;
+  min-height: 100vh;
   overflow-y: scroll;
 `;
 

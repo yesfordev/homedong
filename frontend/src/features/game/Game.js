@@ -268,6 +268,7 @@ class Game extends Component {
       isRankModalOpen: false,
       startbuttonstate: true,
       finalRank: [],
+      isFliped: true,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -294,6 +295,9 @@ class Game extends Component {
 
   componentDidMount() {
     this.props.doResetMyPageInfo();
+    window.addEventListener('beforeunload', () => {
+      this.componentWillUnmount();
+    });
     music.currentTime = 0;
     setTimeout(() => {
       const { home } = this.props;
@@ -1095,7 +1099,7 @@ class Game extends Component {
           <div className="timer-wrapper">
             <CountdownCircleTimer
               isPlaying
-              duration={20}
+              duration={30}
               colors={[['#004777', 0.33], ['#F7B801', 0.33], ['#A30000']]}
               onComplete={() => {
                 setTimeout(() => {

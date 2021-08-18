@@ -12,6 +12,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { withStyles } from '@material-ui/styles';
+import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
+import ReactCardFlip from 'react-card-flip';
 
 // image
 // import defaultImage from '../../assets/default.png';
@@ -59,7 +63,7 @@ const ProfileImage = styled.img`
   border-radius: 50%;
   border: ${(props) => (!props.isMouseOver ? '1px solid' : '5px solid')};
   cursor: pointer;
-  border-color: ${(props) => (!props.isMouseOver ? 'white' : 'white')};
+  border-color: ${(props) => (!props.isMouseOver ? 'white' : '#edb9bb')};
 `;
 
 // 선택할 수 있는 프로필 image 뿌려주기
@@ -109,7 +113,7 @@ const CustomMain = styled(Main)`
 
 // 내용
 const Content = styled.p`
-  font-size: 2rem;
+  font-size: 1.9rem;
   display: block;
   word-break: break-all;
   margin: 0 15px 60px 40px;
@@ -151,6 +155,7 @@ const Badges = styled.section`
   justify-content: ${(props) => (props.isHomeDongKing ? 'center' : '')};
   flex-direction: row;
   margin-bottom: 40px;
+  cursor: pointer;
   
 
   @media (max-width: 767px) {
@@ -184,9 +189,20 @@ const BadgeContainer = styled.div`
 const Badge = styled.img`
   width: calc(100% / 3 - 14px);
   margin: 0 7px;
+  cursor: pointer;
   filter: ${(props) => (props.isPresent ? 'grayscale(0%)' : 'grayscale(100%)')};
   opacity: ${(props) => (props.isPresent ? '1' : '0.3')};
 `;
+// 뱃지 툴팁
+const BadgeTooltip = withStyles(() => ({
+  tooltip: {
+    backgroundColor: '#9FA9D8',
+    color: 'white',
+    maxWidth: 230,
+    fontSize: 15,
+    border: '1px solid #9FA9D8',
+  },
+}))(Tooltip);
 
 // 메세지
 const Message = styled.p`
@@ -205,6 +221,17 @@ const Footer = styled.footer`
   margin: 50px 0;
 `;
 
+// tooltip
+const ProfileTooltip = withStyles(() => ({
+  tooltip: {
+    backgroundColor: '#9FA9D8',
+    color: 'white',
+    maxWidth: 280,
+    fontSize: 11,
+    border: '1px solid #9FA9D8',
+  },
+}))(Tooltip);
+
 export default function MyPage() {
   const { nickname, email, img } = useSelector((state) => state.auth.user);
   // badgesOwned
@@ -218,6 +245,10 @@ export default function MyPage() {
   const [open, setOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
   const [mouseState, setMouseState] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const handleClick = () => {
+    setIsFlipped(!isFlipped);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -251,7 +282,6 @@ export default function MyPage() {
       badgeImages[kind][level][1] = true;
     });
   }
-
   function updateCurrentImg(imgNum) {
     setCurrentImage(imgNum);
   }
@@ -268,6 +298,7 @@ export default function MyPage() {
     dispatch(loadBadge())
       .unwrap()
       .then(() => {
+        console.log(badgeImages.burpee.beginner[1]);
         dispatch(loadBadgesOwned());
       })
       .catch((err) => {
@@ -304,26 +335,29 @@ export default function MyPage() {
           {profileImages.map((profileImage, index) => {
             if (index + 1 === Number(img)) {
               return (
-                <ProfileImage
-                  src={profileImage}
-                  alt="profile"
-                  onClick={handleClickOpen}
-                  onMouseOver={handleMouseOver}
-                  onMouseOut={handleMouseOut}
-                  isMouseOver={mouseState}
-                />
+                <ProfileTooltip
+                  title={
+                    <>
+                      <Typography color="inherit">
+                        프로필을 변경하려면 👆🏼 클릭해주세요!
+                      </Typography>
+                    </>
+                  }
+                >
+                  <ProfileImage
+                    src={profileImage}
+                    alt="profile"
+                    onClick={handleClickOpen}
+                    onMouseOver={handleMouseOver}
+                    onMouseOut={handleMouseOut}
+                    isMouseOver={mouseState}
+                  />
+                </ProfileTooltip>
               );
             }
             return <span> </span>;
           })}
           <div>
-            {/* <Button
-              variant="outlined"
-              color="primary"
-              onClick={handleClickOpen}
-            >
-              프로필 변경하기
-            </Button> */}
             <Dialog
               open={open}
               onClose={handleClose}
@@ -385,74 +419,208 @@ export default function MyPage() {
             <MyTable />
           </Record>
           <Title getMoreMT>내 뱃지</Title>
-          {badgeImages.homedongKing.best[1] === true ? (
-            <Badges isHomeDongKing>
-              <Badge isPresent src={badgeImages.homedongKing.best[0]} />
-            </Badges>
-          ) : (
-            <Badges>
+          <ReactCardFlip isFlipped={isFlipped} flipDirection="vertical">
+            <Badges onClick={handleClick}>
               <ExerciseKind>
                 <ExerciseImage src={squat} alt="badge" />
                 <BadgeContainer>
-                  <Badge
-                    isPresent={badgeImages.squat.beginner[1]}
-                    src={badgeImages.squat.beginner[0]}
-                    alt="badge"
-                  />
-                  <Badge
-                    isPresent={badgeImages.squat.intermediate[1]}
-                    src={badgeImages.squat.intermediate[0]}
-                    alt="badge"
-                  />
-                  <Badge
-                    isPresent={badgeImages.squat.advanced[1]}
-                    src={badgeImages.squat.advanced[0]}
-                    alt="badge"
-                  />
+                  <BadgeTooltip
+                    title={
+                      <div>
+                        <Typography color="inherit">잔근육(다리)</Typography>
+                        <span>
+                          {badgeImages.squat.beginner[1]
+                            ? '스쿼트 최고 기록이 10개 이상이면 획득할 수 있다.'
+                            : '더 운동하고 오세요.'}
+                        </span>
+                      </div>
+                    }
+                  >
+                    <Badge
+                      isPresent={badgeImages.squat.beginner[1]}
+                      src={badgeImages.squat.beginner[0]}
+                      alt="badge"
+                    />
+                  </BadgeTooltip>
+                  <BadgeTooltip
+                    title={
+                      <div>
+                        <Typography color="inherit">실전근육(다리)</Typography>
+                        <span>
+                          {badgeImages.squat.intermediate[1]
+                            ? '스쿼트 최고 기록이 20개 이상이면 획득할 수 있다.'
+                            : '더 운동하고 오세요.'}
+                        </span>
+                      </div>
+                    }
+                  >
+                    <Badge
+                      isPresent={badgeImages.squat.intermediate[1]}
+                      src={badgeImages.squat.intermediate[0]}
+                      alt="badge"
+                    />
+                  </BadgeTooltip>
+                  <BadgeTooltip
+                    title={
+                      <div>
+                        <Typography color="inherit">하체왕</Typography>
+                        <span>
+                          {badgeImages.squat.advanced[1]
+                            ? '스쿼트 최고 기록이 30개 이상이면 획득할 수 있다. 스쿼트를 마스터 한 자에게 주어진다.'
+                            : '더 운동하고 오세요.'}
+                        </span>
+                      </div>
+                    }
+                  >
+                    <Badge
+                      isPresent={badgeImages.squat.advanced[1]}
+                      src={badgeImages.squat.advanced[0]}
+                      alt="badge"
+                    />
+                  </BadgeTooltip>
                 </BadgeContainer>
               </ExerciseKind>
               <ExerciseKind>
                 <ExerciseImage src={burpee} alt="badge" />
                 <BadgeContainer>
-                  <Badge
-                    isPresent={badgeImages.burpee.beginner[1]}
-                    src={badgeImages.burpee.beginner[0]}
-                    alt="badge"
-                  />
-                  <Badge
-                    isPresent={badgeImages.burpee.intermediate[1]}
-                    src={badgeImages.burpee.intermediate[0]}
-                    alt="badge"
-                  />
-                  <Badge
-                    isPresent={badgeImages.burpee.advanced[1]}
-                    src={badgeImages.burpee.advanced[0]}
-                    alt="badge"
-                  />
+                  <BadgeTooltip
+                    title={
+                      <div>
+                        <Typography color="inherit">잔근육(코어)</Typography>
+                        <span>
+                          {badgeImages.burpee.beginner[1]
+                            ? '버피 최고 기록이 5개 이상이면 획득할 수 있다.'
+                            : '더 운동하고 오세요.'}
+                        </span>
+                      </div>
+                    }
+                  >
+                    <Badge
+                      isPresent={badgeImages.burpee.beginner[1]}
+                      src={badgeImages.burpee.beginner[0]}
+                      alt="badge"
+                    />
+                  </BadgeTooltip>
+                  <BadgeTooltip
+                    title={
+                      <div>
+                        <Typography color="inherit">실전근육(코어)</Typography>
+                        <span>
+                          {badgeImages.burpee.intermediate[1]
+                            ? '버피 최고 기록이 10개 이상이면 획득할 수 있다.'
+                            : '더 운동하고 오세요.'}
+                        </span>
+                      </div>
+                    }
+                  >
+                    <Badge
+                      isPresent={badgeImages.burpee.intermediate[1]}
+                      src={badgeImages.burpee.intermediate[0]}
+                      alt="badge"
+                    />
+                  </BadgeTooltip>
+                  <BadgeTooltip
+                    title={
+                      <div>
+                        <Typography color="inherit">코어왕</Typography>
+                        <span>
+                          {badgeImages.burpee.advanced[1]
+                            ? '버피 최고 기록이 15개 이상이면 획득할 수 있다. 버피를 마스터 한 자에게 주어진다.'
+                            : '더 운동하고 오세요.'}
+                        </span>
+                      </div>
+                    }
+                  >
+                    <Badge
+                      isPresent={badgeImages.burpee.advanced[1]}
+                      src={badgeImages.burpee.advanced[0]}
+                      alt="badge"
+                    />
+                  </BadgeTooltip>
                 </BadgeContainer>
               </ExerciseKind>
               <ExerciseKind>
                 <ExerciseImage src={pushUp} alt="badge" />
                 <BadgeContainer>
-                  <Badge
-                    isPresent={badgeImages.pushUp.beginner[1]}
-                    src={badgeImages.pushUp.beginner[0]}
-                    alt="badge"
-                  />
-                  <Badge
-                    isPresent={badgeImages.pushUp.intermediate[1]}
-                    src={badgeImages.pushUp.intermediate[0]}
-                    alt="badge"
-                  />
-                  <Badge
-                    isPresent={badgeImages.pushUp.advanced[1]}
-                    src={badgeImages.pushUp.advanced[0]}
-                    alt="badge"
-                  />
+                  <BadgeTooltip
+                    title={
+                      <div>
+                        <Typography color="inherit">잔근육(팔)</Typography>
+                        <span>
+                          {badgeImages.pushUp.beginner[1]
+                            ? '푸시업 최고 기록이 10개 이상이면 획득할 수 있다.'
+                            : '더 운동하고 오세요.'}
+                        </span>
+                      </div>
+                    }
+                  >
+                    <Badge
+                      isPresent={badgeImages.pushUp.beginner[1]}
+                      src={badgeImages.pushUp.beginner[0]}
+                      alt="badge"
+                    />
+                  </BadgeTooltip>
+                  <BadgeTooltip
+                    title={
+                      <div>
+                        <Typography color="inherit">실전근육(팔)</Typography>
+                        <span>
+                          {badgeImages.pushUp.intermediate[1]
+                            ? '푸시업 최고 기록이 15개 이상이면 획득할 수 있다.'
+                            : '더 운동하고 오세요.'}
+                        </span>
+                      </div>
+                    }
+                  >
+                    <Badge
+                      isPresent={badgeImages.pushUp.intermediate[1]}
+                      src={badgeImages.pushUp.intermediate[0]}
+                      alt="badge"
+                    />
+                  </BadgeTooltip>
+                  <BadgeTooltip
+                    title={
+                      <div>
+                        <Typography color="inherit">팔뚝왕</Typography>
+                        <span>
+                          {badgeImages.pushUp.advanced[1]
+                            ? '푸시업 최고 기록이 20개 이상이면 획득할 수 있다. 푸시업을 마스터 한 자에게 주어진다.'
+                            : '더 운동하고 오세요.'}
+                        </span>
+                      </div>
+                    }
+                  >
+                    <Badge
+                      isPresent={badgeImages.pushUp.advanced[1]}
+                      src={badgeImages.pushUp.advanced[0]}
+                      alt="badge"
+                    />
+                  </BadgeTooltip>
                 </BadgeContainer>
               </ExerciseKind>
             </Badges>
-          )}
+            <Badges isHomeDongKing onClick={handleClick}>
+              <BadgeTooltip
+                title={
+                  <div>
+                    <Typography color="inherit">홈동킹</Typography>
+                    <span>
+                      {badgeImages.homedongKing.best[1]
+                        ? '하체왕, 코어왕, 팔뚝왕을 모두 획득한 당신. 당신은 진정한 홈동킹입니다.✨'
+                        : '아직 훨씬 더 많은 운동이 필요합니다.'}
+                    </span>
+                  </div>
+                }
+              >
+                <Badge
+                  isPresent={badgeImages.homedongKing.best[1]}
+                  src={badgeImages.homedongKing.best[0]}
+                  alt="badge"
+                />
+              </BadgeTooltip>
+            </Badges>
+          </ReactCardFlip>
+
           <Title getMoreMB getMoreMT>
             1일 1동
           </Title>
