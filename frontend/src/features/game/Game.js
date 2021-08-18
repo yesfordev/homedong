@@ -38,6 +38,12 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import { Link } from 'react-router-dom';
+import {
+  IoMicSharp,
+  IoMicOffSharp,
+  IoVideocamOff,
+  IoVideocam,
+} from 'react-icons/io5';
 import axios1 from '../../common/api/http-common';
 import butimg from '../../assets/chatmsg.svg';
 import { quickStart } from '../home/homeSlice';
@@ -55,23 +61,21 @@ import RankModal from './RankModal';
 
 const OPENVIDU_SERVER_URL = 'https://i5a608.p.ssafy.io:8443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
-
+const Sbutton = styled.button`
+  background: linear-gradient(45deg, #ff859f 30%, #ffa87a 70%);
+  border-radius: 7px;
+  border: 0;
+  fontweight: bold;
+  color: white;
+  height: 40px;
+  padding: 0 30px;
+  box-shadow: 0 3px 5px 2px rgba(255, 105, 135, 0.3);
+  &:hover {
+    background: linear-gradient(45deg, #fe6b8b 30%, #ff8e53 70%);
+  }
+`;
 // 전체 컨테이너
 const useStyles = makeStyles({
-  button: {
-    background: 'linear-gradient(45deg, #ff859f 30%, #ffa87a 70%)',
-    borderRadius: 7,
-    border: 0,
-    fontWeight: 'bold',
-    color: 'white',
-    height: 40,
-    marginTop: '10px',
-    padding: '0 30px',
-    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-    '&:hover': {
-      background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 70%)',
-    },
-  },
   root: {
     minWidth: 50,
   },
@@ -114,18 +118,23 @@ const Logo = styled.img`
   width: 200px;
   height: 100px;
 `;
-
-const LeftList = styled.ul`
+const Buttons = styled.ul`
   display: flex;
   justify-content: center;
   align-items: center;
   & > * {
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+`;
+const LeftList = styled.ul`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  & > * {
     margin-right: 10px;
     margin-left: 10px;
-  }
-  > button {
-    font-size: 1rem;
-    cursor: pointer;
   }
 `;
 
@@ -167,6 +176,7 @@ class Game extends Component {
       leaved: false,
       // 게임끝날 때 true, x버튼 누를 때 false
       isRankModalOpen: true,
+      startbuttonstate: true,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -527,6 +537,7 @@ class Game extends Component {
     }, 3000);
     this.setState({
       started: true,
+      startbuttonstate: false,
     });
   }
 
@@ -860,39 +871,63 @@ class Game extends Component {
             <LeftList>
               <span>{this.state.headerText}</span>
             </LeftList>
+            <Buttons>
+              {this.state.audiostate ? (
+                <IoMicSharp
+                  color="#9FA9D8"
+                  size="24"
+                  onClick={() => {
+                    this.state.publisher.publishAudio(!this.state.audiostate);
+                    this.setState({ audiostate: !this.state.audiostate });
+                  }}
+                />
+              ) : (
+                <IoMicOffSharp
+                  color="#50468c"
+                  size="24"
+                  onClick={() => {
+                    this.state.publisher.publishAudio(!this.state.audiostate);
+                    this.setState({ audiostate: !this.state.audiostate });
+                  }}
+                />
+              )}
+              {this.state.videostate ? (
+                <IoVideocam
+                  color="#9FA9D8"
+                  size="24"
+                  onClick={() => {
+                    this.state.publisher.publishVideo(!this.state.videostate);
+                    this.setState({ videostate: !this.state.videostate });
+                  }}
+                />
+              ) : (
+                <IoVideocamOff
+                  color="#50468c"
+                  size="24"
+                  onClick={() => {
+                    this.state.publisher.publishVideo(!this.state.videostate);
+                    this.setState({ videostate: !this.state.videostate });
+                  }}
+                />
+              )}
 
-            <Button
-              onClick={() => {
-                this.state.publisher.publishAudio(!this.state.audiostate);
-                this.setState({ audiostate: !this.state.audiostate });
-              }}
-            >
-              {this.state.audiostate ? '음소거' : '소리재생'}
-            </Button>
-            <Button
-              onClick={() => {
-                this.state.publisher.publishVideo(!this.state.videostate);
-                this.setState({ videostate: !this.state.videostate });
-              }}
-            >
-              {this.state.videostate ? '카메라 끄기' : '카메라 켜기'}
-            </Button>
-            {this.state.ishost ? (
-              <Button
+              {this.state.ishost && this.state.startbuttonstate ? (
+                <Sbutton
+                  className={classes.button}
+                  type="primary"
+                  onClick={this.startButton}
+                >
+                  게임시작
+                </Sbutton>
+              ) : null}
+              <Sbutton
                 className={classes.button}
                 type="primary"
-                onClick={this.startButton}
+                onClick={this.leaveSession}
               >
-                게임시작
-              </Button>
-            ) : null}
-            <Button
-              className={classes.button}
-              type="primary"
-              onClick={this.leaveSession}
-            >
-              나가기
-            </Button>
+                나가기
+              </Sbutton>
+            </Buttons>
           </HeaderWrapper>
         </NavWrapper>
         <Button onClick={() => this.setState({ isRankModalOpen: true })}>
@@ -927,6 +962,7 @@ class Game extends Component {
                     timer: false,
                     arrow: false,
                     status: 'up',
+                    startbuttonstate: true,
                   });
                   axios1.post('/api/game/end', {
                     count: this.state.count,
