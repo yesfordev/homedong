@@ -48,7 +48,10 @@ import './UserVideo.css';
 import Messages from './components/Messages';
 import startsound from './sound/start.mp3';
 import gamemusic2 from './sound/gamemusic2.mp3';
+
+// features
 import UserVideoComponent from './UserVideoComponent';
+import RankModal from './RankModal';
 
 const OPENVIDU_SERVER_URL = 'https://i5a608.p.ssafy.io:8443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -162,6 +165,8 @@ class Game extends Component {
       headerText: '',
       arrow: false,
       leaved: false,
+      // 게임끝날 때 true, x버튼 누를 때 false
+      isRankModalOpen: true,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -183,6 +188,7 @@ class Game extends Component {
     this.sendmessageByClick = this.sendmessageByClick.bind(this);
     this.sendmessageByEnter = this.sendmessageByEnter.bind(this);
     this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
+    this.closeRankModal = this.closeRankModal.bind(this);
   }
 
   componentDidMount() {
@@ -822,6 +828,10 @@ class Game extends Component {
     });
   }
 
+  closeRankModal() {
+    this.setState({ isRankModalOpen: false });
+  }
+
   render() {
     const classes = useStyles;
     const renderTime = ({ remainingTime }) => {
@@ -885,6 +895,14 @@ class Game extends Component {
             </Button>
           </HeaderWrapper>
         </NavWrapper>
+        <Button onClick={() => this.setState({ isRankModalOpen: true })}>
+          랭킹
+        </Button>
+        <RankModal
+          rankInfo={this.state.audiostate}
+          isOpen={this.state.isRankModalOpen}
+          handleModalClose={this.closeRankModal}
+        />
         {this.state.arrow ? (
           <div
             className={`arrow-container ${this.state.check ? 'rotate' : ''}`}

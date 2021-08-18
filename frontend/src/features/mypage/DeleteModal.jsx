@@ -1,5 +1,5 @@
 // basic
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -21,7 +21,7 @@ import { toast } from 'react-toastify';
 import { deleteToken } from '../../common/api/JWT-common';
 import { deleteUser } from '../auth/authSlice';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = forwardRef(function Transition(props, ref) {
   return <Zoom in ref={ref} {...props} />;
 });
 
