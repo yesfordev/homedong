@@ -14,11 +14,7 @@
   --italic: 300;
   --primary: #9fa9d8;
 }
-ul li {
-  list-style-type: none;
-  float: left;
-  padding: 20px;
-}
+
 
 nav {
   height: 50px;
@@ -350,6 +346,7 @@ nav {
 
 /* CONTENT ISOPEN */
 .chatbox--active {
+  min-height: 60vh;
   transform: translateY(-40px);
   z-index: 123456;
   opacity: 1;
