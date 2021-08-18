@@ -30,7 +30,7 @@ public enum ErrorCode {
     ROOM_IS_NOT_AVAILABLE(409, "R001", "Room Status is Not Available"),
     ROOM_IS_FULL(409, "R001", "Room is Full"),
     ROOM_IS_ON_GAME(409, "R002", "Room is on Game"),
-    ROOM_IS_OFFLINE(409, "R003", "Room is OFF"),
+    ROOM_IS_OFFLINE(404, "R003", "Room is OFF"),
     ROOM_PASSWORD_NOT_MATCH(400, "R004", "Room password is Not Match")
     ;
 
