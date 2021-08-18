@@ -27,15 +27,28 @@
 /* eslint-disable react/no-access-state-in-setstate */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/sort-comp */
+import React, { Component, createRef, forwardRef } from 'react';
 import axios from 'axios';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Zoom from '@material-ui/core/Zoom';
+import { CgClose } from 'react-icons/cg';
 import { OpenVidu } from 'openvidu-browser';
-import React, { Component, createRef } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Button, makeStyles } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import { Link } from 'react-router-dom';
 import {
@@ -57,7 +70,6 @@ import gamemusic2 from './sound/gamemusic2.mp3';
 
 // features
 import UserVideoComponent from './UserVideoComponent';
-import RankModal from './RankModal';
 
 const OPENVIDU_SERVER_URL = 'https://i5a608.p.ssafy.io:8443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -138,6 +150,65 @@ const LeftList = styled.ul`
   }
 `;
 
+// modal
+const RankDialog = styled(Dialog)`
+  opacity: 0.97;
+  padding: 0 50px 0 100px;
+  & .MuiPaper-rounded {
+    border-radius: 15px;
+  }
+`;
+
+const RankDialogTitle = styled(DialogTitle)`
+  display: flex;
+  justify-content: center;
+  background-color: rgba(106, 96, 169, 0.5);
+  padding-bottom: 0;
+
+  & > .MuiTypography-root {
+    display: flex;
+    align-items: center;
+  }
+`;
+
+const Title = styled.p`
+  font-weight: bold;
+  font-size: 2rem;
+  color: white;
+`;
+
+const CancelButton = styled(CgClose)`
+  cursor: pointer;
+  color: white;
+  justify-self: flex-end;
+`;
+
+const RankDialogContent = styled(DialogContent)`
+  display: flex;
+  color: white;
+  flex-direction: column;
+  background-color: rgba(106, 96, 169, 0.5);
+`;
+
+const RankDialogContentText = styled(DialogContentText)``;
+
+const RankDialogActions = styled(DialogActions)`
+  flex-direction: row;
+`;
+
+const RankRecordContainer = styled(Table)`
+  color: white;
+  display: flex;
+`;
+
+const CustomTableCell = styled(TableCell)`
+  font-size: 1.2rem;
+`;
+
+const Transition = forwardRef(function Transition(props, ref) {
+  return <Zoom in ref={ref} {...props} />;
+});
+
 const music = new Audio(gamemusic2);
 class Game extends Component {
   constructor(props) {
@@ -174,9 +245,9 @@ class Game extends Component {
       headerText: '',
       arrow: false,
       leaved: false,
-      // 게임끝날 때 true, x버튼 누를 때 false
-      isRankModalOpen: true,
+      isRankModalOpen: false,
       startbuttonstate: true,
+      finalRank: [],
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -933,11 +1004,55 @@ class Game extends Component {
         <Button onClick={() => this.setState({ isRankModalOpen: true })}>
           랭킹
         </Button>
-        <RankModal
-          rankInfo={this.state.rankdata}
-          isOpen={this.state.isRankModalOpen}
-          handleModalClose={this.closeRankModal}
-        />
+        <RankDialog
+          fullWidth
+          open={this.state.isRankModalOpen}
+          onClose={() => this.closeRankModal()}
+          TransitionComponent={Transition}
+          aria-labelledby="form-dialog-title"
+        >
+          <RankDialogTitle c id="form-dialog-title">
+            <Title>랭킹</Title>
+          </RankDialogTitle>
+          <RankDialogContent>
+            <RankDialogContentText>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <CustomTableCell align="center"> 순위 </CustomTableCell>
+                      <CustomTableCell align="center"> 닉네임 </CustomTableCell>
+                      <CustomTableCell align="center"> 개수 </CustomTableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {this.state.finalRank.map((item, index) => {
+                      return (
+                        <TableRow key={index}>
+                          <TableCell component="th" scope="row" align="center">
+                            {index + 1 === 1 && '🥇'}
+                            {index + 1 === 2 && '🥇'}
+                            {index + 1 === 3 && '🥉'}
+                            {index + 1 >= 4 && index + 1}
+                          </TableCell>
+                          <TableCell align="center">{item.nickname}</TableCell>
+                          <TableCell align="center">{item.count}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </RankDialogContentText>
+            <RankDialogActions>
+              <CancelButton
+                onClick={() => {
+                  this.closeRankModal();
+                }}
+              />
+            </RankDialogActions>
+          </RankDialogContent>
+        </RankDialog>
         {this.state.arrow ? (
           <div
             className={`arrow-container ${this.state.check ? 'rotate' : ''}`}
@@ -955,7 +1070,9 @@ class Game extends Component {
               colors={[['#004777', 0.33], ['#F7B801', 0.33], ['#A30000']]}
               onComplete={() => {
                 setTimeout(() => {
+                  console.log(this.state.rankdata);
                   this.setState({
+                    finalRank: [...this.state.rankdata],
                     ranking: new Map(),
                     sortedrank: new Map(),
                     rankdata: [],
@@ -963,6 +1080,7 @@ class Game extends Component {
                     arrow: false,
                     status: 'up',
                     startbuttonstate: true,
+                    isRankModalOpen: true,
                   });
                   axios1.post('/api/game/end', {
                     count: this.state.count,
@@ -1135,3 +1253,8 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
+
+//                   // return ( // <Order>{index + 1}위</Order>
+// <Nickname>닉네임:{item.nickname}</Nickname>
+// <Count>갯수:{item.count}</Count>
+// );
