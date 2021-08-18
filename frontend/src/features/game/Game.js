@@ -221,6 +221,8 @@ class Game extends Component {
           this.setState({ headerText: roomId + '/팔굽혀펴기' });
           break;
       }
+      console.log(`teachablemachinestart${this.state.gametype}`);
+      this.setmodel();
       this.joinSession();
     }, 500);
   }
@@ -582,13 +584,11 @@ class Game extends Component {
       });
   }
 
-  // 티처블 머신
-  async init() {
-    console.log(`teachablemachinestart${this.state.gametype}`);
+  async setmodel() {
     switch (this.state.gametype) {
       case 2: // 푸쉬업
         this.setState({
-          URL: 'https://teachablemachine.withgoogle.com/models/cIjn1XveJ/',
+          URL: 'https://teachablemachine.withgoogle.com/models/2XrVxIc_1/',
         });
         break;
       case 3: // 버피
@@ -598,7 +598,7 @@ class Game extends Component {
         break;
       case 1: // 스쿼트
         this.setState({
-          URL: 'https://teachablemachine.withgoogle.com/models/y1scUcaWN/',
+          URL: 'https://teachablemachine.withgoogle.com/models/JCxTWXNy4/',
         });
         break;
     }
@@ -610,6 +610,10 @@ class Game extends Component {
     this.setState({
       model: await tmPose.load(modelURL, metadataURL),
     });
+  }
+
+  // 티처블 머신
+  async init() {
     // Convenience function to setup a webcam
     const size = 200;
     const flip = true; // whether to flip the webcam
@@ -698,7 +702,7 @@ class Game extends Component {
           });
       }
       this.setState({ status: 'up' });
-    } else if (prediction[2].probability.toFixed(2) > 0.95) {
+    } else if (prediction[1].probability.toFixed(2) > 0.95) {
       this.setState({ status: 'down' });
       this.setState({ check: true });
     }
