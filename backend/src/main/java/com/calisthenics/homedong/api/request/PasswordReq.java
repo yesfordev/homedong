@@ -19,7 +19,6 @@ public class PasswordReq {
 
     @ApiModelProperty(name = "현재 유저 password", example = "yesyes")
     @NotEmpty(message = "password may not be empty")
-    @Size(min = 3, max = 100)
     private String password;
 
 }

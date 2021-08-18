@@ -18,6 +18,6 @@ public class ChangeNicknameReq {
 
     @ApiModelProperty(name = "변경할 유저 nickname", example = "홈동짱")
     @NotNull(message = "changePassword may not be empty")
-    @Size(min = 2, max = 10)
+    @Size(min = 1, max = 6)
     private String changeNickname;
 }
