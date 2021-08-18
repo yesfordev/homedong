@@ -47,8 +47,8 @@ function handleData(data, rows) {
   if (data) {
     Array.from(data).forEach((record) => {
       const { bestRecord, ranking } = record;
-      bestRecords.push(bestRecord);
-      rankings.push(ranking);
+      bestRecords.push(`${bestRecord} 개`);
+      rankings.push(`${ranking} 위`);
     });
     rows.push(createData(names[0], ...bestRecords));
     rows.push(createData(names[1], ...rankings));

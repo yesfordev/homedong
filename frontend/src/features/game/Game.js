@@ -933,7 +933,7 @@ class Game extends Component {
           <div className="timer-wrapper">
             <CountdownCircleTimer
               isPlaying
-              duration={20}
+              duration={30}
               colors={[['#004777', 0.33], ['#F7B801', 0.33], ['#A30000']]}
               onComplete={() => {
                 setTimeout(() => {
