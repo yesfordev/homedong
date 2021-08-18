@@ -899,7 +899,7 @@ class Game extends Component {
           랭킹
         </Button>
         <RankModal
-          rankInfo={this.state.audiostate}
+          rankInfo={this.state.rankdata}
           isOpen={this.state.isRankModalOpen}
           handleModalClose={this.closeRankModal}
         />
