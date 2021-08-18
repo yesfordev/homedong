@@ -16,9 +16,10 @@ import profileImages from '../../assets/profile/profileImages';
 
 const useStyles = makeStyles({
   profile: {
-    border: '0.5px solid',
-    width: '55px',
-    height: '55px',
+    border: '0.5px solid white',
+    background: 'linear-gradient(45deg, #ffa1b5 30%, #ffa87a 80%)',
+    width: '50px',
+    height: '50px',
   },
 });
 
