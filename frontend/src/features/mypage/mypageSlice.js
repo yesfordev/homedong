@@ -77,9 +77,10 @@ const mypageSlice = createSlice({
       state.badgeInfo = {};
       state.bestRecordInfo = {};
       state.dailyInfo = {};
+      state.badgesOwned = [];
     },
     loadBadgesOwned: (state) => {
-      const gameTypes = ['sitUp', 'pushUp', 'squat'];
+      const gameTypes = ['squat', 'pushUp', 'burpee'];
       let gameType = '';
       const { badgeInfo } = state;
       Object.entries(badgeInfo).forEach(([exercise, detailInfo]) => {
@@ -125,6 +126,10 @@ const mypageSlice = createSlice({
   },
 });
 
-export const { resetMyPageInfo, loadBadgesOwned, saveNewBadges } =
-  mypageSlice.actions;
+export const {
+  resetMyPageInfo,
+  loadBadgesOwned,
+  saveNewBadges,
+  resetBadgesInfo,
+} = mypageSlice.actions;
 export default mypageSlice.reducer;

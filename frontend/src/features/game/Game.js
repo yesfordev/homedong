@@ -68,12 +68,17 @@ import './UserVideo.css';
 import Messages from './components/Messages';
 import startsound from './sound/start.mp3';
 import gamemusic2 from './sound/gamemusic2.mp3';
+import badgeImages from '../../assets/badges/badgeImages';
 
 // features
 import UserVideoComponent from './UserVideoComponent';
 
 // actions
-import { saveNewBadges, loadBadgesOwned } from '../mypage/mypageSlice';
+import {
+  saveNewBadges,
+  loadBadgesOwned,
+  resetMyPageInfo,
+} from '../mypage/mypageSlice';
 
 const OPENVIDU_SERVER_URL = 'https://i5a608.p.ssafy.io:8443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -274,9 +279,11 @@ class Game extends Component {
     this.sendmessageByEnter = this.sendmessageByEnter.bind(this);
     this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
     this.closeRankModal = this.closeRankModal.bind(this);
+    this.drawBadge = this.drawBadge.bind(this);
   }
 
   componentDidMount() {
+    this.props.doResetMyPageInfo();
     music.currentTime = 0;
     setTimeout(() => {
       const { home } = this.props;
@@ -918,6 +925,16 @@ class Game extends Component {
     this.setState({ isRankModalOpen: false });
   }
 
+  // badge 가지고 있는 것 추출하는 함수
+  drawBadge() {
+    const { mypage } = this.props;
+    const { badgesOwned } = mypage;
+    badgesOwned.forEach((badgeOwned) => {
+      const [kind, level] = badgeOwned;
+      badgeImages[kind][level][1] = true;
+    });
+  }
+
   render() {
     const classes = useStyles;
     const renderTime = ({ remainingTime }) => {
@@ -935,6 +952,8 @@ class Game extends Component {
     };
     const messages = this.state.messages;
     const bull = <span className={classes.bullet}>•</span>;
+    const { mypage } = this.props;
+    const { badgesOwned } = mypage;
 
     return (
       <Wrapper>
@@ -1046,7 +1065,12 @@ class Game extends Component {
                 </TableBody>
               </Table>
             </TableContainer>
-
+            <div>
+              {badgesOwned.map((kind, level) => {
+                console.log(kind, level);
+                // return <img src={badgeImages[kind][level][0]} />;
+              })}
+            </div>
             <RankDialogActions>
               <CancelButton
                 onClick={() => {
@@ -1252,6 +1276,7 @@ class Game extends Component {
 const mapStateToProps = (state) => ({
   // homeSlice
   home: state.home,
+  mypage: state.mypage,
 });
 
 // slice에 있는 actions(방찾기, 빠른 시작등등)을 사용하고 싶을 때
@@ -1262,6 +1287,7 @@ const mapDispatchToProps = (dispatch) => {
     doQuickStart: (type) => dispatch(quickStart(type)),
     doSaveNewBadges: (resData) => dispatch(saveNewBadges(resData)),
     doLoadBadgesOwned: () => dispatch(loadBadgesOwned()),
+    doResetMyPageInfo: () => dispatch(resetMyPageInfo()),
   };
 };
 

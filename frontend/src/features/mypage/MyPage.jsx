@@ -248,10 +248,7 @@ export default function MyPage() {
   function drawBadge() {
     badgesOwned.forEach((badgeOwned) => {
       const [kind, level] = badgeOwned;
-      // 임시로 뱃지 다보일 수 있게 해줌
-      if (kind !== 'sitUp' && kind !== 'homedongKing') {
-        badgeImages[kind][level][1] = true;
-      }
+      badgeImages[kind][level][1] = true;
     });
   }
 
