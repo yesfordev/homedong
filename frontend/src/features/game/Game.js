@@ -33,9 +33,6 @@ import React, { Component, createRef } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Button, makeStyles } from '@material-ui/core';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import { Link } from 'react-router-dom';
 import {
@@ -172,6 +169,7 @@ class Game extends Component {
       arrow: false,
       leaved: false,
       startbuttonstate: true,
+      isFliped: true,
     };
 
     this.joinSession = this.joinSession.bind(this);
