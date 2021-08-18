@@ -33,7 +33,7 @@ function Calender() {
   }
   function content({ date, view }) {
     return Array.from(dailyRecordInfo).map(
-      ([y, m, d, squatCnt, burpeeCnt, pushupCnt]) =>
+      ([y, m, d, squatCnt, pushupCnt, burpeeCnt]) =>
         view === 'month' &&
         date.getFullYear() === Number(y) &&
         date.getMonth() === Number(m) - 1 &&
