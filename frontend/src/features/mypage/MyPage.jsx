@@ -155,6 +155,7 @@ const Badges = styled.section`
   justify-content: ${(props) => (props.isHomeDongKing ? 'center' : '')};
   flex-direction: row;
   margin-bottom: 40px;
+  cursor: pointer;
   
 
   @media (max-width: 767px) {
@@ -195,11 +196,11 @@ const Badge = styled.img`
 // 뱃지 툴팁
 const BadgeTooltip = withStyles(() => ({
   tooltip: {
-    backgroundColor: '#f5f5f9',
-    color: 'rgba(0, 0, 0, 0.87)',
+    backgroundColor: '#9FA9D8',
+    color: 'white',
     maxWidth: 220,
-    fontSize: 11,
-    border: '1px solid #dadde9',
+    fontSize: 14,
+    border: '1px solid #9FA9D8',
   },
 }))(Tooltip);
 
@@ -278,13 +279,9 @@ export default function MyPage() {
   function drawBadge() {
     badgesOwned.forEach((badgeOwned) => {
       const [kind, level] = badgeOwned;
-      // 임시로 뱃지 다보일 수 있게 해줌
-      if (kind !== 'sitUp' && kind !== 'homedongKing') {
-        badgeImages[kind][level][1] = true;
-      }
+      badgeImages[kind][level][1] = true;
     });
   }
-
   function updateCurrentImg(imgNum) {
     setCurrentImage(imgNum);
   }
@@ -430,10 +427,10 @@ export default function MyPage() {
                   <BadgeTooltip
                     title={
                       <div>
-                        <Typography color="inherit">스쿼트 브론즈</Typography>
+                        <Typography color="inherit">잔근육(다리)</Typography>
                         <span>
                           {badgeImages.squat.beginner[1]
-                            ? '게임에서 스쿼트 10개를 성공하셨습니다.'
+                            ? '스쿼트 최고 기록이 10개 이상이면 획득할 수 있다.'
                             : '미획득'}
                         </span>
                       </div>
@@ -448,10 +445,10 @@ export default function MyPage() {
                   <BadgeTooltip
                     title={
                       <div>
-                        <Typography color="inherit">스쿼트 실버</Typography>
+                        <Typography color="inherit">실전근육(다리)</Typography>
                         <span>
                           {badgeImages.squat.intermediate[1]
-                            ? '게임에서 스쿼트 20개를 성공하셨습니다.'
+                            ? '스쿼트 최고 기록이 20개 이상이면 획득할 수 있다.'
                             : '미획득'}
                         </span>
                       </div>
@@ -466,10 +463,10 @@ export default function MyPage() {
                   <BadgeTooltip
                     title={
                       <div>
-                        <Typography color="inherit">스쿼트 골드</Typography>
+                        <Typography color="inherit">하체왕</Typography>
                         <span>
                           {badgeImages.squat.advanced[1]
-                            ? '게임에서 스쿼트 30개를 성공하셨습니다.'
+                            ? '스쿼트 최고 기록이 30개 이상이면 획득할 수 있다. 스쿼트를 마스터 한 자에게 주어진다.'
                             : '미획득'}
                         </span>
                       </div>
@@ -489,10 +486,10 @@ export default function MyPage() {
                   <BadgeTooltip
                     title={
                       <div>
-                        <Typography color="inherit">버피 브론즈</Typography>
+                        <Typography color="inherit">잔근육(코어)</Typography>
                         <span>
                           {badgeImages.burpee.beginner[1]
-                            ? '게임에서 버피 5개를 성공하셨습니다.'
+                            ? '버피 최고 기록이 5개 이상이면 획득할 수 있다.'
                             : '미획득'}
                         </span>
                       </div>
@@ -507,10 +504,10 @@ export default function MyPage() {
                   <BadgeTooltip
                     title={
                       <div>
-                        <Typography color="inherit">버피 실버</Typography>
+                        <Typography color="inherit">실전근육(코어)</Typography>
                         <span>
                           {badgeImages.burpee.intermediate[1]
-                            ? '게임에서 버피 10개를 성공하셨습니다.'
+                            ? '버피 최고 기록이 10개 이상이면 획득할 수 있다.'
                             : '미획득'}
                         </span>
                       </div>
@@ -525,10 +522,10 @@ export default function MyPage() {
                   <BadgeTooltip
                     title={
                       <div>
-                        <Typography color="inherit">버피 골드</Typography>
+                        <Typography color="inherit">코어왕</Typography>
                         <span>
                           {badgeImages.burpee.advanced[1]
-                            ? '게임에서 버피 15개를 성공하셨습니다.'
+                            ? '버피 최고 기록이 15개 이상이면 획득할 수 있다. 버피를 마스터 한 자에게 주어진다.'
                             : '미획득'}
                         </span>
                       </div>
@@ -548,10 +545,10 @@ export default function MyPage() {
                   <BadgeTooltip
                     title={
                       <div>
-                        <Typography color="inherit">푸시업 브론즈</Typography>
+                        <Typography color="inherit">잔근육(팔)</Typography>
                         <span>
                           {badgeImages.pushUp.beginner[1]
-                            ? '게임에서 푸시업 10개를 성공하셨습니다.'
+                            ? '푸시업 최고 기록이 10개 이상이면 획득할 수 있다.'
                             : '미획득'}
                         </span>
                       </div>
@@ -566,10 +563,10 @@ export default function MyPage() {
                   <BadgeTooltip
                     title={
                       <div>
-                        <Typography color="inherit">푸시업 실버</Typography>
+                        <Typography color="inherit">실전근육(팔)</Typography>
                         <span>
                           {badgeImages.pushUp.intermediate[1]
-                            ? '게임에서 푸시업 15개를 성공하셨습니다.'
+                            ? '푸시업 최고 기록이 15개 이상이면 획득할 수 있다.'
                             : '미획득'}
                         </span>
                       </div>
@@ -584,10 +581,10 @@ export default function MyPage() {
                   <BadgeTooltip
                     title={
                       <div>
-                        <Typography color="inherit">푸시업 골드</Typography>
+                        <Typography color="inherit">팔뚝왕</Typography>
                         <span>
                           {badgeImages.pushUp.advanced[1]
-                            ? '게임에서 푸시업 20개를 성공하셨습니다.'
+                            ? '푸시업 최고 기록이 20개 이상이면 획득할 수 있다. 푸시업을 마스터 한 자에게 주어진다.'
                             : '미획득'}
                         </span>
                       </div>
@@ -603,11 +600,24 @@ export default function MyPage() {
               </ExerciseKind>
             </Badges>
             <Badges isHomeDongKing onClick={handleClick}>
-              <Badge
-                isPresent={badgeImages.homedongKing.best[1]}
-                src={badgeImages.homedongKing.best[0]}
-                alt="badge"
-              />
+              <BadgeTooltip
+                title={
+                  <div>
+                    <Typography color="inherit">팔뚝왕</Typography>
+                    <span>
+                      {badgeImages.homedongKing
+                        ? '하체왕, 코어왕, 팔뚝왕을 모두 획득한 당신. 당신은 진정한 홈동킹입니다.✨'
+                        : '미획득'}
+                    </span>
+                  </div>
+                }
+              >
+                <Badge
+                  isPresent={badgeImages.homedongKing.best[1]}
+                  src={badgeImages.homedongKing.best[0]}
+                  alt="badge"
+                />
+              </BadgeTooltip>
             </Badges>
           </ReactCardFlip>
 
