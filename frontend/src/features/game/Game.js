@@ -194,6 +194,9 @@ class Game extends Component {
   }
 
   componentDidMount() {
+    window.addEventListener('beforeunload', () => {
+      this.componentWillUnmount();
+    });
     music.currentTime = 0;
     setTimeout(() => {
       const { home } = this.props;
