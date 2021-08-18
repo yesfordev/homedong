@@ -41,7 +41,6 @@ const SliderWrapper = styled.div`
   display: flex;
   position: absolute;
   margin-top: 10%;
-  left: 85%;
 `;
 
 class Tutorial extends Component {
@@ -85,11 +84,10 @@ class Tutorial extends Component {
             <TutorialLinks />
             <SliderWrapper>
               <SimpleImageSlider
-                width={1280}
-                height={720}
+                width={925}
+                height={520}
                 images={squatimages}
                 style={{
-                  position: 'absolute',
                   marginTop: '5%',
                   right: '10%',
                 }}
@@ -103,11 +101,10 @@ class Tutorial extends Component {
             <TutorialLinks />
             <SliderWrapper>
               <SimpleImageSlider
-                width={1280}
-                height={720}
+                width={925}
+                height={520}
                 images={burpeeimages}
                 style={{
-                  position: 'absolute',
                   marginTop: '5%',
                   right: '10%',
                 }}
@@ -121,11 +118,10 @@ class Tutorial extends Component {
             <TutorialLinks />
             <SliderWrapper>
               <SimpleImageSlider
-                width={1280}
-                height={720}
+                width={925}
+                height={520}
                 images={pushupimages}
                 style={{
-                  position: 'absolute',
                   marginTop: '5%',
                   right: '10%',
                 }}
