@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -7,13 +7,19 @@ import { Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 // image
-import defaultImage from '../../assets/default.png';
+// import defaultImage from '../../assets/default.png';
 import badgeImages from '../../assets/badges/badgeImages';
 import burpee from '../../assets/burpee.svg';
 import pushUp from '../../assets/pushup.svg';
 import squat from '../../assets/squat.svg';
+import profileImages from '../../assets/profile/profileImages';
 
 // component
 import Navbar from '../../common/navbar/Navbar';
@@ -22,8 +28,14 @@ import Calendar from './Calendar';
 import DeleteModal from './DeleteModal';
 
 // action
-import { loadBadge, loadBestRecord, loadBadgesOwned } from './mypageSlice';
+import {
+  loadBadge,
+  loadBestRecord,
+  loadBadgesOwned,
+  changeUserProfile,
+} from './mypageSlice';
 import { deleteToken } from '../../common/api/JWT-common';
+import { loadUser } from '../auth/authSlice';
 
 // 전체 컨테이너
 const Wrapper = styled.div`
@@ -35,19 +47,45 @@ const Wrapper = styled.div`
 // 사이드바
 const Sidebar = styled.aside`
   display: flex;
+  flex: 1;
   justify-content: center;
-  max-width: 20%;
+  margin-left: 5%;
 `;
 
 const ProfileImage = styled.img`
-  width: 70%;
-  height: 15%;
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(45deg, #ffa1b5 30%, #ffa87a 80%);
   border-radius: 50%;
+  border: ${(props) => (!props.isMouseOver ? '1px solid' : '5px solid')};
+  cursor: pointer;
+  border-color: ${(props) => (!props.isMouseOver ? 'white' : 'white')};
+`;
+
+// 선택할 수 있는 프로필 image 뿌려주기
+const VariousImage = styled.img`
+  width: 95px;
+  margin: 5px;
+  cursor: pointer;
+  border: 2px solid;
+  border-radius: 50%;
+  border-color: #f5e4e7;
+`;
+
+const SelectedImage = styled.img`
+  width: 95px;
+  margin: 5px;
+  cursor: pointer;
+  border: 4px solid;
+  border-radius: 50%;
+  border-color: #ff859f;
+  background: linear-gradient(45deg, #ffa1b5 30%, #ffa87a 80%);
 `;
 
 // 메인
 const Main = styled.main`
-  width: 70%;
+  flex: 5;
+  display: flex;
 `;
 
 // 닉네임 이메일
@@ -59,13 +97,14 @@ const Title = styled.div`
   margin-bottom: ${(props) => (props.getMoreMB ? '40px' : '20px')};
   margin-top: ${(props) => (props.getMoreMT ? '40px' : '0px')};
   font-weight: bold;
-  font-size: 3rem;
+  font-size: 1.5rem;
   border-bottom: 5px solid rgba(251, 209, 75, 0.5);
 `;
 
 const CustomMain = styled(Main)`
   display: flex;
   flex-direction: column;
+  margin-right: 10%;
 `;
 
 // 내용
@@ -79,6 +118,19 @@ const Content = styled.p`
 const Nickname = styled.div`
   > button {
     margin-left: 30px;
+  }
+`;
+
+const CommonButton = styled(Button)`
+  width: 100%;
+  border-radius: 6px;
+  padding: 0.4em 1em;
+  background: #9fa9d8;
+  color: white;
+
+  &:hover {
+    background: #8090d8;
+    color: white;
   }
 `;
 
@@ -154,7 +206,7 @@ const Footer = styled.footer`
 `;
 
 export default function MyPage() {
-  const { nickname, email } = useSelector((state) => state.auth.user);
+  const { nickname, email, img } = useSelector((state) => state.auth.user);
   // badgesOwned
   const { consecutiveRecordInfo, badgesOwned } = useSelector(
     (state) => state.mypage
@@ -163,6 +215,34 @@ export default function MyPage() {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const [open, setOpen] = useState(false);
+  const [currentImage, setCurrentImage] = useState(0);
+  const [mouseState, setMouseState] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+    setCurrentImage(Number(img));
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    if (Number(img) === currentImage) return;
+    dispatch(changeUserProfile(currentImage.toString()))
+      .then(() => {
+        dispatch(loadUser());
+        toast.success('🎨 프로필 사진이 변경되었습니다!');
+      })
+      .catch((err) => {
+        if (err.status === 401) {
+          toast.error('😥 로그인을 다시 해주세요!');
+          deleteToken();
+          history.push('/login');
+        } else if (err.status === 500) {
+          history.push('/error');
+        }
+      });
+  };
+
   // badge 가지고 있는 것 추출하는 함수
   // 각 경기에 대한 뱃지 이미지의 색을 살려준다.
   function drawBadge() {
@@ -170,6 +250,18 @@ export default function MyPage() {
       const [kind, level] = badgeOwned;
       badgeImages[kind][level][1] = true;
     });
+  }
+
+  function updateCurrentImg(imgNum) {
+    setCurrentImage(imgNum);
+  }
+
+  function handleMouseOver() {
+    setMouseState(true);
+  }
+
+  function handleMouseOut() {
+    setMouseState(false);
   }
 
   useEffect(() => {
@@ -209,7 +301,61 @@ export default function MyPage() {
       <Navbar />
       <Wrapper>
         <Sidebar>
-          <ProfileImage src={defaultImage} alt="profile" />
+          {profileImages.map((profileImage, index) => {
+            if (index + 1 === Number(img)) {
+              return (
+                <ProfileImage
+                  src={profileImage}
+                  alt="profile"
+                  onClick={handleClickOpen}
+                  onMouseOver={handleMouseOver}
+                  onMouseOut={handleMouseOut}
+                  isMouseOver={mouseState}
+                />
+              );
+            }
+            return <span> </span>;
+          })}
+          <div>
+            {/* <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleClickOpen}
+            >
+              프로필 변경하기
+            </Button> */}
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                변경할 프로필을 골라주세요
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {profileImages.map((profileImage, index) => {
+                    if (index + 1 === currentImage) {
+                      return <SelectedImage alt="profile" src={profileImage} />;
+                    }
+                    return (
+                      <VariousImage
+                        alt="profile"
+                        src={profileImage}
+                        onClick={() => updateCurrentImg(index + 1)}
+                      />
+                    );
+                  })}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary" autoFocus>
+                  변경하기
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
         </Sidebar>
         <CustomMain>
           <BasicInfo>
@@ -218,14 +364,14 @@ export default function MyPage() {
               <ContentContainer>
                 <Content>{nickname}</Content>
                 <Link to="/checkpassword">
-                  <Button
+                  <CommonButton
                     variant="contained"
                     color="primary"
                     size="small"
                     startIcon={<EditIcon />}
                   >
                     회원정보수정
-                  </Button>
+                  </CommonButton>
                 </Link>
               </ContentContainer>
             </Nickname>

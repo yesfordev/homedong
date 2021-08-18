@@ -1,18 +1,32 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Avatar } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { makeStyles } from '@material-ui/core/styles';
 import { resetUser, logout } from '../../features/auth/authSlice';
-import { resetMyPageInfo } from '../../features/mypage/mypageSlice';
-import defaultImage from '../../assets/default.png';
 import { deleteToken } from '../api/JWT-common';
+import { resetMyPageInfo } from '../../features/mypage/mypageSlice';
+import profileImages from '../../assets/profile/profileImages';
+
+// import defaultImage from '../../assets/default.png';
+
+const useStyles = makeStyles({
+  profile: {
+    border: '0.5px solid white',
+    background: 'linear-gradient(45deg, #ffa1b5 30%, #ffa87a 80%)',
+    width: '50px',
+    height: '50px',
+  },
+});
 
 export default function SimpleMenu() {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const { img } = useSelector((state) => state.auth.user);
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -47,6 +61,8 @@ export default function SimpleMenu() {
       });
   };
 
+  const classes = useStyles();
+
   return (
     <div>
       <Button
@@ -54,7 +70,19 @@ export default function SimpleMenu() {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <Avatar alt="default" src={defaultImage} />
+        {profileImages.map((profileImage, index) => {
+          if (index + 1 === Number(img)) {
+            return (
+              <Avatar
+                className={classes.profile}
+                alt="profile"
+                src={profileImage}
+              />
+            );
+          }
+          return <span> </span>;
+        })}
+        {/* <Avatar alt="default" src={defaultImage} /> */}
       </Button>
       <Menu
         disableScrollLock

@@ -58,7 +58,7 @@ export default function EmailCheckedPlease() {
       <br />
       <div>
         <CommonButton mauve="true">
-          <Link to="/login">홈으로</Link>
+          <Link to="/login">로그인 하러 가기</Link>
         </CommonButton>
       </div>
     </Wrapper>

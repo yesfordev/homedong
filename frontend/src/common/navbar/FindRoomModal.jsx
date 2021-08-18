@@ -90,6 +90,9 @@ export default function FindRoomModal({ isOpen, handleModalClose }) {
     };
     dispatch(searchRoom(data))
       .unwrap()
+      .then(() => {
+        history.push('/game');
+      })
       .catch((err) => {
         if (err.status === 400) {
           toast.error('😥 입력된 정보를 다시 확인해주세요');
@@ -99,14 +102,12 @@ export default function FindRoomModal({ isOpen, handleModalClose }) {
           history.push('/login');
         } else if (err.status === 409) {
           toast.error('😥 방 인원이 초과 되었습니다');
+          history.push('/');
         } else if (err.status === 404) {
           toast.error('😥 방 정보가 없습니다.');
         } else if (err.status === 500) {
           history.push('/error');
         }
-      })
-      .then(() => {
-        history.push('/game');
       });
     setRoomId('');
     setPassword('');
