@@ -149,7 +149,9 @@ export default function SignUp() {
       })
       .catch((err) => {
         if (err.status === 400) {
-          toast.error('😥 입력하신 이메일을 다시 확인해주세요');
+          toast.error(
+            "😥 입력하신 정보를 한번 더 확인해주세요 (닉네임에는 'ㅣ' 사용이 불가합니다)"
+          );
         } else if (err.status === 409) {
           toast.error('😥 중복된 이메일이 존재합니다.');
         } else if (err.status === 500) {
