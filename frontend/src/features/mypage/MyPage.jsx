@@ -447,7 +447,7 @@ export default function MyPage() {
                         <span>
                           {badgeImages.squat.beginner[1]
                             ? '스쿼트 최고 기록이 10개 이상이면 획득할 수 있다.'
-                            : '더 운동하고 오세요.'}
+                            : '더 운동하고 오세요!'}
                         </span>
                       </div>
                     }
@@ -465,7 +465,7 @@ export default function MyPage() {
                         <span>
                           {badgeImages.squat.intermediate[1]
                             ? '스쿼트 최고 기록이 20개 이상이면 획득할 수 있다.'
-                            : '더 운동하고 오세요.'}
+                            : '더 운동하고 오세요!'}
                         </span>
                       </div>
                     }
@@ -483,7 +483,7 @@ export default function MyPage() {
                         <span>
                           {badgeImages.squat.advanced[1]
                             ? '스쿼트 최고 기록이 30개 이상이면 획득할 수 있다. 스쿼트를 마스터 한 자에게 주어진다.'
-                            : '더 운동하고 오세요.'}
+                            : '더 운동하고 오세요!'}
                         </span>
                       </div>
                     }
@@ -506,7 +506,7 @@ export default function MyPage() {
                         <span>
                           {badgeImages.burpee.beginner[1]
                             ? '버피 최고 기록이 5개 이상이면 획득할 수 있다.'
-                            : '더 운동하고 오세요.'}
+                            : '더 운동하고 오세요!'}
                         </span>
                       </div>
                     }
@@ -524,7 +524,7 @@ export default function MyPage() {
                         <span>
                           {badgeImages.burpee.intermediate[1]
                             ? '버피 최고 기록이 10개 이상이면 획득할 수 있다.'
-                            : '더 운동하고 오세요.'}
+                            : '더 운동하고 오세요!'}
                         </span>
                       </div>
                     }
@@ -542,7 +542,7 @@ export default function MyPage() {
                         <span>
                           {badgeImages.burpee.advanced[1]
                             ? '버피 최고 기록이 15개 이상이면 획득할 수 있다. 버피를 마스터 한 자에게 주어진다.'
-                            : '더 운동하고 오세요.'}
+                            : '더 운동하고 오세요!'}
                         </span>
                       </div>
                     }
@@ -565,7 +565,7 @@ export default function MyPage() {
                         <span>
                           {badgeImages.pushUp.beginner[1]
                             ? '푸시업 최고 기록이 10개 이상이면 획득할 수 있다.'
-                            : '더 운동하고 오세요.'}
+                            : '더 운동하고 오세요!'}
                         </span>
                       </div>
                     }
@@ -583,7 +583,7 @@ export default function MyPage() {
                         <span>
                           {badgeImages.pushUp.intermediate[1]
                             ? '푸시업 최고 기록이 15개 이상이면 획득할 수 있다.'
-                            : '더 운동하고 오세요.'}
+                            : '더 운동하고 오세요!'}
                         </span>
                       </div>
                     }
@@ -601,7 +601,7 @@ export default function MyPage() {
                         <span>
                           {badgeImages.pushUp.advanced[1]
                             ? '푸시업 최고 기록이 20개 이상이면 획득할 수 있다. 푸시업을 마스터 한 자에게 주어진다.'
-                            : '더 운동하고 오세요.'}
+                            : '더 운동하고 오세요!'}
                         </span>
                       </div>
                     }
@@ -623,7 +623,7 @@ export default function MyPage() {
                     <span>
                       {badgeImages.homedongKing.best[1]
                         ? '하체왕, 코어왕, 팔뚝왕을 모두 획득한 당신. 당신은 진정한 홈동킹입니다.✨'
-                        : '아직 훨씬 더 많은 운동이 필요합니다.'}
+                        : '아직 훨씬 더 많은 운동이 필요합니다!'}
                     </span>
                   </div>
                 }
@@ -642,10 +642,12 @@ export default function MyPage() {
           </Title>
           {workToday ? (
             <Message>
-              현재, {duration}일동안 운동하셨어요!! 오늘도 하셨네요😀
+              오늘까지 {duration}일동안 운동하셨어요!! 고생하셨어요!😀
             </Message>
           ) : (
-            <Message>{duration}일동안 운동하셨는데..오늘도 하셔야죠!😥</Message>
+            <Message>
+              어제까지 {duration}일동안 운동하셨는데..오늘도 하셔야죠!😥
+            </Message>
           )}
           <CustomCalendar className="react-calendar" />
           <Footer>

@@ -69,7 +69,6 @@ import Messages from './components/Messages';
 import startsound from './sound/start.mp3';
 import gamemusic2 from './sound/gamemusic2.mp3';
 import badgeImages from '../../assets/badges/badgeImages';
-import burpeeAdvanced from '../../assets/badges/burpeeAdvanced.png';
 
 // features
 import UserVideoComponent from './UserVideoComponent';
@@ -240,6 +239,9 @@ const Badge = styled.img`
   margin-bottom: 10px;
 `;
 
+const BodyTableCell = styled(TableCell)`
+  font-size: 1.5rem;
+`;
 const Transition = forwardRef(function Transition(props, ref) {
   return <Zoom in ref={ref} {...props} />;
 });
@@ -337,6 +339,8 @@ class Game extends Component {
           this.setState({ headerText: roomId + '/팔굽혀펴기' });
           break;
       }
+      console.log(`teachablemachinestart${this.state.gametype}`);
+      this.setmodel();
       this.joinSession();
     }, 500);
   }
@@ -698,13 +702,11 @@ class Game extends Component {
       });
   }
 
-  // 티처블 머신
-  async init() {
-    console.log(`teachablemachinestart${this.state.gametype}`);
+  async setmodel() {
     switch (this.state.gametype) {
       case 2: // 푸쉬업
         this.setState({
-          URL: 'https://teachablemachine.withgoogle.com/models/cIjn1XveJ/',
+          URL: 'https://teachablemachine.withgoogle.com/models/2XrVxIc_1/',
         });
         break;
       case 3: // 버피
@@ -714,7 +716,7 @@ class Game extends Component {
         break;
       case 1: // 스쿼트
         this.setState({
-          URL: 'https://teachablemachine.withgoogle.com/models/y1scUcaWN/',
+          URL: 'https://teachablemachine.withgoogle.com/models/JCxTWXNy4/',
         });
         break;
     }
@@ -726,6 +728,10 @@ class Game extends Component {
     this.setState({
       model: await tmPose.load(modelURL, metadataURL),
     });
+  }
+
+  // 티처블 머신
+  async init() {
     // Convenience function to setup a webcam
     const size = 200;
     const flip = true; // whether to flip the webcam
@@ -814,7 +820,7 @@ class Game extends Component {
           });
       }
       this.setState({ status: 'up' });
-    } else if (prediction[2].probability.toFixed(2) > 0.95) {
+    } else if (prediction[1].probability.toFixed(2) > 0.95) {
       this.setState({ status: 'down' });
       this.setState({ check: true });
     }
@@ -1043,9 +1049,9 @@ class Game extends Component {
             </Buttons>
           </HeaderWrapper>
         </NavWrapper>
-        <Button onClick={() => this.setState({ isRankModalOpen: true })}>
+        {/* <Button onClick={() => this.setState({ isRankModalOpen: true })}>
           랭킹
-        </Button>
+        </Button> */}
         <RankDialog
           fullWidth
           open={this.state.isRankModalOpen}
@@ -1070,14 +1076,22 @@ class Game extends Component {
                   {this.state.finalRank.map((item, index) => {
                     return (
                       <TableRow key={index}>
-                        <TableCell component="th" scope="row" align="center">
+                        <BodyTableCell
+                          component="th"
+                          scope="row"
+                          align="center"
+                        >
                           {index + 1 === 1 && '🥇'}
                           {index + 1 === 2 && '🥇'}
                           {index + 1 === 3 && '🥉'}
                           {index + 1 >= 4 && index + 1}
-                        </TableCell>
-                        <TableCell align="center">{item.nickname}</TableCell>
-                        <TableCell align="center">{item.count}</TableCell>
+                        </BodyTableCell>
+                        <BodyTableCell align="center">
+                          {item.nickname}
+                        </BodyTableCell>
+                        <BodyTableCell align="center">
+                          {item.count}
+                        </BodyTableCell>
                       </TableRow>
                     );
                   })}
@@ -1085,7 +1099,9 @@ class Game extends Component {
               </Table>
             </TableContainer>
             <BadgesContainer>
-              {badgesOwned.length !== 0 && <Title>새로 획득한 뱃지🏆</Title>}
+              {badgesOwned.length !== 0 && (
+                <Title>뱃지를 획득하셨습니다! 🏆</Title>
+              )}
               <Badges>
                 {badgesOwned &&
                   badgesOwned.map((badge) => {
@@ -1139,8 +1155,12 @@ class Game extends Component {
                     arrow: false,
                     status: 'up',
                     startbuttonstate: true,
-                    isRankModalOpen: true,
                   });
+                  setTimeout(() => {
+                    this.setState({
+                      isRankModalOpen: true,
+                    });
+                  }, 700);
                   axios1
                     .post('/api/game/end', {
                       count: this.state.count,
