@@ -343,7 +343,7 @@ class Game extends Component {
           this.setState({ headerText: roomId + '/팔굽혀펴기' });
           break;
       }
-      console.log(`teachablemachinestart${this.state.gametype}`);
+
       this.setmodel();
       this.joinSession();
     }, 500);
@@ -517,23 +517,18 @@ class Game extends Component {
         });
         // On every Stream destroyed...
         mySession.on('streamDestroyed', (event) => {
-          console.log('somoneout');
           // Remove the stream from 'subscribers' array
           this.updateHost().then((clientData) => {
             const host = JSON.parse(clientData).clientData;
-            console.log(`************${host}`);
+
             mySession
               .signal({
                 data: host,
                 to: [],
                 type: 'update-host',
               })
-              .then(() => {
-                console.log('Message successfully sent');
-              })
-              .catch((error) => {
-                console.error(error);
-              });
+              .then(() => {})
+              .catch((error) => {});
           });
           this.deleteSubscriber(event.stream.streamManager);
         });
@@ -543,9 +538,7 @@ class Game extends Component {
           }
         });
         // On every asynchronous exception...
-        mySession.on('exception', (exception) => {
-          console.warn(exception);
-        });
+        mySession.on('exception', (exception) => {});
 
         // --- 4) Connect to the session with a valid user token ---
 
@@ -562,7 +555,7 @@ class Game extends Component {
             .then(() => {
               this.updateHost().then((firstUser) => {
                 const host = JSON.parse(firstUser).clientData;
-                console.log(`===========>first${host}`);
+
                 if (this.state.myUserName === host)
                   this.setState({ ishost: true });
               });
@@ -591,13 +584,7 @@ class Game extends Component {
                 publisher,
               });
             })
-            .catch((error) => {
-              console.log(
-                'There was an error connecting to the session:',
-                error.code,
-                error.message
-              );
-            });
+            .catch((error) => {});
         });
       }
     );
@@ -620,13 +607,9 @@ class Game extends Component {
           'Access-Control-Allow-Methods': 'GET,POST',
         },
         success: (response) => {
-          console.log(
-            '***********************response************************'
-          );
           let content = response.content;
           content.sort((a, b) => a.createdAt - b.createdAt);
-          console.log(content);
-          console.log(`===============>whofirst${content[0].clientData}`);
+
           resolve(content[0].clientData);
         },
         error: (error) => reject(error),
@@ -685,8 +668,6 @@ class Game extends Component {
 
   // 시작버튼
   leaveSession() {
-    console.log('난 떠나요');
-    console.log(this.state.mySessionId);
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
     const mySession = this.state.session;
     if (mySession) {
@@ -708,7 +689,7 @@ class Game extends Component {
           mainStreamManager: undefined,
           publisher: undefined,
         });
-        console.log(this.state.leaved);
+
         this.props.history.push('/');
       });
   }
@@ -789,12 +770,9 @@ class Game extends Component {
             type: 'count', // The type of message (optional)
           })
           .then(() => {
-            console.log('Message successfully sent');
             this.setState({ check: false });
           })
-          .catch((error) => {
-            console.error(error);
-          });
+          .catch((error) => {});
       }
       this.setState({ status: 'up' });
     } else if (prediction[1].probability.toFixed(2) > 0.95) {
@@ -823,12 +801,9 @@ class Game extends Component {
             type: 'count', // The type of message (optional)
           })
           .then(() => {
-            console.log('Message successfully sent');
             this.setState({ check: false });
           })
-          .catch((error) => {
-            console.error(error);
-          });
+          .catch(() => {});
       }
       this.setState({ status: 'up' });
     } else if (prediction[1].probability.toFixed(2) > 0.95) {
@@ -857,12 +832,9 @@ class Game extends Component {
             type: 'count', // The type of message (optional)
           })
           .then(() => {
-            console.log('Message successfully sent');
             this.setState({ check: false });
           })
-          .catch((error) => {
-            console.error(error);
-          });
+          .catch(() => {});
       }
       this.setState({ status: 'up' });
     } else if (prediction[1].probability.toFixed(2) > 0.95) {
@@ -916,28 +888,19 @@ class Game extends Component {
           },
         })
         .then((response) => {
-          console.log('CREATE SESION', response);
           resolve(response.data.id);
         })
         .catch((response) => {
           let error = { ...response };
           if (error?.response?.status === 409) {
             resolve(sessionId);
-          } else {
-            console.log(error);
-            console.warn(
-              `No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`
-            );
-            if (
-              window.confirm(
-                `No connection to OpenVidu Server. This may be a certificate error at "${OPENVIDU_SERVER_URL}"\n\nClick OK to navigate and accept it. ` +
-                  `If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
-              )
-            ) {
-              window.location.assign(
-                `${OPENVIDU_SERVER_URL}/accept-certificate`
-              );
-            }
+          } else if (
+            window.confirm(
+              `No connection to OpenVidu Server. This may be a certificate error at "${OPENVIDU_SERVER_URL}"\n\nClick OK to navigate and accept it. ` +
+                `If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
+            )
+          ) {
+            window.location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
           }
         });
     });
@@ -960,7 +923,6 @@ class Game extends Component {
           }
         )
         .then((response) => {
-          console.log('TOKEN', response);
           resolve(response.data.token);
         })
         .catch((error) => reject(error));
@@ -1120,7 +1082,7 @@ class Game extends Component {
                 {badgesOwned &&
                   badgesOwned.map((badge) => {
                     const [kind, level] = badge;
-                    console.log(kind, level);
+
                     return (
                       <BadgeContainer>
                         <Badge src={badgeImages[kind][level][0]} />
