@@ -81,10 +81,13 @@ export default function FindRoomModal({ isOpen, handleModalClose }) {
   const [password, setPassword] = useState('');
   const [roomId, setRoomId] = useState('');
 
+  function resetInfo() {
+    setRoomId('');
+    setPassword('');
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
-    handleModalClose();
-
     const data = {
       roomId,
       password,
@@ -92,7 +95,9 @@ export default function FindRoomModal({ isOpen, handleModalClose }) {
     dispatch(searchRoom(data))
       .unwrap()
       .then(() => {
+        handleModalClose();
         dispatch(resetMyPageInfo());
+        resetInfo();
         history.push('/game');
       })
       .catch((err) => {
@@ -104,20 +109,12 @@ export default function FindRoomModal({ isOpen, handleModalClose }) {
           history.push('/login');
         } else if (err.status === 409) {
           toast.error('😥 현재 방에 접속할 수 없는 상태입니다');
-          history.push('/');
         } else if (err.status === 404) {
           toast.error('😥 방 정보가 없습니다.');
         } else if (err.status === 500) {
           history.push('/error');
         }
       });
-    setRoomId('');
-    setPassword('');
-  }
-
-  function resetInfo() {
-    setRoomId('');
-    setPassword('');
   }
 
   return (
