@@ -1051,7 +1051,7 @@ class Game extends Component {
                 <TableBody>
                   {this.state.finalRank.map((item, index) => {
                     return (
-                      <TableRow key={index}>
+                      <TableRow key={[item, index]}>
                         <BodyTableCell
                           component="th"
                           scope="row"
@@ -1084,8 +1084,11 @@ class Game extends Component {
                     const [kind, level] = badge;
 
                     return (
-                      <BadgeContainer>
-                        <Badge src={badgeImages[kind][level][0]} />
+                      <BadgeContainer key={[kind, level]}>
+                        <Badge
+                          key={[kind, level]}
+                          src={badgeImages[kind][level][0]}
+                        />
                         <span>{badgeImages[kind][level][2]}</span>
                       </BadgeContainer>
                     );
