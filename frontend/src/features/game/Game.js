@@ -114,10 +114,10 @@ const useStyles = makeStyles({
   },
 });
 const Wrapper = styled.div`
-  height: auto;
   display: flex;
   padding: 0px 0px 0px 0px;
   min-height: 100vh;
+  height: auto;
   width: 100%;
 `;
 const NavWrapper = styled.div`
@@ -129,7 +129,7 @@ const NavWrapper = styled.div`
   align-items: center;
   border-bottom: solid rgba(248, 208, 83, 0.5);
   background-color: rgba(246, 245, 253, 1);
-  z-index: 123456;
+  z-index: 999;
 `;
 const HeaderWrapper = styled.div`
   margin: 0 2em 0 2em;
@@ -351,6 +351,7 @@ class Game extends Component {
 
   componentWillUnmount() {
     music.pause();
+    window.location.reload();
     if (!this.state.leaved) {
       this.leaveSession();
     }
@@ -654,7 +655,11 @@ class Game extends Component {
       this.init();
     }, 5000);
     setTimeout(() => {
-      this.setState({ readystate: 'start' });
+      this.setState({
+        readystate: 'start',
+        rankdata: [],
+      });
+      this.renderTableData();
     }, 3000);
     this.setState({
       started: true,
@@ -1181,6 +1186,10 @@ class Game extends Component {
                     });
                   music.pause();
                   this.renderTableData();
+                  this.setState({
+                    rankdata: [],
+                  });
+                  this.props.doResetMyPageInfo();
                 }, 300);
               }}
             >
