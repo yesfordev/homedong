@@ -224,11 +224,11 @@ export default function SignUp() {
               value={password}
               validators={[
                 'required',
-                'matchRegexp:^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*[@$!%*#?&]).{8,16}$',
+                'matchRegexp:^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*[~!@#$%^&()+|=]).{8,16}$',
               ]}
               errorMessages={[
                 '정보를 입력해주세요',
-                '영어, 숫자, 특수문자 적어도 한 개 이상 포함해주세요(8~16자)',
+                '영어, 숫자, 특수문자(~!@#$%^&()+|=)를 적어도 한 개 이상 포함해주세요(8~16자)',
               ]}
               InputLabelProps={{
                 shrink: true,
