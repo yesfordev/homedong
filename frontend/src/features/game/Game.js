@@ -878,10 +878,10 @@ class Game extends Component {
         }
         if (index < 3) {
           return (
-            <tr key={index}>
+            <tr key={index} className="tableitems">
               <td className="tableitem">{finalRanking}</td>
               <td className="tableitem">{nickname}님</td>
-              <td className="tableitem">{count}개</td>
+              <td className="tableitem">{count} 개</td>
             </tr>
           );
         }
