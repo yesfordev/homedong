@@ -57,29 +57,6 @@ configurations {
     providedRuntime
 }
 
-//processResources {
-//    dependsOn "copyWebApp"
-//}
-//
-///*task npmInstall(type: NpmTask, overwrite: true) {
-//    args = ['install']
-//}*/
-//
-//task webpack(type: NpmTask, dependsOn: 'npmInstall') {
-//    args = ['run','build']
-//}
-//
-//// 추가
-//task copyWebApp(type: Copy) {
-//    dependsOn "webpack"
-//    from "${project.projectDir}/../frontend/build"
-//    into "${project.projectDir}/src/main/resources/static"
-//}
-//
-//// processResources is a Java task. Run the webpack bundling before this task using the 'build' task in the package.json
-//processResources.dependsOn 'webpack'
-
-//set build time and inject value to application.properties
 def buildTime() {
     def date = new Date()
     def formattedDate = date.format('yyyyMMdd_HHmm')
