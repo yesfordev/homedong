@@ -15,7 +15,7 @@
   --primary: #9fa9d8;
 }
 .stream-container {
-  width: calc(100%/3);
+  width: calc(100% / 3);
   padding-bottom: 30px;
 }
 /* start animation */

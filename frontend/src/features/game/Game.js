@@ -114,10 +114,9 @@ const useStyles = makeStyles({
   },
 });
 const Wrapper = styled.div`
-  height: auto;
   display: flex;
   padding: 0px 0px 0px 0px;
-  min-height: 100vh;
+  height: 100vh;
   width: 100%;
 `;
 const NavWrapper = styled.div`
@@ -128,8 +127,6 @@ const NavWrapper = styled.div`
   width: 100%;
   align-items: center;
   border-bottom: solid rgba(248, 208, 83, 0.5);
-  background-color: rgba(246, 245, 253, 1);
-  z-index: 123456;
 `;
 const HeaderWrapper = styled.div`
   margin: 0 2em 0 2em;
@@ -351,6 +348,7 @@ class Game extends Component {
 
   componentWillUnmount() {
     music.pause();
+    window.location.reload();
     if (!this.state.leaved) {
       this.leaveSession();
     }
@@ -654,7 +652,11 @@ class Game extends Component {
       this.init();
     }, 5000);
     setTimeout(() => {
-      this.setState({ readystate: 'start' });
+      this.setState({
+        readystate: 'start',
+        rankdata: [],
+      });
+      this.renderTableData();
     }, 3000);
     this.setState({
       started: true,
@@ -996,11 +998,6 @@ class Game extends Component {
             <LeftList>
               <span>{this.state.headerText}</span>
             </LeftList>
-            {this.state.timer ? (
-              <div className="count">
-                {this.state.myUserName} 님의 현재 개수 : {this.state.count}개
-              </div>
-            ) : null}
             <Buttons>
               {this.state.audiostate ? (
                 <IoMicSharp
@@ -1093,7 +1090,7 @@ class Game extends Component {
                           align="center"
                         >
                           {index + 1 === 1 && '🥇'}
-                          {index + 1 === 2 && '🥈'}
+                          {index + 1 === 2 && '🥇'}
                           {index + 1 === 3 && '🥉'}
                           {index + 1 >= 4 && index + 1}
                         </BodyTableCell>
@@ -1183,6 +1180,10 @@ class Game extends Component {
                     });
                   music.pause();
                   this.renderTableData();
+                  this.setState({
+                    rankdata: [],
+                  });
+                  this.props.doResetMyPageInfo();
                 }, 300);
               }}
             >
@@ -1260,10 +1261,10 @@ class Game extends Component {
             >
               <tbody>{this.renderTableData()}</tbody>
             </table>
-            <div id="video-container" className="video-container">
+            <div id="video-container" className="video-container col-md-6">
               {this.state.publisher !== undefined ? (
                 <div
-                  className="stream-container"
+                  className="stream-container col-md-6 col-xs-6"
                   onClick={() =>
                     this.handleMainVideoStream(this.state.publisher)
                   }
@@ -1274,7 +1275,7 @@ class Game extends Component {
               {this.state.subscribers.map((sub, i) => (
                 <div
                   key={i}
-                  className="stream-container"
+                  className="stream-container col-md-6 col-xs-6"
                   onClick={() => this.handleMainVideoStream(sub)}
                 >
                   <UserVideoComponent streamManager={sub} />
