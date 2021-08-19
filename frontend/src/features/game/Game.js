@@ -994,6 +994,11 @@ class Game extends Component {
             <LeftList>
               <span>{this.state.headerText}</span>
             </LeftList>
+            {this.state.timer ? (
+              <div className="count">
+                {this.state.myUserName} 님의 현재 개수 : {this.state.count}개
+              </div>
+            ) : null}
             <Buttons>
               {this.state.audiostate ? (
                 <IoMicSharp
@@ -1086,7 +1091,7 @@ class Game extends Component {
                           align="center"
                         >
                           {index + 1 === 1 && '🥇'}
-                          {index + 1 === 2 && '🥇'}
+                          {index + 1 === 2 && '🥈'}
                           {index + 1 === 3 && '🥉'}
                           {index + 1 >= 4 && index + 1}
                         </BodyTableCell>

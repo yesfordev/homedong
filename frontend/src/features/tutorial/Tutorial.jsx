@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { animateScroll as scroll } from 'react-scroll';
 import styled from 'styled-components';
 import SimpleImageSlider from 'react-simple-image-slider';
+import logo from '../../assets/logo(basic).svg';
 
 // features
 import TutorialLinks from './TutorialLinks';
@@ -43,6 +44,14 @@ const SliderWrapper = styled.div`
   margin-top: 10%;
 `;
 
+const Logo = styled.img`
+  cursor: pointer;
+  margin: 40px 0 0 40px;
+  position: fixed;
+  width: 200px;
+  align-self: flex-start;
+`;
+
 class Tutorial extends Component {
   constructor(props) {
     super(props);
@@ -78,9 +87,13 @@ class Tutorial extends Component {
     ];
     return (
       <>
-        {/* <Navbar /> */}
         <Wrapper>
           <Exercise name="element1">
+            <Logo
+              src={logo}
+              alt="logo"
+              onClick={() => this.props.history.push('/')}
+            />
             <TutorialLinks />
             <SliderWrapper>
               <SimpleImageSlider

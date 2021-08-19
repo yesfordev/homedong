@@ -533,8 +533,8 @@ tbody {
   display: flex;
 }
 
-.tableitems{
-  margin:10px;
+.tableitems {
+  margin: 10px;
   text-align: center;
 }
 .tableitem {
@@ -546,3 +546,8 @@ tbody {
 }
 
 /*랭킹 테이블*/
+.count {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+}
