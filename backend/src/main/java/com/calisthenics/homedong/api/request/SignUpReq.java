@@ -31,6 +31,9 @@ public class SignUpReq {
 
     @ApiModelProperty(name="유저 nickname")
     @NotNull(message = "nickname may not be empty")
+
+    @Pattern(regexp = "^[0-9a-zA-Z가-힣]*$",
+            message = "닉네임은 숫자, 영어, 한글만 가능합니다.")
     @Size(min = 1, max = 6)
     private String nickname;
 
