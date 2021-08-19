@@ -1138,6 +1138,9 @@ class Game extends Component {
           </div>
         ) : null}
         {this.state.timer ? (
+          <div className="count">현재 개수 : {this.state.count}개</div>
+        ) : null}
+        {this.state.timer ? (
           <div className="timer-wrapper">
             <CountdownCircleTimer
               isPlaying
