@@ -1090,7 +1090,7 @@ class Game extends Component {
                           align="center"
                         >
                           {index + 1 === 1 && '🥇'}
-                          {index + 1 === 2 && '🥇'}
+                          {index + 1 === 2 && '🥈'}
                           {index + 1 === 3 && '🥉'}
                           {index + 1 >= 4 && index + 1}
                         </BodyTableCell>

@@ -186,7 +186,7 @@ const authSlice = createSlice({
         state.isAdmin = true;
       }
       state.user = action.payload;
-      console.log(state.user.img);
+      console.log(roles, 'isAdmin');
     },
   },
 });
