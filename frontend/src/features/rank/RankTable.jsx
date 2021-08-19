@@ -128,7 +128,7 @@ export default function RankTable() {
               </TableCell>
               <TableCell align="center">{row.nickname}</TableCell>
               <TableCell align="center">{row.count}</TableCell>
-              <TableCell style={{ fontSize: '0.6rem' }} align="center">
+              <TableCell style={{ fontSize: '0.8rem' }} align="center">
                 {row.finalChangeStatus}
               </TableCell>
             </TableRow>

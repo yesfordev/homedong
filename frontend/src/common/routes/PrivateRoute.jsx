@@ -5,12 +5,16 @@ import { toast } from 'react-toastify';
 import isAuthenticated from '../api/isAuthenticated';
 import { loadUser } from '../../features/auth/authSlice';
 import { deleteToken } from '../api/JWT-common';
+import { resetBadge } from '../../features/mypage/MyPage';
 
 export default function PrivateRoute({ component: Component, ...rest }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
   useEffect(() => {
+    if (location.pathname !== '/mypage') {
+      resetBadge();
+    }
     dispatch(loadUser())
       .unwrap()
       .catch((err) => {

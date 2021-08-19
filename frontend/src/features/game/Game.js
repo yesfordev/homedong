@@ -184,6 +184,7 @@ const Title = styled.p`
   font-weight: bold;
   font-size: 2rem;
   color: white;
+  margin-bottom: 40px;
 `;
 
 const CancelButton = styled(CgClose)`
@@ -214,17 +215,33 @@ const CustomTableCell = styled(TableCell)`
   font-size: 1.2rem;
 `;
 
-const BadgeContainer = styled.div`
+const BadgesContainer = styled.div`
   margin-top: 50px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+`;
+
+const Badges = styled.div`
+  display: flex;
   justify-content: center;
+`;
+
+const BadgeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Badge = styled.img`
   width: 100px;
+  padding: 0 10px;
+  margin-bottom: 10px;
 `;
 
+const BodyTableCell = styled(TableCell)`
+  font-size: 1.5rem;
+`;
 const Transition = forwardRef(function Transition(props, ref) {
   return <Zoom in ref={ref} {...props} />;
 });
@@ -1032,9 +1049,9 @@ class Game extends Component {
             </Buttons>
           </HeaderWrapper>
         </NavWrapper>
-        <Button onClick={() => this.setState({ isRankModalOpen: true })}>
+        {/* <Button onClick={() => this.setState({ isRankModalOpen: true })}>
           랭킹
-        </Button>
+        </Button> */}
         <RankDialog
           fullWidth
           open={this.state.isRankModalOpen}
@@ -1059,28 +1076,46 @@ class Game extends Component {
                   {this.state.finalRank.map((item, index) => {
                     return (
                       <TableRow key={index}>
-                        <TableCell component="th" scope="row" align="center">
+                        <BodyTableCell
+                          component="th"
+                          scope="row"
+                          align="center"
+                        >
                           {index + 1 === 1 && '🥇'}
                           {index + 1 === 2 && '🥇'}
                           {index + 1 === 3 && '🥉'}
                           {index + 1 >= 4 && index + 1}
-                        </TableCell>
-                        <TableCell align="center">{item.nickname}</TableCell>
-                        <TableCell align="center">{item.count}</TableCell>
+                        </BodyTableCell>
+                        <BodyTableCell align="center">
+                          {item.nickname}
+                        </BodyTableCell>
+                        <BodyTableCell align="center">
+                          {item.count}
+                        </BodyTableCell>
                       </TableRow>
                     );
                   })}
                 </TableBody>
               </Table>
             </TableContainer>
-            <BadgeContainer>
-              {badgesOwned.length !== 0 && <Title>새로 딴 뱃지😀</Title>}
-              {badgesOwned &&
-                badgesOwned.map((badge) => {
-                  const [kind, level] = badge;
-                  return <Badge src={badgeImages[kind][level][0]} />;
-                })}
-            </BadgeContainer>
+            <BadgesContainer>
+              {badgesOwned.length !== 0 && (
+                <Title>뱃지를 획득하셨습니다! 🏆</Title>
+              )}
+              <Badges>
+                {badgesOwned &&
+                  badgesOwned.map((badge) => {
+                    const [kind, level] = badge;
+                    console.log(kind, level);
+                    return (
+                      <BadgeContainer>
+                        <Badge src={badgeImages[kind][level][0]} />
+                        <span>{badgeImages[kind][level][2]}</span>
+                      </BadgeContainer>
+                    );
+                  })}
+              </Badges>
+            </BadgesContainer>
             <RankDialogActions>
               <CancelButton
                 onClick={() => {
@@ -1120,8 +1155,12 @@ class Game extends Component {
                     arrow: false,
                     status: 'up',
                     startbuttonstate: true,
-                    isRankModalOpen: true,
                   });
+                  setTimeout(() => {
+                    this.setState({
+                      isRankModalOpen: true,
+                    });
+                  }, 700);
                   axios1
                     .post('/api/game/end', {
                       count: this.state.count,
