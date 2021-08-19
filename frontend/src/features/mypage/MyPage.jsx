@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 // style
 import { Button } from '@material-ui/core';
@@ -243,8 +243,6 @@ const ProfileTooltip = withStyles(() => ({
 }))(Tooltip);
 
 export default function MyPage() {
-  const location = useLocation();
-  console.log(location);
   const { nickname, email, img } = useSelector((state) => state.auth.user);
   // badgesOwned
   const { consecutiveRecordInfo, badgesOwned } = useSelector(
