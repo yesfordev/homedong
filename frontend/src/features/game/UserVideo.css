@@ -3,8 +3,13 @@ video {
   height: auto;
   float: left;
   cursor: pointer;
-  border: 5px;
 }
+
+.streamcomponent {
+  display: flex;
+  justify-content: center;
+}
+
 .streamcomponent div {
   position: absolute;
   background: #f8f8f8;
