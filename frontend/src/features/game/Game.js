@@ -1035,7 +1035,7 @@ class Game extends Component {
           TransitionComponent={Transition}
           aria-labelledby="form-dialog-title"
         >
-          <RankDialogTitle c id="form-dialog-title">
+          <RankDialogTitle id="form-dialog-title">
             <Title>랭킹</Title>
           </RankDialogTitle>
           <RankDialogContent>

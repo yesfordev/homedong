@@ -83,7 +83,7 @@ class Home extends Component {
           <StartWrapper>
             {kindLists.map((kindList, index) => {
               return (
-                <div
+                <div key={kindList.source}
                   onClick={() => {
                     let num;
                     switch (index) {
@@ -128,7 +128,7 @@ class Home extends Component {
                       });
                   }}
                 >
-                  <Kind imgSrc={kindList.source} title={kindList.title} />
+                  <Kind  imgSrc={kindList.source} title={kindList.title} />
                 </div>
               );
             })}

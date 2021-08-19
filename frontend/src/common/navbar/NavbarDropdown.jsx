@@ -74,15 +74,15 @@ export default function SimpleMenu() {
           if (index + 1 === Number(img)) {
             return (
               <Avatar
+                key={[profileImage, index]}
                 className={classes.profile}
                 alt="profile"
                 src={profileImage}
               />
             );
           }
-          return <span> </span>;
+          return <span key={[profileImage, index]}> </span>;
         })}
-        {/* <Avatar alt="default" src={defaultImage} /> */}
       </Button>
       <Menu
         disableScrollLock

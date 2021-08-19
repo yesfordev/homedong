@@ -39,6 +39,7 @@ function Calender() {
         date.getMonth() === Number(m) - 1 &&
         date.getDate() === Number(d) ? (
           <HtmlTooltip
+            key={`${y}-${m}-${d}`}
             title={
               <>
                 <Typography color="inherit">
