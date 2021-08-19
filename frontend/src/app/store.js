@@ -13,18 +13,12 @@ const rootPersistConfig = {
   key: 'root',
   version: 1,
   storage,
-  whitelist: ['auth', 'admin'],
-};
-
-const authPersistConfig = {
-  key: 'auth',
-  storage,
-  whitelist: ['isAdmin'],
+  whitelist: ['admin'],
 };
 
 const rootReducer = combineReducers({
   // 각 리듀서를 합침
-  auth: persistReducer(authPersistConfig, AuthReducer),
+  auth: AuthReducer,
   mypage: MyPageReducer,
   rank: RankReducer,
   home: HomeReducer,
