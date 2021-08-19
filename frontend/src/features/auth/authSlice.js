@@ -149,6 +149,7 @@ const authSlice = createSlice({
     },
     resetUser: (state) => {
       state.user = {};
+      state.isAdmin = false;
     },
   },
   extraReducers: {

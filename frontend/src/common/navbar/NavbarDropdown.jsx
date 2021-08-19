@@ -24,7 +24,8 @@ const useStyles = makeStyles({
 });
 
 export default function SimpleMenu() {
-  const { img, isAdmin } = useSelector((state) => state.auth.user);
+  const { img } = useSelector((state) => state.auth.user);
+  const { isAdmin } = useSelector((state) => state.auth);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const dispatch = useDispatch();
   const history = useHistory();
