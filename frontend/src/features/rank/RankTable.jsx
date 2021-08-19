@@ -52,6 +52,12 @@ const ProfileImage = styled.img`
   border-radius: 50%;
 `;
 
+const TableCellStatus = styled(TableCell)`
+  font-size: 0.9rem;
+  color: ${(props) => (props.currentStatue === 'new' ? '#9FA9D8' : 'black')};
+  font-weight: ${(props) => (props.currentStatue === 'new' ? 'bold' : '')};
+`;
+
 function createData(
   ranking,
   nickname,
@@ -69,7 +75,7 @@ function createData(
   } else if (changeStatus === 'down') {
     finalChangeStatus = `🔻${changeRanking}`;
   } else if (changeStatus === 'new') {
-    finalChangeStatus = 'new';
+    finalChangeStatus = '✨NEW✨';
   }
   if (ranking === 1) {
     finalRanking = '🥇';
@@ -81,7 +87,14 @@ function createData(
     finalRanking = ranking;
   }
 
-  return { finalRanking, nickname, img, count, finalChangeStatus };
+  return {
+    finalRanking,
+    nickname,
+    img,
+    count,
+    finalChangeStatus,
+    changeStatus,
+  };
 }
 
 export default function RankTable() {
@@ -128,9 +141,9 @@ export default function RankTable() {
               </TableCell>
               <TableCell align="center">{row.nickname}</TableCell>
               <TableCell align="center">{row.count}</TableCell>
-              <TableCell style={{ fontSize: '0.8rem' }} align="center">
+              <TableCellStatus currentStatue={row.changeStatus} align="center">
                 {row.finalChangeStatus}
-              </TableCell>
+              </TableCellStatus>
             </TableRow>
           ))}
         </TableBody>
