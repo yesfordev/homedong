@@ -33,6 +33,7 @@ const LogoWrapper = styled.div`
 `;
 
 const Logo = styled.img`
+  cursor: pointer;
   width: 400px;
   height: 100px;
 `;
@@ -188,7 +189,12 @@ export default function ModifyUserInfo() {
   return (
     <Wrapper>
       <LogoWrapper>
-        <Logo src={logo} />
+        <Logo
+          src={logo}
+          onClick={() => {
+            history.push('/');
+          }}
+        />
       </LogoWrapper>
 
       <ModifyContainer>
