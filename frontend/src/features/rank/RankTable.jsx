@@ -53,8 +53,8 @@ const ProfileImage = styled.img`
 
 const TableCellStatus = styled(TableCell)`
   font-size: 0.9rem;
-  color: ${(props) => (props.currentStatue === 'new' ? '#9FA9D8' : 'black')};
-  font-weight: ${(props) => (props.currentStatue === 'new' ? 'bold' : '')};
+  color: ${(props) => (props.currentstatus === 'new' ? '#9FA9D8' : 'black')};
+  font-weight: ${(props) => (props.currentstatus === 'new' ? 'bold' : '')};
 `;
 
 function createData(
@@ -133,14 +133,20 @@ export default function RankTable() {
               <TableCell align="center">
                 {profileImages.map((profileImage, index) => {
                   if (index + 1 === Number(row.img)) {
-                    return <ProfileImage src={profileImage} alt="profile" />;
+                    return (
+                      <ProfileImage
+                        key={[index, row.img, row.nickname]}
+                        src={profileImage}
+                        alt="profile"
+                      />
+                    );
                   }
-                  return <span> </span>;
+                  return <span key={[index, row.img, row.nickname]}> </span>;
                 })}
               </TableCell>
               <TableCell align="center">{row.nickname}</TableCell>
               <TableCell align="center">{row.count}</TableCell>
-              <TableCellStatus currentStatue={row.changeStatus} align="center">
+              <TableCellStatus currentstatus={row.changeStatus} align="center">
                 {row.finalChangeStatus}
               </TableCellStatus>
             </TableRow>

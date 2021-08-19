@@ -121,7 +121,7 @@ function CheckPassword() {
               shrink: true,
             }}
           />
-          <CommonButton yellow type="submit">
+          <CommonButton yellow="true" type="submit">
             제출하기
           </CommonButton>
         </ValidatorForm>

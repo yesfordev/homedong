@@ -355,6 +355,7 @@ export default function MyPage() {
             if (index + 1 === Number(img)) {
               return (
                 <ProfileTooltip
+                  key={[index, img].join('_')}
                   title={
                     <>
                       <Typography color="inherit">
@@ -374,7 +375,7 @@ export default function MyPage() {
                 </ProfileTooltip>
               );
             }
-            return <span> </span>;
+            return <span key={[profileImage, index]}> </span>;
           })}
           <div>
             <Dialog
@@ -390,10 +391,17 @@ export default function MyPage() {
                 <DialogContentText id="alert-dialog-description">
                   {profileImages.map((profileImage, index) => {
                     if (index + 1 === currentImage) {
-                      return <SelectedImage alt="profile" src={profileImage} />;
+                      return (
+                        <SelectedImage
+                          key={[profileImage, index]}
+                          alt="profile"
+                          src={profileImage}
+                        />
+                      );
                     }
                     return (
                       <VariousImage
+                        key={[profileImage, index]}
                         alt="profile"
                         src={profileImage}
                         onClick={() => updateCurrentImg(index + 1)}
