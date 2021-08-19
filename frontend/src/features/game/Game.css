@@ -548,3 +548,9 @@ tbody {
 }
 
 /*랭킹 테이블*/
+.count{
+  position : absolute;
+  margin-top :12%;
+  left : 3%;
+  font-size:20px;
+}
