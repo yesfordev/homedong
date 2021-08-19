@@ -17,7 +17,6 @@ import MyPage from '../features/mypage/MyPage';
 import CheckPassword from '../features/auth/modify/CheckPassword';
 import ModifyUserInfo from '../features/auth/modify/ModifyUserInfo';
 import Home from '../features/home/Home';
-import EmailChecked from '../features/auth/signup/EmailChecked';
 import EmailCheckedPlease from '../features/auth/signup/EmailCheckedPlease';
 import Tutorial from '../features/tutorial/Tutorial';
 import Rank from '../features/rank/Rank';
@@ -61,7 +60,6 @@ function App() {
             <PublicRoute restricted path="/login" component={Login} />
             <PublicRoute restricted path="/signup" component={SignUp} />
             <PublicRoute path="/tutorial" component={Tutorial} />
-            <Route path="/emailchecked" component={EmailChecked} />
             <Route path="/emailcheckedplease" component={EmailCheckedPlease} />
             <Route path="/error" component={Error500} />
             <PrivateRoute exact path="/" component={Home} />

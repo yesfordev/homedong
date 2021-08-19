@@ -127,7 +127,7 @@ export default function Login() {
       })
       .catch((err) => {
         if (err.status === 400) {
-          toast.error('😥 입력된 정보를 다시 확인해주세요');
+          toast.error('😥 입력하신 정보를 다시 확인해주세요');
         } else if (err.status === 409) {
           toast.error('😥 이미 로그인된 사용자입니다');
         } else if (err.status === 401) {

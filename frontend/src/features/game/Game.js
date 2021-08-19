@@ -116,7 +116,8 @@ const useStyles = makeStyles({
 const Wrapper = styled.div`
   display: flex;
   padding: 0px 0px 0px 0px;
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   width: 100%;
 `;
 const NavWrapper = styled.div`
@@ -127,6 +128,8 @@ const NavWrapper = styled.div`
   width: 100%;
   align-items: center;
   border-bottom: solid rgba(248, 208, 83, 0.5);
+  background-color: rgba(246, 245, 253, 1);
+  z-index: 999;
 `;
 const HeaderWrapper = styled.div`
   margin: 0 2em 0 2em;
@@ -992,12 +995,15 @@ class Game extends Component {
       <Wrapper>
         <NavWrapper>
           <HeaderWrapper>
-            <Link to="/">
-              <Logo src={logo} />
-            </Link>
+            <Logo src={logo} />
             <LeftList>
               <span>{this.state.headerText}</span>
             </LeftList>
+            {this.state.timer ? (
+              <div className="count">
+                {this.state.myUserName} 님의 현재 개수 : {this.state.count}개
+              </div>
+            ) : null}
             <Buttons>
               {this.state.audiostate ? (
                 <IoMicSharp
@@ -1090,7 +1096,7 @@ class Game extends Component {
                           align="center"
                         >
                           {index + 1 === 1 && '🥇'}
-                          {index + 1 === 2 && '🥇'}
+                          {index + 1 === 2 && '🥈'}
                           {index + 1 === 3 && '🥉'}
                           {index + 1 >= 4 && index + 1}
                         </BodyTableCell>
@@ -1261,10 +1267,10 @@ class Game extends Component {
             >
               <tbody>{this.renderTableData()}</tbody>
             </table>
-            <div id="video-container" className="video-container col-md-6">
+            <div id="video-container" className="video-container">
               {this.state.publisher !== undefined ? (
                 <div
-                  className="stream-container col-md-6 col-xs-6"
+                  className="stream-container"
                   onClick={() =>
                     this.handleMainVideoStream(this.state.publisher)
                   }
@@ -1275,7 +1281,7 @@ class Game extends Component {
               {this.state.subscribers.map((sub, i) => (
                 <div
                   key={i}
-                  className="stream-container col-md-6 col-xs-6"
+                  className="stream-container"
                   onClick={() => this.handleMainVideoStream(sub)}
                 >
                   <UserVideoComponent streamManager={sub} />
