@@ -256,17 +256,7 @@ export default function SignUp() {
               size="small"
               fullWidth
             />
-            <CommonButton
-              mauve="true"
-              disabled={
-                !isNicknameChecked ||
-                !email ||
-                !password ||
-                !repeatPassword ||
-                isLoading
-              }
-              type="submit"
-            >
+            <CommonButton mauve="true" type="submit" disabled={isLoading}>
               {isLoading ? '회원가입중입니다' : '회원가입'}
             </CommonButton>
             <Link to="/login">
