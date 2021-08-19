@@ -141,7 +141,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<Map<String, Boolean>> checkPassword(@RequestBody PasswordReq passwordReq) {
+    public ResponseEntity<Map<String, Boolean>> checkPassword(@RequestBody @Valid PasswordReq passwordReq) {
         return ResponseEntity.ok(userService.checkPassword(passwordReq));
     }
 
@@ -155,7 +155,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity changeUserPassword(@RequestBody ChangePasswordReq changePasswordReq) {
+    public ResponseEntity changeUserPassword(@RequestBody @Valid ChangePasswordReq changePasswordReq) {
         userService.updatePassword(changePasswordReq);
 
         return new ResponseEntity(HttpStatus.OK);
@@ -171,7 +171,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity changeUserNickname(@RequestBody ChangeNicknameReq changeNicknameReq) {
+    public ResponseEntity changeUserNickname(@RequestBody @Valid ChangeNicknameReq changeNicknameReq) {
         userService.updateNickname(changeNicknameReq);
 
         return new ResponseEntity(HttpStatus.OK);
