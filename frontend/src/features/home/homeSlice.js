@@ -14,22 +14,6 @@ export const makeRoom = createAsyncThunk(
   }
 );
 
-export const leaveRoom = createAsyncThunk(
-  'LEAVE_ROOM',
-  async ([roomId, gameToken], { rejectWithValue }) => {
-    try {
-      const userInfo = {
-        roomId,
-        token: gameToken,
-      };
-      const response = await axios.put('/api/rooms', userInfo);
-      return response;
-    } catch (err) {
-      return rejectWithValue(err);
-    }
-  }
-);
-
 export const quickStart = createAsyncThunk(
   'QUICK_START',
   async (data, { rejectWithValue }) => {
@@ -75,11 +59,6 @@ const homeSlice = createSlice({
       state.roomId = roomId;
       state.gameType = gameType;
       state.nickname = nickname;
-    },
-    [leaveRoom.fulfilled]: (state) => {
-      state.roomId = '';
-      state.gameType = '';
-      state.nickname = '';
     },
     [quickStart.fulfilled]: (state, action) => {
       const { roomId, gameType, nickname } = action.payload;
