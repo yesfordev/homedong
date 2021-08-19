@@ -128,6 +128,8 @@ const NavWrapper = styled.div`
   width: 100%;
   align-items: center;
   border-bottom: solid rgba(248, 208, 83, 0.5);
+  background-color: rgba(246, 245, 253, 1);
+  z-index: 123456;
 `;
 const HeaderWrapper = styled.div`
   margin: 0 2em 0 2em;

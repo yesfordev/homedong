@@ -15,7 +15,8 @@
   --primary: #9fa9d8;
 }
 .stream-container {
-  width: 33%;
+  width: calc(100%/3);
+  padding-bottom: 30px;
 }
 /* start animation */
 .demo {
@@ -392,13 +393,14 @@
 .video-container {
   justify-content: center;
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
+  margin-bottom: 50px;
 }
 /*랭킹테이블*/
 #session {
   justify-content: center;
   margin-top: 200px;
+  min-width: 100%;
 }
 /*타이머*/
 h1 {
