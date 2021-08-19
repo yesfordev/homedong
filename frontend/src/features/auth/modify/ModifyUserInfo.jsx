@@ -52,6 +52,10 @@ const Title = styled.span`
   margin-bottom: 25px;
 `;
 
+const ChangeButton = styled(CommonButton)`
+  margin-bottom: 30px;
+`;
+
 const useStyles = makeStyles({
   validatorForm: {
     width: '40%',
@@ -63,6 +67,7 @@ export default function ModifyUserInfo() {
   // local state
   const [newNickname, setNickname] = useState('');
   const [newPassword, setPassword] = useState('');
+  const [isPasswordSame, setIsPasswordSame] = useState(false);
   const [repeatPassword, setRepeatPassword] = useState('');
   const { isNicknameChecked } = useSelector((state) => state.auth);
   const classes = useStyles();
@@ -113,7 +118,7 @@ export default function ModifyUserInfo() {
       ? dispatch(modifyNickname(data))
           .unwrap()
           .then(() => {
-            toast.info('😀 닉네임 변경이 완료되었습니다');
+            toast.success('😀 닉네임 변경이 완료되었습니다');
           })
           .catch((err) => {
             if (err.status === 400) {
@@ -162,8 +167,10 @@ export default function ModifyUserInfo() {
   useEffect(() => {
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
       if (value !== newPassword) {
+        setIsPasswordSame(false);
         return false;
       }
+      setIsPasswordSame(true);
       return true;
     });
   }, [repeatPassword]);
@@ -211,13 +218,13 @@ export default function ModifyUserInfo() {
           <CommonButton
             mauve="true"
             onClick={doCheckNickname}
-            disabled={isNicknameChecked}
+            disabled={isNicknameChecked || !newNickname}
           >
-            중복확인
+            닉네임 중복확인
           </CommonButton>
-          <CommonButton type="submit" disabled={!isNicknameChecked}>
-            변경하기
-          </CommonButton>
+          <ChangeButton type="submit" disabled={!isNicknameChecked}>
+            닉네임 변경하기
+          </ChangeButton>
         </ValidatorForm>
         <ValidatorForm
           onSubmit={handleSubmit}
@@ -230,8 +237,14 @@ export default function ModifyUserInfo() {
             name="password"
             type="password"
             value={newPassword}
-            validators={['required']}
-            errorMessages={['비밀번호를 입력해주세요']}
+            validators={[
+              'required',
+              'matchRegexp:^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*[~!@#$%^&()+|=]).{8,16}$',
+            ]}
+            errorMessages={[
+              '비밀번호를 입력해주세요',
+              '영어, 숫자, 특수문자(~!@#$%^&()+|=)를 적어도 한 개 이상 포함해주세요(8~16자)',
+            ]}
             InputLabelProps={{
               shrink: true,
             }}
@@ -258,8 +271,12 @@ export default function ModifyUserInfo() {
             size="small"
             fullWidth
           />
-          <CommonButton mauve="true" type="submit">
-            Submit
+          <CommonButton
+            disabled={!newPassword || !isPasswordSame}
+            mauve="true"
+            type="submit"
+          >
+            비밀번호 변경하기
           </CommonButton>
         </ValidatorForm>
       </ModifyContainer>

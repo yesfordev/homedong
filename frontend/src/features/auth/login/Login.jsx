@@ -64,6 +64,7 @@ export const CommonTextValidator = styled(TextValidator)`
   & .MuiOutlinedInput-notchedOutline {
     opacity: 0;
   }
+  margin-bottom: ${(props) => (props.isLoginInput ? '15px' : '0')};
 `;
 
 const useStyles = makeStyles({
@@ -157,6 +158,7 @@ export default function Login() {
           className={classes.validatorForm}
         >
           <CommonTextValidator
+            isLoginInput
             label="이메일"
             onChange={(e) => setEmail(e.target.value.replace(/\s/g, ''))}
             name="email"
