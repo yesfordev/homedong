@@ -278,6 +278,10 @@ export default function MyPage() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const updateProfile = () => {
+    // setOpen(false);
     if (Number(img) === currentImage) return;
     dispatch(changeUserProfile(currentImage.toString()))
       .then(() => {
@@ -293,6 +297,7 @@ export default function MyPage() {
           history.push('/error');
         }
       });
+    handleClose();
   };
 
   function updateCurrentImg(imgNum) {
@@ -376,7 +381,7 @@ export default function MyPage() {
           <div>
             <Dialog
               open={open}
-              onClose={handleClose}
+              // onClose={handleClose}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
@@ -400,8 +405,11 @@ export default function MyPage() {
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose} color="primary" autoFocus>
+                <Button onClick={updateProfile} color="primary" autoFocus>
                   변경하기
+                </Button>
+                <Button onClick={handleClose} color="primary">
+                  취소
                 </Button>
               </DialogActions>
             </Dialog>
