@@ -1,4 +1,4 @@
-import { useState, React, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -71,9 +71,21 @@ export default function ModifyUserInfo() {
   const [isPasswordSame, setIsPasswordSame] = useState(false);
   const [repeatPassword, setRepeatPassword] = useState('');
   const { isNicknameChecked } = useSelector((state) => state.auth);
+  const [isValidInputNickname, setIsValidInputNickname] = useState(false);
+  const errRef = useRef(null);
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (isNicknameChecked || !newNickname || errRef.current.invalid[0]) {
+        setIsValidInputNickname(false);
+      } else {
+        setIsValidInputNickname(true);
+      }
+    }, 10);
+  }, [newNickname, errRef.current, isNicknameChecked]);
 
   // setState when user change input
   function handleNickname(event) {
@@ -210,8 +222,11 @@ export default function ModifyUserInfo() {
             color="secondary"
             name="nickname"
             value={newNickname}
-            validators={['required']}
-            errorMessages={['닉네임을 입력해주세요']}
+            validators={['required', 'matchRegexp:^[가-힣|a-z|A-Z|0-9|]+$']}
+            errorMessages={[
+              '닉네임을 입력해주세요',
+              '한글,영문,숫자만 입력해주세요',
+            ]}
             helperText="최대 6글자입니다."
             variant="outlined"
             InputLabelProps={{
@@ -220,11 +235,14 @@ export default function ModifyUserInfo() {
             margin="normal"
             size="small"
             fullWidth
+            ref={errRef}
           />
           <CommonButton
             mauve="true"
             onClick={doCheckNickname}
-            disabled={isNicknameChecked || !newNickname}
+            disabled={
+              isNicknameChecked || !newNickname || !isValidInputNickname
+            }
           >
             닉네임 중복확인
           </CommonButton>
