@@ -18,22 +18,22 @@ import homedongKing from './homedongking.png';
 
 const badgeImages = {
   squat: {
-    beginner: [squatBeginner, false],
-    intermediate: [squatIntermediate, false],
-    advanced: [squatAdvanced, false],
+    beginner: [squatBeginner, false, '잔근육(다리)'],
+    intermediate: [squatIntermediate, false, '실전근육(다리)'],
+    advanced: [squatAdvanced, false, '하체왕'],
   },
   burpee: {
-    beginner: [burpeeBeginner, false],
-    intermediate: [burpeeIntermediate, false],
-    advanced: [burpeeAdvanced, false],
+    beginner: [burpeeBeginner, false, '잔근육(코어)'],
+    intermediate: [burpeeIntermediate, false, '실전근육(코어)'],
+    advanced: [burpeeAdvanced, false, '코어왕'],
   },
   pushUp: {
-    beginner: [pushupBeginner, false],
-    intermediate: [pushupIntermediate, false],
-    advanced: [pushupAdvanced, false],
+    beginner: [pushupBeginner, false, '잔근육(팔)'],
+    intermediate: [pushupIntermediate, false, '실전근육(팔)'],
+    advanced: [pushupAdvanced, false, '팔뚝왕'],
   },
   homedongKing: {
-    best: [homedongKing, false],
+    best: [homedongKing, false, '홈동킹'],
   },
 };
 

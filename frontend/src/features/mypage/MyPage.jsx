@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 // style
 import { Button } from '@material-ui/core';
@@ -18,7 +18,7 @@ import Typography from '@material-ui/core/Typography';
 import ReactCardFlip from 'react-card-flip';
 
 // image
-// import defaultImage from '../../assets/default.png';
+
 import badgeImages from '../../assets/badges/badgeImages';
 import burpee from '../../assets/burpee.svg';
 import pushUp from '../../assets/pushup.svg';
@@ -221,6 +221,16 @@ const Footer = styled.footer`
   margin: 50px 0;
 `;
 
+export function resetBadge() {
+  const title = ['squat', 'burpee', 'pushUp'];
+  const level = ['beginner', 'intermediate', 'advanced'];
+  title.forEach((type) =>
+    level.forEach((difficulty) => {
+      badgeImages[type][difficulty][1] = false;
+    })
+  );
+}
+
 // tooltip
 const ProfileTooltip = withStyles(() => ({
   tooltip: {
@@ -233,6 +243,8 @@ const ProfileTooltip = withStyles(() => ({
 }))(Tooltip);
 
 export default function MyPage() {
+  const location = useLocation();
+  console.log(location);
   const { nickname, email, img } = useSelector((state) => state.auth.user);
   // badgesOwned
   const { consecutiveRecordInfo, badgesOwned } = useSelector(
@@ -249,6 +261,15 @@ export default function MyPage() {
   const handleClick = () => {
     setIsFlipped(!isFlipped);
   };
+
+  // badge 가지고 있는 것 추출하는 함수
+  // 각 경기에 대한 뱃지 이미지의 색을 살려준다.
+  function drawBadge() {
+    badgesOwned.forEach((badgeOwned) => {
+      const [kind, level] = badgeOwned;
+      badgeImages[kind][level][1] = true;
+    });
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -274,14 +295,6 @@ export default function MyPage() {
       });
   };
 
-  // badge 가지고 있는 것 추출하는 함수
-  // 각 경기에 대한 뱃지 이미지의 색을 살려준다.
-  function drawBadge() {
-    badgesOwned.forEach((badgeOwned) => {
-      const [kind, level] = badgeOwned;
-      badgeImages[kind][level][1] = true;
-    });
-  }
   function updateCurrentImg(imgNum) {
     setCurrentImage(imgNum);
   }
@@ -295,11 +308,18 @@ export default function MyPage() {
   }
 
   useEffect(() => {
+    drawBadge();
+  });
+
+  useEffect(() => {
     dispatch(loadBadge())
       .unwrap()
       .then(() => {
-        console.log(badgeImages.burpee.beginner[1]);
-        dispatch(loadBadgesOwned());
+        dispatch(loadBadgesOwned())
+          .unwrap()
+          .then(() => {
+            drawBadge();
+          });
       })
       .catch((err) => {
         if (err.status === 401) {
@@ -322,10 +342,6 @@ export default function MyPage() {
         }
       });
   }, []);
-
-  useEffect(() => {
-    drawBadge();
-  }, [dispatch, badgesOwned]);
 
   return (
     <>
