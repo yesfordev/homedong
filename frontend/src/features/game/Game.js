@@ -114,9 +114,10 @@ const useStyles = makeStyles({
   },
 });
 const Wrapper = styled.div`
+  height: auto;
   display: flex;
   padding: 0px 0px 0px 0px;
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
 `;
 const NavWrapper = styled.div`
@@ -1252,10 +1253,10 @@ class Game extends Component {
             >
               <tbody>{this.renderTableData()}</tbody>
             </table>
-            <div id="video-container" className="video-container col-md-6">
+            <div id="video-container" className="video-container">
               {this.state.publisher !== undefined ? (
                 <div
-                  className="stream-container col-md-6 col-xs-6"
+                  className="stream-container"
                   onClick={() =>
                     this.handleMainVideoStream(this.state.publisher)
                   }
@@ -1266,7 +1267,7 @@ class Game extends Component {
               {this.state.subscribers.map((sub, i) => (
                 <div
                   key={i}
-                  className="stream-container col-md-6 col-xs-6"
+                  className="stream-container"
                   onClick={() => this.handleMainVideoStream(sub)}
                 >
                   <UserVideoComponent streamManager={sub} />

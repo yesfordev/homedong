@@ -15,7 +15,7 @@
   --primary: #9fa9d8;
 }
 .stream-container {
-  padding: 0;
+  width: 33%;
 }
 /* start animation */
 .demo {
@@ -391,12 +391,14 @@
 }
 .video-container {
   justify-content: center;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 /*랭킹테이블*/
 #session {
   justify-content: center;
   margin-top: 200px;
-  width: 100%;
 }
 /*타이머*/
 h1 {
@@ -434,11 +436,7 @@ h1 {
 }
 /*타이머*/
 .video {
-  margin-left: 3%;
-  margin-right: 3%;
-  margin-top: 1%;
-
-  width: 23%;
+  width: 80%;
 }
 /*게임 지시*/
 
