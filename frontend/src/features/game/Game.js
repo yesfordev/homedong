@@ -290,6 +290,7 @@ class Game extends Component {
       startbuttonstate: true,
       finalRank: [],
       isFliped: true,
+      userImage: '',
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -321,12 +322,14 @@ class Game extends Component {
     });
     music.currentTime = 0;
     setTimeout(() => {
-      const { home } = this.props;
+      const { home, auth } = this.props;
+      const { img } = auth.user;
       const { token, roomId, nickname, gameType } = home;
       if (roomId === '') {
         this.props.history.push('/error');
       }
       this.setState({
+        userImage: img,
         token,
         mySessionId: roomId,
         myUserName: nickname,
@@ -1275,7 +1278,11 @@ class Game extends Component {
                     this.handleMainVideoStream(this.state.publisher)
                   }
                 >
-                  <UserVideoComponent streamManager={this.state.publisher} />
+                  <UserVideoComponent
+                    userImg={this.state.userImage}
+                    streamManager={this.state.publisher}
+                    currentVideo={this.state.videostate}
+                  />
                 </div>
               ) : null}
               {this.state.subscribers.map((sub, i) => (
@@ -1284,7 +1291,10 @@ class Game extends Component {
                   className="stream-container"
                   onClick={() => this.handleMainVideoStream(sub)}
                 >
-                  <UserVideoComponent streamManager={sub} />
+                  <UserVideoComponent
+                    streamManager={sub}
+                    userImg={this.state.userImage}
+                  />
                 </div>
               ))}
             </div>
@@ -1344,6 +1354,7 @@ const mapStateToProps = (state) => ({
   // homeSlice
   home: state.home,
   mypage: state.mypage,
+  auth: state.auth,
 });
 
 // slice에 있는 actions(방찾기, 빠른 시작등등)을 사용하고 싶을 때

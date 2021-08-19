@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import OpenViduVideoComponent from './OvVideo';
 import './UserVideo.css';
+import profileImages from '../../assets/profile/profileImages';
 
 const StreamComponent = styled.div`
   display: flex;
@@ -18,6 +19,12 @@ const Nickname = styled.div`
   font-weight: bold;
 `;
 
+const Image = styled.img`
+  width: 40%;
+  position: absolute;
+  bottom: 10%;
+`;
+
 export default class UserVideoComponent extends Component {
   getNicknameTag() {
     // Gets the nickName of the user
@@ -26,14 +33,20 @@ export default class UserVideoComponent extends Component {
   }
 
   render() {
+    console.log(this.props.userImg, '이미지들어왔냐~~', profileImages);
     return (
-      <div>
+      <div style={{ position: 'relative' }}>
         {this.props.streamManager !== undefined ? (
           <StreamComponent className="streamcomponent">
             <OpenViduVideoComponent streamManager={this.props.streamManager} />
             <Nickname>{this.getNicknameTag()}</Nickname>
+            {!this.props.currentVideo && (
+              <Image src={profileImages[this.props.userImg - 1]} alt="User" />
+            )}
           </StreamComponent>
-        ) : null}
+        ) : (
+          123
+        )}
       </div>
     );
   }
