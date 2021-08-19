@@ -609,7 +609,9 @@ class Game extends Component {
           this.state.mySessionId
         }/connection`,
         headers: {
-          Authorization: 'Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU',
+          Authorization: `Basic ${btoa(
+            `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+          )}`,
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'GET,POST',
         },
