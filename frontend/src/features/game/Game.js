@@ -351,6 +351,7 @@ class Game extends Component {
 
   componentWillUnmount() {
     music.pause();
+    window.location.reload();
     if (!this.state.leaved) {
       this.leaveSession();
     }
@@ -709,7 +710,6 @@ class Game extends Component {
         });
         console.log(this.state.leaved);
         this.props.history.push('/');
-        // window.location.reload();
       });
   }
 
