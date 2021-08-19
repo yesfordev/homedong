@@ -47,7 +47,6 @@ const CustomTableRow = styled(TableRow)`
 const ProfileImage = styled.img`
   width: 45px;
   margin: 5px;
-  cursor: pointer;
   border: 1px solid;
   border-radius: 50%;
 `;
