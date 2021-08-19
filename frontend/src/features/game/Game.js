@@ -990,9 +990,7 @@ class Game extends Component {
       <Wrapper>
         <NavWrapper>
           <HeaderWrapper>
-            <Link to="/">
-              <Logo src={logo} />
-            </Link>
+            <Logo src={logo} />
             <LeftList>
               <span>{this.state.headerText}</span>
             </LeftList>
