@@ -102,7 +102,7 @@ export default function FindRoomModal({ isOpen, handleModalClose }) {
       })
       .catch((err) => {
         if (err.status === 400) {
-          toast.error('😥 입력된 정보를 다시 확인해주세요');
+          toast.error('😥 입력하신 정보를 다시 확인해주세요');
         } else if (err.status === 401) {
           toast.error('😥 로그인을 다시 해주세요');
           deleteToken();

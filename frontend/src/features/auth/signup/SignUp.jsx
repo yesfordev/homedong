@@ -124,7 +124,7 @@ export default function SignUp() {
       })
       .catch((err) => {
         if (err.status === 400) {
-          toast.error('😥 입력된 정보를 다시 확인해주세요');
+          toast.error('😥 입력하신 정보를 다시 확인해주세요');
         } else if (err.status === 409) {
           toast.error('😥 중복된 닉네임입니다.');
         } else if (err.status === 500) {
@@ -149,7 +149,9 @@ export default function SignUp() {
       })
       .catch((err) => {
         if (err.status === 400) {
-          toast.error('😥 입력된 정보를 다시 확인해주세요');
+          toast.error(
+            "😥 입력하신 정보를 한번 더 확인해주세요 (닉네임에는 'ㅣ' 사용이 불가합니다)"
+          );
         } else if (err.status === 409) {
           toast.error('😥 중복된 이메일이 존재합니다.');
         } else if (err.status === 500) {
@@ -203,7 +205,10 @@ export default function SignUp() {
               onChange={(e) => setEmail(e.target.value.replace(/\s/g, ''))}
               name="email"
               value={email}
-              validators={['required', 'isEmail']}
+              validators={[
+                'required',
+                'matchRegexp:^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$',
+              ]}
               errorMessages={[
                 '정보를 입력해주세요',
                 '유효하지 않은 이메일 형식입니다',
@@ -256,17 +261,7 @@ export default function SignUp() {
               size="small"
               fullWidth
             />
-            <CommonButton
-              mauve="true"
-              disabled={
-                !isNicknameChecked ||
-                !email ||
-                !password ||
-                !repeatPassword ||
-                isLoading
-              }
-              type="submit"
-            >
+            <CommonButton mauve="true" type="submit" disabled={isLoading}>
               {isLoading ? '회원가입중입니다' : '회원가입'}
             </CommonButton>
             <Link to="/login">
