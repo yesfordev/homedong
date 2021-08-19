@@ -81,7 +81,8 @@ import {
 } from '../mypage/mypageSlice';
 
 const OPENVIDU_SERVER_URL = 'https://i5a608.p.ssafy.io:8443';
-const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
+const OPENVIDU_SERVER_SECRET = 'HOMEDONG';
+
 const Sbutton = styled.button`
   background: linear-gradient(45deg, #ff859f 30%, #ffa87a 70%);
   border-radius: 7px;
