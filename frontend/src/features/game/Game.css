@@ -528,12 +528,17 @@ h1 {
   position: fixed;
   top: 10%;
   left: 50%;
+  transform: translateX(-50%);
 }
 
 tbody {
   display: flex;
 }
 
+.tableitems {
+  margin: 10px;
+  text-align: center;
+}
 .tableitem {
   display: block;
   font-size: 30px;
@@ -543,3 +548,8 @@ tbody {
 }
 
 /*랭킹 테이블*/
+.count {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+}

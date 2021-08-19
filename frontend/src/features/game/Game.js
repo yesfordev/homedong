@@ -609,7 +609,9 @@ class Game extends Component {
           this.state.mySessionId
         }/connection`,
         headers: {
-          Authorization: 'Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU',
+          Authorization: `Basic ${btoa(
+            `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+          )}`,
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'GET,POST',
         },
@@ -876,10 +878,10 @@ class Game extends Component {
         }
         if (index < 3) {
           return (
-            <tr key={index}>
+            <tr key={index} className="tableitems">
               <td className="tableitem">{finalRanking}</td>
               <td className="tableitem">{nickname}님</td>
-              <td className="tableitem">{count}개</td>
+              <td className="tableitem">{count} 개</td>
             </tr>
           );
         }
@@ -991,6 +993,11 @@ class Game extends Component {
             <LeftList>
               <span>{this.state.headerText}</span>
             </LeftList>
+            {this.state.timer ? (
+              <div className="count">
+                {this.state.myUserName} 님의 현재 개수 : {this.state.count}개
+              </div>
+            ) : null}
             <Buttons>
               {this.state.audiostate ? (
                 <IoMicSharp
