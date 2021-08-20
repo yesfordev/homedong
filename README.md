@@ -23,14 +23,14 @@
 ---
 
 🖱**Backend**
-
 - IntelliJ
-- Spring Boot 2.4.5
+- spring boot 2.4.5
+- spring-boot-jpa
 - Spring Security
-- Spring Data Jpa
-- MariaDB
 - Java 8
 - AWS EC2
+- mysql
+- redis
 
 🖱**Frontend**
 
@@ -38,14 +38,22 @@
 - React.js 17.0.2
 - styled-components 5.3.0
 - Material-UI
+- redux-toolkit 1.6.1
+- redux 4.1.0
 
 🖱**Web RTC**
 
-- Openvidu
+- openvidu 2.19.0
 
 🖱**Pose Detection**
 
 - Teachable Machine
+
+🖱**CI/CD**
+- aws ec2
+- docker
+- nginx
+- jenkins
 
 ### 👨‍👩‍👧 협업 툴
 
@@ -151,6 +159,7 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
 
 </div>
 </details>
+## HOMEDONG INTRODUCTION
 
 1. **서비스명**
     - HOMEDONG(홈동)
