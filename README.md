@@ -4,10 +4,11 @@
 
 1일 1커밋의 열풍이 불고 있는 SSAFY인들의 건강은 괜찮으신가요? SSAFY인들의 건강을 책임지기 위해 저희 **HomeDong**이 왔습니다 ✌1일 1동(홈 트레이닝 운동)의 시작을 홈동과 함께하고 건강을 지켜보세요!
 
+👉[Homedong](https://i5a608.p.ssafy.io) 서비스! 구경하기 👈
+
 ### ⁉HomeDong의 개발 방식이 궁금하다면?!
 
 ---
-
 👉[HomeDong 기술 블로그](https://calisthenics-homedong.tistory.com/) 보러가기 👈
 
 ### 💞캘리스떼닉스(Calisthenics) 팀원을 소개합니다!
@@ -17,6 +18,49 @@
 |:---:|:---:|:---:|:---:|:-----------:|
 |<img src="/uploads/f64f84c30fb5d172c8a0a606c6a3d72a/Untitled.png" width="800">|<img src="/uploads/b772ba4ff5c261d8d0cd39e55ee65333/Untitled_1.png" width="800">|<img src="/uploads/5e7238824a318175b658579b897630e1/Untitled_2.png" width="800">|<img src="/uploads/a6eea0e5ec39fabd05bbfb9be399a0ba/Untitled_3.png" width="800">|<img src="/uploads/be2ba567dca8bb01ab6e2509f16dadcc/Untitled_4.png" width="930">|
 |Leader & Backend|Backend|Backend|Frontend|Cute|
+
+<details>
+<summary>👉자세히👈</summary>
+<div markdown="1">
+- 김예슬
+    - openvidu를 통한 WebRTC 기능 구현
+    - 백엔드 방 관리 API 구현(방 만들기/빠른 시작/방 찾기/방 나가기/방장 부여)
+    - 백엔드 관리자 API 구현
+    - 오픈비두 서버 배포
+    - styled-component와 material-ui를 통한 css 스타일링
+- 송상민
+    - react와 redux-toolkit을 활용하여 SPA 구현
+    - 프론트 개발(회원가입, 로그인, 회원정보 수정, 메인 화면, 랭킹, 튜토리얼, 마이페이지, 방만들기, 방찾기등, 관리자 페이지 구현)
+    - styled-components와 material-ui를 통한 컴포넌트 레이아웃 구현 및 css 스타일링
+- 김성민
+    - Teachable Machine을 통한 운동 인식 구현
+    - 운동별 로직을 통한 운동 카운트 기능 및 튜토리얼 구현
+    - Openvidu를 통한 게임 내부 정보 실시간 통신
+    - 게임 시작, 종료 이벤트 처리 및 실시간 랭킹, 채팅 기능 구현
+    - styled-component와 material-ui를 통한 css 스타일링
+- 서영은
+    - Spring security, JWT, JPA를 이용한 이메일 인증(폼 구현)회원가입, 로그인 기능 구현 (인증, 인가)
+    - JWT, Redis 캐싱을 이용한 랭킹 조회 정보 캐싱 처리 구현
+    - JWT, Redis를 이용해 로그아웃된 토큰 재사용 불가 처리 구현
+    - 비밀번호 변경, 닉네임 변경, 회원 정보 CRUD 구현
+    - 연속 운동일 수 조회, 1일 1홈동 조회, 방장 게임 시작 기능, 게임 끝 기능, 렝킹 페이지 기능, 최고 기록 조회, 뱃지 조회 등의 Spring Boot 백엔드 기능 구현
+    - Jenkins, Docker를 이용한 CI/CD 구현 - Docker로 nginx+react container, spring boot container 생성하여 배포
+    - Nginx 리다이렉트 설정 및 백엔드 및 프론트엔드 url 분기 처리 (/, /api/**)
+    - react를 이용한 프론트엔드 프로필 설정 및 프로필 변경 기능, 프로필 변경 및 1일 1홈동 호버 툴팁 구현
+    - 게임 및 채팅 기능 javascript → react로 migration
+    - styled-component를 통한 css 스타일링
+</div>
+</details>
+
+
+### ✨ 주요 기능
+---
+- 서비스 설명 : 모두가 건강하게 집에서 즐길 수 있는 운동 게임
+- 주요 기능 :
+    - webRTC를 통한 실시간 화상 운동 게임
+    - Pose Detection을 통한 자동 자세 인식
+    - 게임 log를 통한 사용자 운동기록 추적
+    - 기록에 따른 보상을 통한 운동 동기 부여
 
 ### 🖥️ 개발 환경
 
@@ -54,6 +98,12 @@
 - docker
 - nginx
 - jenkins
+
+### 💫 서비스 아키텍처
+
+---
+![image](/uploads/4caa5b741349026bb80d993a41551549/image.png)
+
 
 ### 👨‍👩‍👧 협업 툴
 
@@ -150,79 +200,15 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
 ![erd](/uploads/f88002818d8e2b35da31a6dce25df6d2/erd.png)
 
 
-### ✨ 주요 기능
-<details>
-<summary>접기/펼치기 버튼</summary>
-<div markdown="1">
-
-
-
-</div>
-</details>
-## HOMEDONG INTRODUCTION
-
-1. **서비스명**
-    - HOMEDONG(홈동)
-
-2. **서비스설명/주요기능**
-    - 서비스 설명 : 모두가 건강하게 집에서 즐길 수 있는 운동 게임
-    - 주요 기능 :
-        - webRTC를 통한 실시간 화상 운동 게임
-        - Pose Detection을 통한 자동 자세 인식
-        - 게임 log를 통한 사용자 운동기록 추적
-        - 기록에 따른 보상을 통한 운동 동기 부여
-
-3. **기술스택**
-    - docker
-    - nginx
-    - spring boot 2.4.5
-    - spring-boot-jpa
-    - react 17.0.2
-    - redux-toolkit 1.6.1
-    - redux 4.1.0
-    - openvidu 2.19.0
-    - mysql
-    - aws ec2
-    - redis
-    - jenkins
-    - teachable macine
-
-![image](/uploads/4caa5b741349026bb80d993a41551549/image.png)
-
-1. **팀원 역할**
-    - 김예슬
-        - openvidu를 통한 WebRTC 기능 구현
-        - 백엔드 방 관리 기능 구현(방 만들기/빠른 시작/방 찾기/방 나가기/방장 부여)
-        - 관리자 백엔드 구현
-        - 오픈비두 서버 배포
-        - styled-component와 material-ui를 통한 css 스타일링
-    - 송상민
-        - react와 redux-toolkit을 활용하여 SPA 구현
-        - 프론트 개발(회원가입, 로그인, 회원정보 수정, 메인 화면, 랭킹, 튜토리얼, 마이페이지, 방만들기, 방찾기등, 관리자 페이지 구현)
-        - styled-components와 material-ui를 통한 컴포넌트 레이아웃 구현 및 css 스타일링
-    - 김성민
-        - Teachable Machine을 통한 운동 인식 구현
-        - 운동별 로직을 통한 운동 카운트 기능 및 튜토리얼 구현
-        - Openvidu를 통한 게임 내부 정보 실시간 통신
-        - 게임 시작, 종료 이벤트 처리 및 실시간 랭킹, 채팅 기능 구현
-        - styled-component와 material-ui를 통한 css 스타일링
-    - 서영은
-        - Spring security, JWT, JPA를 이용한 이메일 인증(폼 구현)회원가입, 로그인 기능 구현 (인증, 인가)
-        - JWT, Redis 캐싱을 이용한 랭킹 조회 정보 캐싱 처리 구현
-        - JWT, Redis를 이용해 로그아웃된 토큰 재사용 불가 처리 구현
-        - 비밀번호 변경, 닉네임 변경, 회원 정보 CRUD 구현
-        - 연속 운동일 수 조회, 1일 1홈동 조회, 방장 게임 시작 기능, 게임 끝 기능, 렝킹 페이지 기능, 최고 기록 조회, 뱃지 조회 등의 Spring Boot 백엔드 기능 구현
-        - Jenkins, Docker를 이용한 CI/CD 구현 - Docker로 nginx+react container, spring boot container 생성하여 배포
-        - Nginx 리다이렉트 설정 및 백엔드 및 프론트엔드 url 분기 처리 (/, /api/**)
-        - react를 이용한 프론트엔드 프로필 설정 및 프로필 변경 기능, 프로필 변경 및 1일 1홈동 호버 툴팁 구현
-        - 게임 및 채팅 기능 javascript → react로 migration
-        - styled-component를 통한 css 스타일링
-
-
-2. 서비스 URL
-    - https://i5a608.p.ssafy.io
-
-3. 포트 정리
-    - 포트
-
-        [포트](https://www.notion.so/7cab8267eaca4fd898ff43924dadd20d)
+### ✨ 포트 정리
+---
+|**PORT**|**이름**|
+|:---:|:---:|
+|443|HTTPS|
+|80|HTTP - HTTPS로 리다이렉트(프론트 페이지지로 리다이렉트)|
+|8443|Openvidu|
+|8379|Redis|
+|3306|MySQL|
+|8081|Jenkins|
+|8080|Spring boot Docker Container|
+|3000|React, NginX Docker Container|
