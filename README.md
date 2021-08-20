@@ -140,3 +140,91 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
 ---
 
 ![erd](/uploads/f88002818d8e2b35da31a6dce25df6d2/erd.png)
+
+
+### ✨ 주요 기능
+<details>
+<summary>접기/펼치기 버튼</summary>
+<div markdown="1">
+
+
+
+</div>
+</details>
+
+1. **서비스명**
+    - HOMEDONG(홈동)
+
+2. **서비스설명/주요기능**
+    - 서비스 설명 : 모두가 건강하게 집에서 즐길 수 있는 운동 게임
+    - 주요 기능 :
+        - webRTC를 통한 실시간 화상 운동 게임
+        - Pose Detection을 통한 자동 자세 인식
+        - 게임 log를 통한 사용자 운동기록 추적
+        - 기록에 따른 보상을 통한 운동 동기 부여
+
+3. **기술스택**
+    - docker
+    - nginx
+    - spring boot 2.4.5
+    - spring-boot-jpa
+    - react 17.0.2
+    - redux-toolkit 1.6.1
+    - redux 4.1.0
+    - openvidu 2.19.0
+    - mysql
+    - aws ec2
+    - redis
+    - jenkins
+    - teachable macine
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6de2caf7-72b9-4424-a3ee-427e91ceab61/Untitled.png)
+
+1. **팀원 역할**
+    - 김예슬
+        - openvidu를 통한 WebRTC 기능 구현
+        - 백엔드 방 관리 기능 구현(방 만들기/빠른 시작/방 찾기/방 나가기/방장 부여)
+        - 관리자 백엔드 구현
+        - 오픈비두 서버 배포
+        - styled-component와 material-ui를 통한 css 스타일링
+    - 송상민
+        - react와 redux-toolkit을 활용하여 SPA 구현
+        - 프론트 개발(회원가입, 로그인, 회원정보 수정, 메인 화면, 랭킹, 튜토리얼, 마이페이지, 방만들기, 방찾기등, 관리자 페이지 구현)
+        - styled-components와 material-ui를 통한 컴포넌트 레이아웃 구현 및 css 스타일링
+    - 김성민
+        - Teachable Machine을 통한 운동 인식 구현
+        - 운동별 로직을 통한 운동 카운트 기능 및 튜토리얼 구현
+        - Openvidu를 통한 게임 내부 정보 실시간 통신
+        - 게임 시작, 종료 이벤트 처리 및 실시간 랭킹, 채팅 기능 구현
+        - styled-component와 material-ui를 통한 css 스타일링
+    - 서영은
+        - Spring security, JWT, JPA를 이용한 이메일 인증(폼 구현)회원가입, 로그인 기능 구현 (인증, 인가)
+        - JWT, Redis 캐싱을 이용한 랭킹 조회 정보 캐싱 처리 구현
+        - JWT, Redis를 이용해 로그아웃된 토큰 재사용 불가 처리 구현
+        - 비밀번호 변경, 닉네임 변경, 회원 정보 CRUD 구현
+        - 연속 운동일 수 조회, 1일 1홈동 조회, 방장 게임 시작 기능, 게임 끝 기능, 렝킹 페이지 기능, 최고 기록 조회, 뱃지 조회 등의 Spring Boot 백엔드 기능 구현
+        - Jenkins, Docker를 이용한 CI/CD 구현 - Docker로 nginx+react container, spring boot container 생성하여 배포
+        - Nginx 리다이렉트 설정 및 백엔드 및 프론트엔드 url 분기 처리 (/, /api/**)
+        - react를 이용한 프론트엔드 프로필 설정 및 프로필 변경 기능, 프로필 변경 및 1일 1홈동 호버 툴팁 구현
+        - 게임 및 채팅 기능 javascript → react로 migration
+        - styled-component를 통한 css 스타일링
+
+2. **기술 특이점**
+    - Teachable machine을 이용하여 유저가 각 운동 종목을 잘 수행하는 지 체크
+    - 게임 화면 내 음악, 애니메이션을 통한 사용자의 몰입감 향상
+    - Redis를 이용하여 자정에 업데이트 되는 랭킹 정보를 캐싱하여 정보 조회 속도를 높임
+    - Redis를 이용해 로그아웃시킨 토큰 만료 처리
+    - redux-toolkit을 이용하여 Ducks Pattern 기반 상태 관리
+    - ConcurrentHashmap을 이용해 게임 방을 빠르게 찾을 수 있고, 인원수 제한 처리 기능 구현
+    - 날짜별 랭킹을 비교하여 변동 추이 시각화
+    - smtp를 이용한 회원가입 이메일 인증 구현
+    - Jenkins, Docker를 이용한 CI/CD 구현 - Docker로 nginx+react container, spring boot container 생성하여 배포
+    - Nginx로 백엔드 및 프론트엔드 url 분기 처리 (/, /api/**)
+
+3. 서비스 URL
+    - https://i5a608.p.ssafy.io
+
+4. 포트 정리
+    - 포트
+
+        [포트](https://www.notion.so/7cab8267eaca4fd898ff43924dadd20d)
