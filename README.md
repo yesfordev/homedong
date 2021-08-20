@@ -21,7 +21,7 @@
 
 <details>
 <summary>👉자세히👈</summary>
-<div markdown="1">
+
 - 김예슬
     - openvidu를 통한 WebRTC 기능 구현
     - 백엔드 방 관리 API 구현(방 만들기/빠른 시작/방 찾기/방 나가기/방장 부여)
@@ -49,7 +49,7 @@
     - react를 이용한 프론트엔드 프로필 설정 및 프로필 변경 기능, 프로필 변경 및 1일 1홈동 호버 툴팁 구현
     - 게임 및 채팅 기능 javascript → react로 migration
     - styled-component를 통한 css 스타일링
-</div>
+
 </details>
 
 
