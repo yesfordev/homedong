@@ -41,7 +41,7 @@
 
 🖱**Web RTC**
 
-- Kurento
+- Openvidu
 
 🖱**Pose Detection**
 
