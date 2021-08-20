@@ -45,6 +45,11 @@ const CustomLoadingOverlay = styled(LoadingOverlay)`
     height: 20px;
   }
 `;
+
+const EmailTextValidator = styled(CommonTextValidator)`
+  margin-bottom: 15px;
+`;
+
 const useStyles = makeStyles({
   validatorForm: {
     width: '40%',
@@ -200,7 +205,7 @@ export default function SignUp() {
             >
               중복확인
             </CommonButton>
-            <CommonTextValidator
+            <EmailTextValidator
               label="이메일"
               onChange={(e) => setEmail(e.target.value.replace(/\s/g, ''))}
               name="email"
