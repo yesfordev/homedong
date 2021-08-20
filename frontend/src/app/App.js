@@ -19,7 +19,7 @@ import ModifyUserInfo from '../features/auth/modify/ModifyUserInfo';
 import Home from '../features/home/Home';
 import EmailCheckedPlease from '../features/auth/signup/EmailCheckedPlease';
 import Tutorial from '../features/tutorial/Tutorial';
-import EmailChecked from '../features/auth/signup/EmailChecked.jsx';
+import EmailChecked from '../features/auth/signup/EmailChecked';
 import Rank from '../features/rank/Rank';
 import Game from '../features/game/Game';
 import Error404 from '../common/error/Error404';
