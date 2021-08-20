@@ -19,6 +19,7 @@ import ModifyUserInfo from '../features/auth/modify/ModifyUserInfo';
 import Home from '../features/home/Home';
 import EmailCheckedPlease from '../features/auth/signup/EmailCheckedPlease';
 import Tutorial from '../features/tutorial/Tutorial';
+import EmailChecked from '../features/auth/signup/EmailChecked';
 import Rank from '../features/rank/Rank';
 import Game from '../features/game/Game';
 import Error404 from '../common/error/Error404';
@@ -61,6 +62,7 @@ function App() {
             <PublicRoute restricted path="/signup" component={SignUp} />
             <PublicRoute path="/tutorial" component={Tutorial} />
             <Route path="/emailcheckedplease" component={EmailCheckedPlease} />
+            <Route path="/emailchecked" component={EmailChecked} />
             <Route path="/error" component={Error500} />
             <PrivateRoute exact path="/" component={Home} />
             <AdminRoute exact path="/admin" component={Admin} />
