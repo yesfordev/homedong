@@ -15,7 +15,7 @@
 ---
 |**서영은**|**김예슬**|**김성민**|**송상민**|**망고**|
 |:---:|:---:|:---:|:---:|:-----------:|
-|<img src="/uploads/e8c8407735095c6a2fa2aab7469ce66a/image.png" width="800">|<img src="/uploads/a2e597d98b5de28f2b24533accbbe863/image.png" width="800">|<img src="/uploads/974046d4b51144ee19ca6cc7249a26d4/image.png" width="800">|<img src="/uploads/ada107ab245bb0cd74492f17f97b5e34/image.png" width="800">|<img src="/uploads/74b138f321d71eba2f421d5742fcd5f3/image.png" width="930">|
+|<img src="/uploads/f64f84c30fb5d172c8a0a606c6a3d72a/Untitled.png" width="800">|<img src="/uploads/b772ba4ff5c261d8d0cd39e55ee65333/Untitled_1.png" width="800">|<img src="/uploads/5e7238824a318175b658579b897630e1/Untitled_2.png" width="800">|<img src="/uploads/a6eea0e5ec39fabd05bbfb9be399a0ba/Untitled_3.png" width="800">|<img src="/uploads/be2ba567dca8bb01ab6e2509f16dadcc/Untitled_4.png" width="930">|
 |Leader & Backend|Backend|Backend|Frontend|Cute|
 
 ### 🖥️ 개발 환경
@@ -61,15 +61,15 @@
 
 ---
 
-![image](/uploads/3b3223fb035430ae59745179ee804248/image.png)
+![Untitled_21](/uploads/437b8b4b4287bf91db84b519aac43bbc/Untitled_21.png)
 
 ### 🎨 화면 설계서
 
 ---
 
-![image](/uploads/4f1ba620b64801948c63c8eae4857a76/image.png)
+![ss12](/uploads/f5f1a8f0e2e5b4d42e9e1d92457f8769/ss12.png)
 
-![image](/uploads/41288c947a5a015a7740514a6a5c31b0/image.png)
+![ss34](/uploads/81d1ea48230b28aea9bf08b7c020f432/ss34.png)
 
 ### ✨코드 컨벤션
 
@@ -139,18 +139,4 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
 
 ---
 
-![image](/uploads/c60a94c89d3468a629d1b1ba7d8f2650/image.png)
-
-### ✨Git 스터디
-
----
-
-![image](/uploads/332740f983a32245a92db750586badbb/image.png)
-
-### 💠Jira
-
----
-
-![image](/uploads/0b2db4cb7f631f1340f9a72714730dfd/image.png)
-
-- Jira를 통해 스프린트, 개발 주기 등을 관리하고 있습니다.
+![erd](/uploads/f88002818d8e2b35da31a6dce25df6d2/erd.png)
