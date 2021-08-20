@@ -218,22 +218,11 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
         - 게임 및 채팅 기능 javascript → react로 migration
         - styled-component를 통한 css 스타일링
 
-2. **기술 특이점**
-    - Teachable machine을 이용하여 유저가 각 운동 종목을 잘 수행하는 지 체크
-    - 게임 화면 내 음악, 애니메이션을 통한 사용자의 몰입감 향상
-    - Redis를 이용하여 자정에 업데이트 되는 랭킹 정보를 캐싱하여 정보 조회 속도를 높임
-    - Redis를 이용해 로그아웃시킨 토큰 만료 처리
-    - redux-toolkit을 이용하여 Ducks Pattern 기반 상태 관리
-    - ConcurrentHashmap을 이용해 게임 방을 빠르게 찾을 수 있고, 인원수 제한 처리 기능 구현
-    - 날짜별 랭킹을 비교하여 변동 추이 시각화
-    - smtp를 이용한 회원가입 이메일 인증 구현
-    - Jenkins, Docker를 이용한 CI/CD 구현 - Docker로 nginx+react container, spring boot container 생성하여 배포
-    - Nginx로 백엔드 및 프론트엔드 url 분기 처리 (/, /api/**)
 
-3. 서비스 URL
+2. 서비스 URL
     - https://i5a608.p.ssafy.io
 
-4. 포트 정리
+3. 포트 정리
     - 포트
 
         [포트](https://www.notion.so/7cab8267eaca4fd898ff43924dadd20d)
