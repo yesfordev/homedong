@@ -22,23 +22,23 @@
 <details>
 <summary>👉자세히👈</summary>
 
-- 김예슬
+- **김예슬**
     - openvidu를 통한 WebRTC 기능 구현
     - 백엔드 방 관리 API 구현(방 만들기/빠른 시작/방 찾기/방 나가기/방장 부여)
     - 백엔드 관리자 API 구현
     - 오픈비두 서버 배포
     - styled-component와 material-ui를 통한 css 스타일링
-- 송상민
+- **송상민**
     - react와 redux-toolkit을 활용하여 SPA 구현
     - 프론트 개발(회원가입, 로그인, 회원정보 수정, 메인 화면, 랭킹, 튜토리얼, 마이페이지, 방만들기, 방찾기등, 관리자 페이지 구현)
     - styled-components와 material-ui를 통한 컴포넌트 레이아웃 구현 및 css 스타일링
-- 김성민
+- **김성민**
     - Teachable Machine을 통한 운동 인식 구현
     - 운동별 로직을 통한 운동 카운트 기능 및 튜토리얼 구현
     - Openvidu를 통한 게임 내부 정보 실시간 통신
     - 게임 시작, 종료 이벤트 처리 및 실시간 랭킹, 채팅 기능 구현
     - styled-component와 material-ui를 통한 css 스타일링
-- 서영은
+- **서영은**
     - Spring security, JWT, JPA를 이용한 이메일 인증(폼 구현)회원가입, 로그인 기능 구현 (인증, 인가)
     - JWT, Redis 캐싱을 이용한 랭킹 조회 정보 캐싱 처리 구현
     - JWT, Redis를 이용해 로그아웃된 토큰 재사용 불가 처리 구현
