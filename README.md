@@ -178,7 +178,7 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
     - jenkins
     - teachable macine
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6de2caf7-72b9-4424-a3ee-427e91ceab61/Untitled.png)
+![image](/uploads/4caa5b741349026bb80d993a41551549/image.png)
 
 1. **팀원 역할**
     - 김예슬
