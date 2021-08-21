@@ -19,7 +19,7 @@
 |<img src="/uploads/f64f84c30fb5d172c8a0a606c6a3d72a/Untitled.png" width="800">|<img src="/uploads/b772ba4ff5c261d8d0cd39e55ee65333/Untitled_1.png" width="800">|<img src="/uploads/5e7238824a318175b658579b897630e1/Untitled_2.png" width="800">|<img src="/uploads/a6eea0e5ec39fabd05bbfb9be399a0ba/Untitled_3.png" width="800">|<img src="/uploads/be2ba567dca8bb01ab6e2509f16dadcc/Untitled_4.png" width="930">|
 |Leader & Backend|Backend|Backend|Frontend|Cute|
 
-👉[맨 밑으로 가면 역할을 자세히 보실 수 있습니다.](###😃-팀원-역할)
+👉[맨 밑으로 가면 역할을 자세히 보실 수 있습니다.](#-팀원-역할)
 
 
 ### ✨ 주요 기능
@@ -183,6 +183,7 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
 |3000|React, NginX Docker Container|  
 
 ### 😃 팀원 역할
+---
 - **김예슬**
     - openvidu를 통한 WebRTC 기능 구현
     - 백엔드 방 관리 API 구현(방 만들기/빠른 시작/방 찾기/방 나가기/방장 부여)
