@@ -19,8 +19,7 @@
 |<img src="/uploads/f64f84c30fb5d172c8a0a606c6a3d72a/Untitled.png" width="800">|<img src="/uploads/b772ba4ff5c261d8d0cd39e55ee65333/Untitled_1.png" width="800">|<img src="/uploads/5e7238824a318175b658579b897630e1/Untitled_2.png" width="800">|<img src="/uploads/a6eea0e5ec39fabd05bbfb9be399a0ba/Untitled_3.png" width="800">|<img src="/uploads/be2ba567dca8bb01ab6e2509f16dadcc/Untitled_4.png" width="930">|
 |Leader & Backend|Backend|Backend|Frontend|Cute|
 
-
-[👉역할 자세히 보기👈](https://lab.ssafy.com/-/ide/project/s05-webmobile1-sub3/S05P13A608/edit/develop/-/README.md#-%ED%8C%80%EC%9B%90-%EC%97%AD%ED%95%A0)
+👉맨 밑으로 가면 역할을 자세히 보실 수 있습니다.
 
 
 ### ✨ 주요 기능
