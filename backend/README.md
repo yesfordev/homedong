@@ -1,4 +1,4 @@
-# backend+frontend 실행 방법
+# backend 실행 방법
 
 ```
 모든 과정은 intelliJ 기준으로 설명되어있습니다.
