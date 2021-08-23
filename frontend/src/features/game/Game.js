@@ -758,7 +758,7 @@ class Game extends Component {
     );
     // Prediction 2: run input through teachable machine classification model
     const prediction = await this.state.model.predict(posenetOutput);
-    if (prediction[0].probability.toFixed(2) > 0.95) {
+    if (prediction[0].probability.toFixed(2) > 0.99) {
       if (this.state.check) {
         this.setState({
           count: this.state.count + 1,
@@ -775,7 +775,7 @@ class Game extends Component {
           .catch((error) => {});
       }
       this.setState({ status: 'up' });
-    } else if (prediction[1].probability.toFixed(2) > 0.95) {
+    } else if (prediction[1].probability.toFixed(2) > 0.99) {
       this.setState({ status: 'down' });
       this.setState({ check: true });
     }
@@ -789,7 +789,7 @@ class Game extends Component {
     );
     // Prediction 2: run input through teachable machine classification model
     const prediction = await this.state.model.predict(posenetOutput);
-    if (prediction[0].probability.toFixed(2) > 0.95) {
+    if (prediction[0].probability.toFixed(2) > 0.99) {
       if (this.state.check) {
         this.setState({
           count: this.state.count + 1,
@@ -806,7 +806,7 @@ class Game extends Component {
           .catch(() => {});
       }
       this.setState({ status: 'up' });
-    } else if (prediction[1].probability.toFixed(2) > 0.95) {
+    } else if (prediction[1].probability.toFixed(2) > 0.99) {
       this.setState({ status: 'down' });
       this.setState({ check: true });
     }
@@ -820,7 +820,7 @@ class Game extends Component {
     );
     // Prediction 2: run input through teachable machine classification model
     const prediction = await this.state.model.predict(posenetOutput);
-    if (prediction[0].probability.toFixed(2) > 0.95) {
+    if (prediction[0].probability.toFixed(2) > 0.99) {
       if (this.state.check) {
         this.setState({
           count: this.state.count + 1,
@@ -837,7 +837,7 @@ class Game extends Component {
           .catch(() => {});
       }
       this.setState({ status: 'up' });
-    } else if (prediction[1].probability.toFixed(2) > 0.95) {
+    } else if (prediction[1].probability.toFixed(2) > 0.99) {
       this.setState({ status: 'down' });
       this.setState({ check: true });
     }

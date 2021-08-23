@@ -19,38 +19,7 @@
 |<img src="/uploads/f64f84c30fb5d172c8a0a606c6a3d72a/Untitled.png" width="800">|<img src="/uploads/b772ba4ff5c261d8d0cd39e55ee65333/Untitled_1.png" width="800">|<img src="/uploads/5e7238824a318175b658579b897630e1/Untitled_2.png" width="800">|<img src="/uploads/a6eea0e5ec39fabd05bbfb9be399a0ba/Untitled_3.png" width="800">|<img src="/uploads/be2ba567dca8bb01ab6e2509f16dadcc/Untitled_4.png" width="930">|
 |Leader & Backend|Backend|Backend|Frontend|Cute|
 
-<details>
-<summary>👉자세히👈</summary>
-
-- **김예슬**
-    - openvidu를 통한 WebRTC 기능 구현
-    - 백엔드 방 관리 API 구현(방 만들기/빠른 시작/방 찾기/방 나가기/방장 부여)
-    - 백엔드 관리자 API 구현
-    - 오픈비두 서버 배포
-    - styled-component와 material-ui를 통한 css 스타일링
-- **송상민**
-    - react와 redux-toolkit을 활용하여 SPA 구현
-    - 프론트 개발(회원가입, 로그인, 회원정보 수정, 메인 화면, 랭킹, 튜토리얼, 마이페이지, 방만들기, 방찾기등, 관리자 페이지 구현)
-    - styled-components와 material-ui를 통한 컴포넌트 레이아웃 구현 및 css 스타일링
-- **김성민**
-    - Teachable Machine을 통한 운동 인식 구현
-    - 운동별 로직을 통한 운동 카운트 기능 및 튜토리얼 구현
-    - Openvidu를 통한 게임 내부 정보 실시간 통신
-    - 게임 시작, 종료 이벤트 처리 및 실시간 랭킹, 채팅 기능 구현
-    - styled-component와 material-ui를 통한 css 스타일링
-- **서영은**
-    - Spring security, JWT, JPA를 이용한 이메일 인증(폼 구현)회원가입, 로그인 기능 구현 (인증, 인가)
-    - JWT, Redis 캐싱을 이용한 랭킹 조회 정보 캐싱 처리 구현
-    - JWT, Redis를 이용해 로그아웃된 토큰 재사용 불가 처리 구현
-    - 비밀번호 변경, 닉네임 변경, 회원 정보 CRUD 구현
-    - 연속 운동일 수 조회, 1일 1홈동 조회, 방장 게임 시작 기능, 게임 끝 기능, 렝킹 페이지 기능, 최고 기록 조회, 뱃지 조회 등의 Spring Boot 백엔드 기능 구현
-    - Jenkins, Docker를 이용한 CI/CD 구현 - Docker로 nginx+react container, spring boot container 생성하여 배포
-    - Nginx 리다이렉트 설정 및 백엔드 및 프론트엔드 url 분기 처리 (/, /api/**)
-    - react를 이용한 프론트엔드 프로필 설정 및 프로필 변경 기능, 프로필 변경 및 1일 1홈동 호버 툴팁 구현
-    - 게임 및 채팅 기능 javascript → react로 migration
-    - styled-component를 통한 css 스타일링
-
-</details>
+👉[맨 밑으로 가면 역할을 자세히 보실 수 있습니다.](#-팀원-역할)
 
 
 ### ✨ 주요 기능
@@ -211,4 +180,34 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
 |3306|MySQL|
 |8081|Jenkins|
 |8080|Spring boot Docker Container|
-|3000|React, NginX Docker Container|
+|3000|React, NginX Docker Container|  
+
+### 😃 팀원 역할
+---
+- **김예슬**
+    - openvidu를 통한 WebRTC 기능 구현
+    - 백엔드 방 관리 API 구현(방 만들기/빠른 시작/방 찾기/방 나가기/방장 부여)
+    - 백엔드 관리자 API 구현
+    - 오픈비두 서버 배포
+    - styled-component와 material-ui를 통한 css 스타일링
+- **송상민**
+    - react와 redux-toolkit을 활용하여 SPA 구현
+    - 프론트 개발(회원가입, 로그인, 회원정보 수정, 메인 화면, 랭킹, 튜토리얼, 마이페이지, 방만들기, 방찾기등, 관리자 페이지 구현)
+    - styled-components와 material-ui를 통한 컴포넌트 레이아웃 구현 및 css 스타일링
+- **김성민**
+    - Teachable Machine을 통한 운동 인식 구현
+    - 운동별 로직을 통한 운동 카운트 기능 및 튜토리얼 구현
+    - Openvidu를 통한 게임 내부 정보 실시간 통신
+    - 게임 시작, 종료 이벤트 처리 및 실시간 랭킹, 채팅 기능 구현
+    - styled-component와 material-ui를 통한 css 스타일링
+- **서영은**
+    - Spring security, JWT, JPA를 이용한 이메일 인증(폼 구현)회원가입, 로그인 기능 구현 (인증, 인가)
+    - JWT, Redis 캐싱을 이용한 랭킹 조회 정보 캐싱 처리 구현
+    - JWT, Redis를 이용해 로그아웃된 토큰 재사용 불가 처리 구현
+    - 비밀번호 변경, 닉네임 변경, 회원 정보 CRUD 구현
+    - 연속 운동일 수 조회, 1일 1홈동 조회, 방장 게임 시작 기능, 게임 끝 기능, 렝킹 페이지 기능, 최고 기록 조회, 뱃지 조회 등의 Spring Boot 백엔드 기능 구현
+    - Jenkins, Docker를 이용한 CI/CD 구현 - Docker로 nginx+react container, spring boot container 생성하여 배포
+    - Nginx 리다이렉트 설정 및 백엔드 및 프론트엔드 url 분기 처리 (/, /api/**)
+    - react를 이용한 프론트엔드 프로필 설정 및 프로필 변경 기능, 프로필 변경 및 1일 1홈동 호버 툴팁 구현
+    - 게임 및 채팅 기능 javascript → react로 migration
+    - styled-component를 통한 css 스타일링
