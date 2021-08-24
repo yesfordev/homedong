@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -79,6 +80,7 @@ public class AuthController {
             @ApiResponse(code = 500, message = "서버 오류", response = ErrorResponse.class)
     })
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @Transactional
     public ResponseEntity logout(@RequestHeader String Authorization) {
         String token = Authorization.split(" ")[1];
         log.info(token);
