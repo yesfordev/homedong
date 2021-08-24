@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -118,6 +119,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 에러", response = ErrorResponse.class)
     })
     @PreAuthorize("hasAnyRole('USER')")
+    @Transactional
     public ResponseEntity deleteUser(@RequestHeader String Authorization) {
         String token = Authorization.split(" ")[1];
         log.info(token);
