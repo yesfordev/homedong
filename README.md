@@ -11,6 +11,8 @@
 ## ✨홈동의 모토
 `언제 어디서나 건강을 챙기며 함께 즐긴다!`
 
+### 🏆수상 - SSAFY 5기 공통 프로젝트 2위
+
 ## 👀홈동 서비스 화면
 ### 게임 - 스쿼트
 ![스쿼트](https://user-images.githubusercontent.com/31542907/131517102-ae6bd948-53df-4ce5-8b0f-0423dbbbcf35.gif)
@@ -221,6 +223,7 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
         ex) feature/front/login
 
         ex) feature/webrtc
+	
 
 ### 👨‍👩‍👧 Jira
 
@@ -233,11 +236,13 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
 
 이 외에, subtask에 예상 시간을 기록해 더 세세하게 일정 관리를 했고 협업 메신저(Mattermost)에 알람을 등록하여 작업 상황을 실시간으로 확인할 수 있도록 했습니다.
 
+
 ### 👨‍👩‍👧 Notion
 
 ---
 
 모두가 봐야할 공지, 함께 공부해야 할 링크 등을 모아 관리했습니다. 그리고 항상 모든 회의 및 피드백은 기록으로 남겨두어서 잘 반영할 수 있도록 하였습니다. 컨벤션 규칙, 브랜치 전략 등도 노션에 기록하여 모두가 항시 확인할 수 있도록 관리했습니다.
+
 
 ### ✨ ER Diagram
 
@@ -303,6 +308,7 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
 ---
 
 👉[HomeDong 기술 블로그](https://calisthenics-homedong.tistory.com/) 보러가기 👈
+
 
 ### 🐣Homedong을 개발하고 난 후의 회고
 
