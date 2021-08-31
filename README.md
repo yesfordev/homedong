@@ -1,13 +1,12 @@
 # 💪 HomeDong ( 운동 게이미피케이션 플랫폼 )
 
 ## ✨Overview
-
 1일 1커밋의 열풍이 불고 있는 여러분들의 건강은 괜찮으신가요? 모두의 건강을 책임지기 위해 저희 **HomeDong**이 왔습니다 ✌1일 1홈동(홈 트레이닝 운동)의 시작을 홈동과 함께하고 건강을 지켜보세요!
 
-## 홈동 소개 및 시연 영상
-[![Watch the video](https://user-images.githubusercontent.com/31542907/131515083-458cac93-16d0-463e-a18e-ec26156a15f3.png)](https://www.youtube.com/watch?v=_U6xNSv4kFM)
+## 👇홈동 소개 및 시연 영상👇
+[<img src="https://user-images.githubusercontent.com/31542907/131515083-458cac93-16d0-463e-a18e-ec26156a15f3.png" width="250">](https://www.youtube.com/watch?v=_U6xNSv4kFM)
 
-홈동 시나리오는 👉**[여기]()**👈에서 더 자세히 보실 수 있습니다.
+홈동 시나리오는 👉[여기](https://github.com/yesfordev/homedong/blob/develop/%EC%8B%9C%EC%97%B0%20%EC%8B%9C%EB%82%98%EB%A6%AC%EC%98%A4.md)👈에서 더 자세히 보실 수 있습니다.
 
 ## 👀홈동 서비스 화면
 ### 게임 - 스쿼트
@@ -96,7 +95,7 @@
 제가 담당하여 서비스 아키텍처와 같이, Jenkins의 pipeline을 이용하여 자동 무중단 배포를 구축하였습니다. Gitlab webhook을 설정하여 Jenkins에 빌드 트리거를 설정했고, 이에 따라 Gitlab에서 master 브랜치에 push하면 자동으로 배포될 수 있도록 구축하여 개발하는 과정에서 배포로 인한 시간 낭비를 줄였습니다.
 또한 프론트엔드인 React.js는 Nginx와 함께 docker image로 빌드하여 배포하였고, 백엔드 및 redis, openvidu 또한 docker container로 배포하였습니다. 그리고 Nginx와 letsencrypt를 이용하여 ssl 인증서를 적용하였고, 프론트엔드는 443(https)로 프록시로 분기시켰고 백엔드는 /api 경로로 프록시를 걸어줬습니다.
 
-- 프로그램 배포 방법은 **[여기]()**에서 볼 수 있습니다. 해당 배포 방법은 CI/CD를 구축할 수 있는 내용은 아닙니다.(단순 배포 방법)
+- 프로그램 배포 방법은 [여기](https://github.com/yesfordev/homedong/blob/develop/git%20%EC%86%8C%EC%8A%A4%20%ED%81%B4%EB%A1%A0%20%EC%9D%B4%ED%9B%84%20%EB%B9%8C%EB%93%9C%20%EB%B0%8F%20%EB%B0%B0%ED%8F%AC%20%EA%B0%80%EC%9D%B4%EB%93%9C.md)에서 볼 수 있습니다. 해당 배포 방법은 CI/CD를 구축할 수 있는 내용은 아닙니다.(단순 배포 방법)
 
 ### 👨‍👩‍👧 협업 툴
 
@@ -186,7 +185,10 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
 
         ex) feature/webrtc
 
-### Jira
+### 👨‍👩‍👧 Jira
+
+---
+
 협업 및 일정, 업무 관리를 위해 Jira를 이용하였습니다. 매주 월요일 오전 회의에서 한 주동안 진행되어야 할 주 단위 계획을 짜고, 진행할 이슈들을 스프린트를 만들어 등록했습니다. 스프린트는 일주일 단위로 진행하였습니다.
 - Epic : backend, frontend, webrtc로 나누어 구성하였습니다.
 - story : `마이페이지에서 프로필 변경 버튼을 통해 프로필을 변경 한다`와 같이 자세하게 작성하였습니다.
@@ -194,7 +196,10 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
 
 이 외에, subtask에 예상 시간을 기록해 더 세세하게 일정 관리를 했고 협업 메신저(Mattermost)에 알람을 등록하여 작업 상황을 실시간으로 확인할 수 있도록 했습니다.
 
-### Notion
+### 👨‍👩‍👧 Notion
+
+---
+
 모두가 봐야할 공지, 함께 공부해야 할 링크 등을 모아 관리했습니다. 그리고 항상 모든 회의 및 피드백은 기록으로 남겨두어서 잘 반영할 수 있도록 하였습니다. 컨벤션 규칙, 브랜치 전략 등도 노션에 기록하여 모두가 항시 확인할 수 있도록 관리했습니다.
 
 ### ✨ ER Diagram
@@ -259,10 +264,14 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
 ### ⁉HomeDong의 개발 과정이 궁금하다면?!
 
 ---
+
 👉[HomeDong 기술 블로그](https://calisthenics-homedong.tistory.com/) 보러가기 👈
 
-### Homedong을 개발하고 난 후의 회고
+### 🐣Homedong을 개발하고 난 후의 회고
+
+---
+
 - 안되는 것은 함께 해결하면 해결할 수 있다.
-- 코드 리뷰를 하자
+- 코드 리뷰 꼼꼼히 하자
 - 긍정적인 말로 팀 분위기를 만들어가자
 자세한 회고는 [블로그](https://yesforlog.tistory.com/24)에서 자세히 보실 수 있습니다.
