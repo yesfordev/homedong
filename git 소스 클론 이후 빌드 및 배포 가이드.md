@@ -1,4 +1,4 @@
-# Openvidu 백엔드 및 프론트엔드 배포, SSL 인증서
+# Openvidu 백엔드 및 프론트엔드 배포, SSL 인증서 적용
 
 ## Openvidu 배포
 
@@ -101,7 +101,7 @@ OpenJDK 64-Bit Server VM (Zulu 8.33.0.1-win64) (build 25.192-b01, mixed mode)
 ### 1. git clone
 
 ```bash
-git clonehttps://lab.ssafy.com/s05-webmobile1-sub3/S05P13A608.git
+git clone https://github.com/yesfordev/homedong.git
 ```
 
 ### 2. redis_db 배포
@@ -420,7 +420,7 @@ server {
 }
 
 server {
-    if ($host = i5a608.p.ssafy.io) {
+    if ($host = www제외한 도메인 이름) {
         return 301 https://$host$request_uri;
     } # managed by Certbot
 

@@ -1,28 +1,47 @@
 # 💪 HomeDong ( 운동 게이미피케이션 플랫폼 )
 
-### ✨Overview
+## ✨Overview
 
-1일 1커밋의 열풍이 불고 있는 SSAFY인들의 건강은 괜찮으신가요? SSAFY인들의 건강을 책임지기 위해 저희 **HomeDong**이 왔습니다 ✌1일 1동(홈 트레이닝 운동)의 시작을 홈동과 함께하고 건강을 지켜보세요!
+1일 1커밋의 열풍이 불고 있는 여러분들의 건강은 괜찮으신가요? 모두의 건강을 책임지기 위해 저희 **HomeDong**이 왔습니다 ✌1일 1홈동(홈 트레이닝 운동)의 시작을 홈동과 함께하고 건강을 지켜보세요!
 
-👉[Homedong](https://i5a608.p.ssafy.io) 서비스! 구경하기 👈
+## 홈동 소개 및 시연 영상
+[![Watch the video](https://user-images.githubusercontent.com/31542907/131515083-458cac93-16d0-463e-a18e-ec26156a15f3.png)](https://www.youtube.com/watch?v=_U6xNSv4kFM)
 
-### ⁉HomeDong의 개발 방식이 궁금하다면?!
+홈동 시나리오는 👉**[여기]()**👈에서 더 자세히 보실 수 있습니다.
 
----
-👉[HomeDong 기술 블로그](https://calisthenics-homedong.tistory.com/) 보러가기 👈
+## 👀홈동 서비스 화면
+### 게임 - 스쿼트
+![스쿼트](https://user-images.githubusercontent.com/31542907/131517102-ae6bd948-53df-4ce5-8b0f-0423dbbbcf35.gif)
 
-### 💞캘리스떼닉스(Calisthenics) 팀원을 소개합니다!
+### 게임 - 버피
+![버피](https://user-images.githubusercontent.com/31542907/131517100-3e06b5da-48e3-4d47-9125-be4ad158f0fd.gif)
 
----
-|**서영은**|**김예슬**|**김성민**|**송상민**|**망고**|
-|:---:|:---:|:---:|:---:|:-----------:|
-|<img src="/uploads/f64f84c30fb5d172c8a0a606c6a3d72a/Untitled.png" width="800">|<img src="/uploads/b772ba4ff5c261d8d0cd39e55ee65333/Untitled_1.png" width="800">|<img src="/uploads/5e7238824a318175b658579b897630e1/Untitled_2.png" width="800">|<img src="/uploads/a6eea0e5ec39fabd05bbfb9be399a0ba/Untitled_3.png" width="800">|<img src="/uploads/be2ba567dca8bb01ab6e2509f16dadcc/Untitled_4.png" width="930">|
-|Leader & Backend|Backend|Backend|Frontend|Cute|
+### 게임 - 팔굽혀펴기
+![푸시업](https://user-images.githubusercontent.com/31542907/131513675-9307c62b-c428-485a-8652-655b3a2ec19e.gif)
 
-👉[맨 밑으로 가면 역할을 자세히 보실 수 있습니다.](#-팀원-역할)
+### 게임 - 채팅
+![채팅](https://user-images.githubusercontent.com/31542907/131517069-e6cfc4e2-6318-4674-b477-66b841fb2e3d.gif)
+
+### 게임이 끝났을 때 - 획득 뱃지 및 랭킹
+![게임끝](https://user-images.githubusercontent.com/31542907/131517089-dc21ee81-e95c-46e0-89ea-918cd067e7b7.gif)
+
+### 마이페이지 - 뱃지 리워드, 운동 일일 기록, 운동일 수
+![마이페이지리워드](https://user-images.githubusercontent.com/31542907/131517098-070dce29-685c-40f8-9bd0-3942d3ebcc2e.gif)
+
+### 마이페이지 - 프로필 변경
+![프로필 변경](https://user-images.githubusercontent.com/31542907/131517082-7c64a8d2-4a93-43fb-a767-ad5edab487ed.gif)
+
+### 랭킹
+![랭킹](https://user-images.githubusercontent.com/31542907/131517092-19a5d112-ba2d-47a4-b332-9dade3eaf42c.gif)
+
+### 튜토리얼
+![튜토리얼](https://user-images.githubusercontent.com/31542907/131517079-bfb5af03-3c12-4fde-883f-743865bdac0d.gif)
+
+### 회원가입 - 이메일 인증
+![회원가입](https://user-images.githubusercontent.com/31542907/131517086-37ce4e8c-73cb-4a8f-9841-38e0ca1dfd6a.gif)
 
 
-### ✨ 주요 기능
+## ✨ 주요 기능
 ---
 - 서비스 설명 : 모두가 건강하게 집에서 즐길 수 있는 운동 게임
 - 주요 기능 :
@@ -71,14 +90,19 @@
 ### 💫 서비스 아키텍처
 
 ---
-![image](/uploads/4caa5b741349026bb80d993a41551549/image.png)
+![서비스 아키텍처](https://user-images.githubusercontent.com/31542907/131509639-2707daab-08ce-4725-93f7-3da5ecc088b1.png)
 
+### Jenkins를 이용한 CI/CD 구축 및 SSL 인증서 적용
+제가 담당하여 서비스 아키텍처와 같이, Jenkins의 pipeline을 이용하여 자동 무중단 배포를 구축하였습니다. Gitlab webhook을 설정하여 Jenkins에 빌드 트리거를 설정했고, 이에 따라 Gitlab에서 master 브랜치에 push하면 자동으로 배포될 수 있도록 구축하여 개발하는 과정에서 배포로 인한 시간 낭비를 줄였습니다.
+또한 프론트엔드인 React.js는 Nginx와 함께 docker image로 빌드하여 배포하였고, 백엔드 및 redis, openvidu 또한 docker container로 배포하였습니다. 그리고 Nginx와 letsencrypt를 이용하여 ssl 인증서를 적용하였고, 프론트엔드는 443(https)로 프록시로 분기시켰고 백엔드는 /api 경로로 프록시를 걸어줬습니다.
+
+- 프로그램 배포 방법은 **[여기]()**에서 볼 수 있습니다. 해당 배포 방법은 CI/CD를 구축할 수 있는 내용은 아닙니다.(단순 배포 방법)
 
 ### 👨‍👩‍👧 협업 툴
 
 ---
 
-- Gitlab
+- Git
 - Jira
 - Notion
 - Mattermost
@@ -87,16 +111,16 @@
 ### 💭요구사항 정의서
 
 ---
-
-![Untitled_21](/uploads/437b8b4b4287bf91db84b519aac43bbc/Untitled_21.png)
+![요구사항 정의서](https://user-images.githubusercontent.com/31542907/131509739-fb2a0c08-6a06-4f88-8643-93494f7c0150.png)
 
 ### 🎨 화면 설계서
 
 ---
 
-![ss12](/uploads/f5f1a8f0e2e5b4d42e9e1d92457f8769/ss12.png)
+<img width="574" alt="화면설계서1" src="https://user-images.githubusercontent.com/31542907/131509888-18a9e572-0521-492d-b36b-f990f39eea0a.png">
 
-![ss34](/uploads/81d1ea48230b28aea9bf08b7c020f432/ss34.png)
+<img width="1098" alt="화면설계서2" src="https://user-images.githubusercontent.com/31542907/131509897-ad78d45f-bf43-4b59-82e2-38b536ee9d75.png">
+
 
 ### ✨코드 컨벤션
 
@@ -162,14 +186,26 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
 
         ex) feature/webrtc
 
+### Jira
+협업 및 일정, 업무 관리를 위해 Jira를 이용하였습니다. 매주 월요일 오전 회의에서 한 주동안 진행되어야 할 주 단위 계획을 짜고, 진행할 이슈들을 스프린트를 만들어 등록했습니다. 스프린트는 일주일 단위로 진행하였습니다.
+- Epic : backend, frontend, webrtc로 나누어 구성하였습니다.
+- story : `마이페이지에서 프로필 변경 버튼을 통해 프로필을 변경 한다`와 같이 자세하게 작성하였습니다.
+- subtask : 부작업을 나누어 세세하게 업무 관리를 진행하였습니다.
+
+이 외에, subtask에 예상 시간을 기록해 더 세세하게 일정 관리를 했고 협업 메신저(Mattermost)에 알람을 등록하여 작업 상황을 실시간으로 확인할 수 있도록 했습니다.
+
+### Notion
+모두가 봐야할 공지, 함께 공부해야 할 링크 등을 모아 관리했습니다. 그리고 항상 모든 회의 및 피드백은 기록으로 남겨두어서 잘 반영할 수 있도록 하였습니다. 컨벤션 규칙, 브랜치 전략 등도 노션에 기록하여 모두가 항시 확인할 수 있도록 관리했습니다.
+
 ### ✨ ER Diagram
 
 ---
 
-![erd](/uploads/f88002818d8e2b35da31a6dce25df6d2/erd.png)
+![erd](https://user-images.githubusercontent.com/31542907/131509971-463c22d8-6266-4c94-b75c-59a205ec17f9.png)
 
+- 정규화를 거친 Diagram 입니다.
 
-### ✨ 포트 정리
+### ✨ EC2 포트 정리
 ---
 |**PORT**|**이름**|
 |:---:|:---:|
@@ -180,7 +216,15 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
 |3306|MySQL|
 |8081|Jenkins|
 |8080|Spring boot Docker Container|
-|3000|React, NginX Docker Container|  
+|3000|React, NginX Docker Container|
+
+## 💞캘리스떼닉스(Calisthenics) 팀원을 소개합니다!
+
+---
+|**서영은**|**김예슬**|**김성민**|**송상민**|**망고**|
+|:---:|:---:|:---:|:---:|:-----------:|
+|<img src="https://user-images.githubusercontent.com/31542907/131508704-c02a2f49-f426-47f4-903a-815044306b85.png" width="800">|<img src="https://user-images.githubusercontent.com/31542907/131508707-7c491a78-a31f-4551-847e-05ae13ade67f.png" width="800">|<img src="https://user-images.githubusercontent.com/31542907/131508699-dfb94282-92ec-4f50-8d77-ae328c2a71af.png" width="800">|<img src="https://user-images.githubusercontent.com/31542907/131508696-a8946565-9b88-47e5-afc5-376bc8b0e76f.png" width="800">|<img src="https://user-images.githubusercontent.com/31542907/131509605-96a20a25-cbc7-4722-9e0d-2e830ece54cb.png" width="800">|
+|Leader & Backend|Backend|Backend|Frontend|Cute|
 
 ### 😃 팀원 역할
 ---
@@ -200,7 +244,7 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
     - Openvidu를 통한 게임 내부 정보 실시간 통신
     - 게임 시작, 종료 이벤트 처리 및 실시간 랭킹, 채팅 기능 구현
     - styled-component와 material-ui를 통한 css 스타일링
-- **서영은**
+- **서영은(본인)**
     - Spring security, JWT, JPA를 이용한 이메일 인증(폼 구현)회원가입, 로그인 기능 구현 (인증, 인가)
     - JWT, Redis 캐싱을 이용한 랭킹 조회 정보 캐싱 처리 구현
     - JWT, Redis를 이용해 로그아웃된 토큰 재사용 불가 처리 구현
@@ -211,3 +255,14 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
     - react를 이용한 프론트엔드 프로필 설정 및 프로필 변경 기능, 프로필 변경 및 1일 1홈동 호버 툴팁 구현
     - 게임 및 채팅 기능 javascript → react로 migration
     - styled-component를 통한 css 스타일링
+
+### ⁉HomeDong의 개발 과정이 궁금하다면?!
+
+---
+👉[HomeDong 기술 블로그](https://calisthenics-homedong.tistory.com/) 보러가기 👈
+
+### Homedong을 개발하고 난 후의 회고
+- 안되는 것은 함께 해결하면 해결할 수 있다.
+- 코드 리뷰를 하자
+- 긍정적인 말로 팀 분위기를 만들어가자
+자세한 회고는 [블로그](https://yesforlog.tistory.com/24)에서 자세히 보실 수 있습니다.
