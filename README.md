@@ -271,7 +271,7 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
 |**서영은**|**김예슬**|**김성민**|**송상민**|**망고**|
 |:---:|:---:|:---:|:---:|:-----------:|
 |<img src="https://user-images.githubusercontent.com/31542907/131508704-c02a2f49-f426-47f4-903a-815044306b85.png" width="800">|<img src="https://user-images.githubusercontent.com/31542907/131508707-7c491a78-a31f-4551-847e-05ae13ade67f.png" width="800">|<img src="https://user-images.githubusercontent.com/31542907/131508699-dfb94282-92ec-4f50-8d77-ae328c2a71af.png" width="800">|<img src="https://user-images.githubusercontent.com/31542907/131508696-a8946565-9b88-47e5-afc5-376bc8b0e76f.png" width="800">|<img src="https://user-images.githubusercontent.com/31542907/131509605-96a20a25-cbc7-4722-9e0d-2e830ece54cb.png" width="800">|
-|Leader & Backend|Backend|Backend|Frontend|Cute|
+|Leader & FullStack|FullStack|FullStack|Frontend|Cute|
 
 ### 😃 팀원 역할
 ---
