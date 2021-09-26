@@ -290,7 +290,7 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
     - Openvidu를 통한 게임 내부 정보 실시간 통신
     - 게임 시작, 종료 이벤트 처리 및 실시간 랭킹, 채팅 기능 구현
     - styled-component와 material-ui를 통한 css 스타일링
-- **서영은(본인)**
+- **팀장(본인)**
     - Spring security, JWT, JPA를 이용한 이메일 인증(폼 구현)회원가입, 로그인 기능 구현 (인증, 인가)
     - JWT, Redis 캐싱을 이용한 랭킹 조회 정보 캐싱 처리 구현
     - JWT, Redis를 이용해 로그아웃된 토큰 재사용 불가 처리 구현
