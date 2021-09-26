@@ -272,27 +272,19 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
 |8080|Spring boot Docker Container|
 |3000|React, NginX Docker Container|
 
-## 💞캘리스떼닉스(Calisthenics) 팀원을 소개합니다!
-
----
-|**서영은**|**김예슬**|**김성민**|**송상민**|**망고**|
-|:---:|:---:|:---:|:---:|:-----------:|
-|<img src="https://user-images.githubusercontent.com/31542907/131508704-c02a2f49-f426-47f4-903a-815044306b85.png" width="800">|<img src="https://user-images.githubusercontent.com/31542907/131508707-7c491a78-a31f-4551-847e-05ae13ade67f.png" width="800">|<img src="https://user-images.githubusercontent.com/31542907/131508699-dfb94282-92ec-4f50-8d77-ae328c2a71af.png" width="800">|<img src="https://user-images.githubusercontent.com/31542907/131508696-a8946565-9b88-47e5-afc5-376bc8b0e76f.png" width="800">|<img src="https://user-images.githubusercontent.com/31542907/131509605-96a20a25-cbc7-4722-9e0d-2e830ece54cb.png" width="800">|
-|Leader & FullStack|FullStack|FullStack|Frontend|Cute|
-
 ### 😃 팀원 역할
 ---
-- **김예슬**
+- **팀원1**
     - openvidu를 통한 WebRTC 기능 구현
     - 백엔드 방 관리 API 구현(방 만들기/빠른 시작/방 찾기/방 나가기/방장 부여)
     - 백엔드 관리자 API 구현
     - 오픈비두 서버 배포
     - styled-component와 material-ui를 통한 css 스타일링
-- **송상민**
+- **팀원2**
     - react와 redux-toolkit을 활용하여 SPA 구현
     - 프론트 개발(회원가입, 로그인, 회원정보 수정, 메인 화면, 랭킹, 튜토리얼, 마이페이지, 방만들기, 방찾기등, 관리자 페이지 구현)
     - styled-components와 material-ui를 통한 컴포넌트 레이아웃 구현 및 css 스타일링
-- **김성민**
+- **팀원3**
     - Teachable Machine을 통한 운동 인식 구현
     - 운동별 로직을 통한 운동 카운트 기능 및 튜토리얼 구현
     - Openvidu를 통한 게임 내부 정보 실시간 통신
