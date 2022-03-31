@@ -99,11 +99,11 @@
 
 ![서비스 아키텍처](https://user-images.githubusercontent.com/31542907/131509639-2707daab-08ce-4725-93f7-3da5ecc088b1.png)
 
-### ✨Jenkins를 이용한 CI/CD 구축 및 SSL 인증서 적용
+### ✨Jenkins를 이용한 CD 구축 및 SSL 인증서 적용
 
 ---
 
-제가 담당하여 서비스 아키텍처와 같이, Jenkins의 pipeline을 이용하여 자동 무중단 배포를 구축하였습니다. Gitlab webhook을 설정하여 Jenkins에 빌드 트리거를 설정했고, 이에 따라 Gitlab에서 master 브랜치에 push하면 자동으로 배포될 수 있도록 구축하여 개발하는 과정에서 배포로 인한 시간 낭비를 줄였습니다.
+제가 담당하여 서비스 아키텍처와 같이, Jenkins의 pipeline을 이용하여 자동 배포를 구축하였습니다. Gitlab webhook을 설정하여 Jenkins에 빌드 트리거를 설정했고, 이에 따라 Gitlab에서 master 브랜치에 push하면 자동으로 배포될 수 있도록 구축하여 개발하는 과정에서 배포로 인한 시간 낭비를 줄였습니다.
 또한 프론트엔드인 React.js는 Nginx와 함께 docker image로 빌드하여 배포하였고, 백엔드 및 redis, openvidu 또한 docker container로 배포하였습니다. 그리고 Nginx와 letsencrypt를 이용하여 ssl 인증서를 적용하였고, 프론트엔드는 443(https)로 프록시로 분기시켰고 백엔드는 /api 경로로 프록시를 걸어줬습니다.
 
 - 프로그램 배포 방법은 [여기](https://github.com/yesfordev/homedong/blob/develop/git%20%EC%86%8C%EC%8A%A4%20%ED%81%B4%EB%A1%A0%20%EC%9D%B4%ED%9B%84%20%EB%B9%8C%EB%93%9C%20%EB%B0%8F%20%EB%B0%B0%ED%8F%AC%20%EA%B0%80%EC%9D%B4%EB%93%9C.md)에서 볼 수 있습니다. 해당 배포 방법은 CI/CD를 구축할 수 있는 내용은 아닙니다.(단순 배포 방법)
@@ -296,7 +296,7 @@ ex) FEAT: 로그인 rest api 추가 [#지라이슈넘버]
     - JWT, Redis를 이용해 로그아웃된 토큰 재사용 불가 처리 구현
     - 비밀번호 변경, 닉네임 변경, 회원 정보 CRUD 구현
     - 연속 운동일 수 조회, 1일 1홈동 조회, 방장 게임 시작 기능, 게임 끝 기능, 렝킹 페이지 기능, 최고 기록 조회, 뱃지 조회 등의 Spring Boot 백엔드 기능 구현
-    - Jenkins, Docker를 이용한 CI/CD 구현 - Docker로 nginx+react container, spring boot container 생성하여 배포
+    - Jenkins, Docker를 이용한 CD 구현 - Docker로 nginx+react container, spring boot container 생성하여 배포
     - Nginx 리다이렉트 설정 및 백엔드 및 프론트엔드 url 분기 처리 (/, /api/**)
     - react를 이용한 프론트엔드 프로필 설정 및 프로필 변경 기능, 프로필 변경 및 1일 1홈동 호버 툴팁 구현
     - 게임 및 채팅 기능 javascript → react로 migration
